@@ -1,0 +1,10 @@
+{
+  "database":{
+    "host": "localhost",
+    "user": "root",
+    "password": "",
+    "database": "taxiconn"
+  },
+  "www": "taxiconn.com.ua",
+  "port": 1111
+}
