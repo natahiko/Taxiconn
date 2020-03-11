@@ -5,6 +5,5 @@
     "password": "",
     "database": "taxiconn"
   },
-  "www": "taxiconn.com.ua",
   "port": 1111
 }

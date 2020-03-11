@@ -1,6 +1,9 @@
 var mysql = require('mysql');
+var fs = require('fs');
+const pug = require('pug');
 let express = require('express');
 let config = require('./config/conf.json');
+let text = require('./config/main.json');
 var functions = require('./js/functions');
 var database = require('./js/db');
 var LocalStorage = require('node-localstorage').LocalStorage, localStorage = new LocalStorage('./scratch');
@@ -15,7 +18,8 @@ server.use(express.static('files'));
 var con = mysql.createConnection(config['database']);
 
 server.get('/', function(req, res) {
-    res.sendFile(__dirname+functions.foo());
+    res.write(pug.renderFile(__dirname+"/pugs/header-driver.pug", text.header));
+    res.end();
 });
 server.get('/set', function(req, res) {
     localStorage.setItem("name","nata");
