@@ -19,7 +19,7 @@ body
         div.collapse.navbar-collapse(id="navbarContent")
             ul.navbar-nav.mr-auto
                 li.nav-item
-                    a.nav-link.disabled(href="/aboutus") Про нас
+                    a.nav-link(href="/aboutus") Про нас
                 li.nav-item.dropdown
                     a.nav-link.dropdown-toggle(href="#" data-toggle="dropdown" aria-expanded="false") Водію
                     div.dropdown-menu
@@ -65,3 +65,4 @@ body
                 div.modal-footer
                     button.btn.btn-secondary(data-dismiss="modal") Назад
                     button.btn.btn-success(onclick="loginUser()") Увійти
+                    span(style="display: none;" id='nowpage') #{nowpage}

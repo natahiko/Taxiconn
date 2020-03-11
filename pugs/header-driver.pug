@@ -23,7 +23,7 @@ body
                 li.nav-item.dropdown
                     a.nav-link.dropdown-toggle(href="#" data-toggle="dropdown" aria-expanded="false") Блог
                     div.dropdown-menu
-                        a.dropdown-item.disabled(href="/aboutus") Про нас
+                        a.dropdown-item(href="/aboutus") Про нас
                         a.dropdown-item.disabled(href="/workcond") Умови роботи
                         a.dropdown-item.disabled(href="/usefultips") Корисні поради
                 li.nav-item
@@ -33,4 +33,4 @@ body
                 li.nav-item
                     a.nav-link.disabled(href="/contacts") Контакти
             form.form-inline
-                button.btn.btn-outline-success Вихід
+                button.btn.btn-outline-success(onclick="exit()") Вихід

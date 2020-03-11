@@ -1,0 +1,57 @@
+div.carousel.slide(id="mycarousel" data-ride="carousel")
+    ol.carousel-indicators
+        li.active(data-target="#mycarousel" data-slide-to="0")
+        li(data-target="#mycarousel" data-slide-to="1")
+        li(data-target="#mycarousel" data-slide-to="2")
+    div.carousel-inner
+        div.carousel-item.active
+            img.d-block.w-100(src="../images/carousel1.jpg" alt="First slide")
+            div.carousel-caption.d-md-block.jumbotron
+                    h2.black Найкраще таксі у Києво моглинській академії
+                    p.black Використовуйте наше таксі для зручної, швидкої та недорогої дорого від дому до університету та навпаки.
+        div.carousel-item
+            img.d-block.w-100(src="../images/carousel2.jpg" alt="Second slide")
+            div.carousel-caption.d-md-block.jumbotron
+                h2.black Безпека - понад усе
+                p.black Ми надзвичайно стурбовані тим, щоб наші користувачі не потрапляли в ДТП, тому всі поїздки виключно віртуальні!
+                span.black Віртуальність гарантує вам фізичну безпеку та запобігає отриманню неприємного досвіду в поїздках.
+        div.carousel-item
+            img.d-block.w-100(src="../images/carousel3.jpg" alt="Third slide")
+            div.carousel-caption.d-md-block.jumbotron
+                h3.black Цінність у кожному клієнті та водієві!!!
+                p.black Ми цінуємо кожного, хто приєднується до нашого сервісу та сворюємо комфортне середовище для роботи і користування
+    a.carousel-control-prev(href="#mycarousel" role="button" data-slide="prev")
+        span.carousel-control-prev-icon(aria-hidden="true")
+        span.sr-only Previous
+    a.carousel-control-next(href="#mycarousel" role="button" data-slide="next")
+        span.carousel-control-next-icon(aria-hidden="true")
+        span.sr-only Next
+section.mt-5
+    div.container
+        div.section-header
+            h2 Переваги використання
+            p
+        div.row
+            div.col-lg-4
+                div.box
+                    img.myicon(src='../images/icon1.png')
+                    h4 Відображення заявок
+                    p Зручно замовляйте таксі та переглядайте історію ваших поїздок в будь-який час.
+            div.col-lg-4
+                div.box
+                    img.myicon(src='../images/icon2.png')
+                    h4 Доступні скрізь
+                    p Замовляйте з будь-якої точки світу в будь-якому напрямку
+            div.col-lg-4
+                div.box
+                    img.myicon(src='../images/icon3.png')
+                    h4 Без очікувань
+                    p Мінімальний час очікування на опрацювання запитів, обрабка запитів за лічені секунди!
+
+div.card(style="margin: 10px; padding:10px")
+    div.card-body
+        img.img-thumbnail(src='../images/creator.jpg' style='float: right' width='41%' alt='')
+        h1.card-title Думка розробника
+        p.card-text(style='font-size: x-large') Я вважаю, що користування таким сервісом має приносити і водіям і клієнтам лише задоволення. Особисто я була надзвичайно захопленна його розробкою, сайт створений з чітко видумано структурою, щоб користування було приємним та легким, тому сподіваюсь, що він знайде відгук в кожному серці
+        p.card-text(style='font-size: large') P.S. Час плинний - Могилянка вічна
+

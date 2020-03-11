@@ -14,5 +14,9 @@ module.exports = {
     autorise: function (type, user_id) {
         localStorage.setItem("authorized", type);
         localStorage.setItem("user_id", user_id);
+    },
+    exit: function () {
+        localStorage.setItem("authorized", "");
+        localStorage.setItem("user_id", "");
     }
 };

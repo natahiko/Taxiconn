@@ -39,3 +39,42 @@
     text-decoration: underline !important;
     color: rgba(199, 116, 105, 0.69);
 }
+.black{
+    color: black;
+}
+
+.section-header h2 {
+    font-size: 32px;
+    color: #1d1d1f;
+    text-transform: uppercase;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.section-header h2::before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: #eee;
+    bottom: 0;
+    left: 0;
+}
+.box {
+    padding: 20px;
+    height: 90%;
+    margin-bottom: 35px;
+    box-shadow: 10px 10px 15px rgba(73, 78, 92, 0.1);
+    background: #fff;
+    transition: 0.4s;
+}
+.box h4:hover{
+    text-shadow: 1px 1px 1px rgba(29, 33, 28, 0.37);
+}
+.myicon{
+    width: 5em;
+    padding: 0.5em;
+    float: left;
+}
