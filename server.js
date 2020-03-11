@@ -22,12 +22,14 @@ server.get('/', function (req, res) {
     text.header['nowpage'] = "/";
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
     res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
+    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
 server.get('/aboutus', function (req, res) {
-    text.header['nowpage'] = "/";
+    text.header['nowpage'] = "/aboutus";
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
     res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
+    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
 server.post('/login', function (req, res) {

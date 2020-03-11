@@ -70,6 +70,9 @@
     background: #fff;
     transition: 0.4s;
 }
+.carousel-item{
+    height: 90vh;
+}
 .box h4:hover{
     text-shadow: 1px 1px 1px rgba(29, 33, 28, 0.37);
 }
@@ -77,4 +80,127 @@
     width: 5em;
     padding: 0.5em;
     float: left;
+}
+.navbar-dark{
+    height: 95px;
+    align-content: center;
+}
+
+.wrapper {
+    display: block;
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.wrapper ul {
+    list-style: none;
+}
+
+.wrapper ul li {
+    width: 55px;
+    height: 55px;
+    line-height: 55px;
+    margin: 0 10px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 5px solid #D8E2DC;
+    float: left;
+    transition: all 0.5s ease;
+}
+
+.wrapper ul li .fa {
+    color: #D8E2DC;
+    width: 30px;
+    margin-top: 0;
+
+    padding-top: 0;
+    transition: all 0.5s ease;
+}
+
+.wrapper ul li:hover.facebook {
+    border: 5px solid #3b5998;
+    box-shadow: 0 0 15px #3b5998;
+    transition: all 0.5s ease;
+}
+
+.wrapper ul li:hover .fa-facebook {
+    color: #3b5998;
+    text-shadow: 0 0 15px #3b5998;
+    transition: all 0.5s ease;
+}
+
+/*twitter*/
+.wrapper ul li:hover.twitter {
+    border: 5px solid #00aced;
+    box-shadow: 0 0 15px #00aced;
+    transition: all 0.5s ease;
+}
+
+.wrapper ul li:hover .fa-twitter {
+    color: #00aced;
+    text-shadow: 0 0 15px #00aced;
+    transition: all 0.5s ease;
+}
+
+/* instagram */
+.wrapper ul li:hover.instagram {
+    border: 5px solid #bc2a8d;
+    box-shadow: 0 0 15px #bc2a8d;
+    transition: all 0.5s ease;
+}
+
+.wrapper ul li:hover .fa-instagram {
+    color: #bc2a8d;
+    text-shadow: 0 0 15px #bc2a8d;
+    transition: all 0.5s ease;
+}
+
+/* google */
+.wrapper ul li:hover.google {
+    border: 5px solid #dd4b39;
+    box-shadow: 0 0 15px #dd4b39;
+    transition: all 0.5s ease;
+}
+
+.wrapper ul li:hover .fa-google {
+    color: #dd4b39;
+    text-shadow: 0 0 15px #dd4b39;
+    transition: all 0.5s ease;
+}
+.cc{
+    position: absolute;
+    bottom: 2px;
+    color: #acacac;
+    width: 100%;
+    text-align: center;
+    font-size: medium;
+}
+
+/* media queries */
+
+@media screen and (max-width: 640px){
+    .wrapper {
+        width: 350px;
+    }
+    .wrapper ul li{
+        margin-top: 10px;
+    }
+    .wrapper ul li.google{
+        margin-left: 60px;
+    }
+}
+
+
+@media screen and (max-width: 340px){
+    .wrapper {
+        width: 150px;
+    }
+    .wrapper ul li{
+        margin:15px;
+    }
+    .wrapper ul li.google{
+        margin-left: 15px;
+    }
 }
