@@ -37,5 +37,5 @@
 }
 .active{
     text-decoration: underline !important;
-    color: #4dc71f;
+    color: rgba(199, 116, 105, 0.69);
 }

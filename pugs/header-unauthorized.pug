@@ -5,8 +5,8 @@ head
     link(href = '../css/bootstrap.css', rel = 'stylesheet')
     link(href = '../css/bootstrap-grid.css', rel = 'stylesheet')
     link(href = '../css/bootstrap-reboot.css', rel = 'stylesheet')
-    script(src='../js/main.js' type="text/javascript")
     script(src="https://code.jquery.com/jquery-3.4.1.min.js")
+    script(src='../js/main.js' type="text/javascript")
     script(src='../js/bootstrap.js' type="text/javascript" )
     script(src='../js/bootstrap.bundle.js' type="text/javascript" )
 body
@@ -50,11 +50,18 @@ body
                         div.input-group.mb-3
                             div.input-group-prepend
                                 span.input-group-text(data-toggle="tooltip" data-placement="left" title="Введіть ваш логін, намер телефону або електронну пошту") Логін:
-                            input.form-control(type="text" placeholder="login, number or email...")
+                            input.form-control(type="text" id="log_login" placeholder="login, number or email...")
                         div.input-group.mb-3
                             div.input-group-prepend
                                 span.input-group-text Пароль:
-                            input.form-control(type="password")
+                            input.form-control(type="password" id="log_pass" )
+                        div.input-group.mb-3
+                            div.input-group-prepend
+                                span.input-group-text Увійти як:
+                            select.form-control(id="log_type")
+                                option(selected='true') Оберіть як ви хочете увійти...
+                                option Клієнт
+                                option Водій
                 div.modal-footer
                     button.btn.btn-secondary(data-dismiss="modal") Назад
-                    button.btn.btn-success Увійти
+                    button.btn.btn-success(onclick="loginUser()") Увійти
