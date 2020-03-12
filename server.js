@@ -32,6 +32,13 @@ server.get('/aboutus', function (req, res) {
     res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
+server.get('/404', function (req, res) {
+    text.header['nowpage'] = "/404";
+    functions.exit();
+    res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
+    res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
+    res.end();
+});
 
 server.get('/contacts', function (req, res) {
     text.header['nowpage'] = "/contacts";
@@ -45,7 +52,7 @@ server.post('/login', function (req, res) {
     var login = req.body.login;
     var type = req.body.type;
     con.query("SELECT * FROM " + type + " WHERE password='" + req.body.password + "' AND (email='" + login + "' OR login='" +
-        login + "' OR phone='" + login + "');", function (err, result, fields) {
+        login + "' OR phone='" + login + "');", function (err, result) {
         if (result.length < 1) {
             res.statusCode = 400;
             res.end();

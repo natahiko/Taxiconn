@@ -217,7 +217,7 @@
     }
 }
 footer{
-    margin-top: 100px;
+    margin-top: 90px;
     bottom: 0;
     width: 100%;
 }
@@ -238,4 +238,8 @@ footer{
     float: right;
     margin-right: 5%;
     box-shadow: 2px 2px 3px #8e8e8e;
+}
+.error404 {
+    margin: 40px;
+    padding: 20px;
 }
