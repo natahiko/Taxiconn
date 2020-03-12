@@ -32,6 +32,15 @@ server.get('/aboutus', function (req, res) {
     res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
+
+server.get('/contacts', function (req, res) {
+    text.header['nowpage'] = "/contacts";
+    text.header['googlemapapi'] = config.googlemapapi;
+    res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
+    res.write(pug.renderFile(__dirname + "/pugs/contacts.pug"));
+    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+    res.end();
+});
 server.post('/login', function (req, res) {
     var login = req.body.login;
     var type = req.body.type;
