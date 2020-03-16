@@ -279,3 +279,11 @@ footer {
     font-size: larger;
 
 }
+.tip-img{
+    width: 25%;
+    height: 100%;
+    margin: 0 5% ;
+    padding: 0;
+    object-fit: cover;
+    float: right;
+}
