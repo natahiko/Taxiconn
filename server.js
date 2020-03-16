@@ -40,22 +40,36 @@ server.get('/404', function (req, res) {
     res.end();
 });
 server.get('/workcond', function (req, res) {
-    text.header['nowpage'] = "/404";
-    functions.exit();
+    text.header['nowpage'] = "/workcond";
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
     res.write(pug.renderFile(__dirname + "/pugs/workcond.pug"));
     res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
+server.get('/userrules', function (req, res) {
+    text.header['nowpage'] = "/userrules";
+    res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
+    con.query("SELECT * FROM blogs;", function (err, result) {
+        if (err == null) {
+            console.log(result);
+            res.write(pug.renderFile(__dirname + "/pugs/userrules.pug", {
+                blogs: result
+            }));
+            res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+            res.end();
+        } else {
+            res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
+            res.end();
+        }
+    });
+});
 server.get('/usefultips', function (req, res) {
-    text.header['nowpage'] = "/404";
-    functions.exit();
+    text.header['nowpage'] = "/usefultips";
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
     res.write(pug.renderFile(__dirname + "/pugs/usefultips.pug"));
     res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
-
 server.get('/contacts', function (req, res) {
     text.header['nowpage'] = "/contacts";
     text.header['googlemapapi'] = config.googlemapapi;

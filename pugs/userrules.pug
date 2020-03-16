@@ -1,0 +1,23 @@
+section.condition
+    h2
+        kbd Правила користування
+        i  для клієннтів
+    p Щоб покращити нас сервіс та зробити його приємним і для водіїв і для клієнтів ми рекомендуємо дотримуватись рекомандацій та правил користування нащим сервісом таксі
+    p Взаємодотримання правил зробить вашого водія добрішим, а вашу поїздку приємнішою, окрім того,
+        b  ЗА НЕДОТРИМАННЯ ПРАВИЛ ВОДІЙ МАЄ ПОВНЕ ПРАВО ЗАВЕРШИТИ ПОЇЗДКУ ДОСТРОКОВО!
+        span  Ці правила є загальними правилами для більшості схожих сервісів нашої країни, тому
+        i  їх повинен знати кожен
+div.album.py-5.bg-light
+    div.container
+        div.row
+            each blog in blogs
+                div.col-md-4
+                    div.card.mb-4.shadow-sm
+                        svg.bd-placeholder-img.card-img-top(width="100%" height="50")
+                            rect.rect
+                        div.card-body
+                            h2 #{blog.title}
+                            p.card-text #{blog.text}
+                            div.d-flex.justify-content-between.align-items-center
+                                div
+                                small.text-muted #{blog.date}
