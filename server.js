@@ -39,6 +39,14 @@ server.get('/404', function (req, res) {
     res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
     res.end();
 });
+server.get('/workcond', function (req, res) {
+    text.header['nowpage'] = "/404";
+    functions.exit();
+    res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
+    res.write(pug.renderFile(__dirname + "/pugs/workcond.pug"));
+    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+    res.end();
+});
 
 server.get('/contacts', function (req, res) {
     text.header['nowpage'] = "/contacts";

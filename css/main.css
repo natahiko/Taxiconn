@@ -243,3 +243,29 @@ footer{
     margin: 40px;
     padding: 20px;
 }
+.pict-with-caption{
+    width: 100%;
+    background: url("../images/taxipark.jpg") no-repeat;
+    background-size: cover;
+    height: 90vh;
+}
+.semi-transparent{
+    background-color: rgba(230,230,230,0.38);
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding: 15%;
+}
+.become{
+    margin: 20px;
+}
+.become button{
+    width: 50% !important;
+    font-size: xx-large;
+    font-weight: bolder;
+}
+.condition{
+    margin: 20px 7%;
+    font-size: larger;
+
+}
