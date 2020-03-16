@@ -216,22 +216,26 @@
         margin-left: 15px;
     }
 }
-footer{
+
+footer {
     margin-top: 90px;
     bottom: 0;
     width: 100%;
 }
-.contacts{
+
+.contacts {
     margin: 30px;
     font-size: larger;
 }
-.numbers{
+
+.numbers {
     font-size: large;
     position: absolute;
     top: 120px;
     right: 40px;
 }
-.googlemap{
+
+.googlemap {
     height: 300px;
     width: 40%;
     border-radius: 15px;
@@ -239,32 +243,38 @@ footer{
     margin-right: 5%;
     box-shadow: 2px 2px 3px #8e8e8e;
 }
+
 .error404 {
     margin: 40px;
     padding: 20px;
 }
-.pict-with-caption{
+
+.pict-with-caption {
     width: 100%;
     background: url("../images/taxipark.jpg") no-repeat;
     background-size: cover;
     height: 90vh;
 }
-.semi-transparent{
-    background-color: rgba(230,230,230,0.38);
+
+.semi-transparent {
+    background-color: rgba(230, 230, 230, 0.38);
     width: 100%;
     height: 100%;
     text-align: center;
     padding: 15%;
 }
-.become{
+
+.become {
     margin: 20px;
 }
-.become button{
+
+.become button {
     width: 50% !important;
     font-size: xx-large;
     font-weight: bolder;
 }
-.condition{
+
+.condition {
     margin: 20px 7%;
     font-size: larger;
 
