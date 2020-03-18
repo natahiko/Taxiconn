@@ -279,16 +279,31 @@ footer {
     font-size: larger;
 
 }
-.tip-img{
+
+.tip-img {
     width: 25%;
     height: 100%;
-    margin: 0 5% ;
+    margin: 0 5%;
     padding: 0;
     object-fit: cover;
     float: right;
 }
+
 .rect {
     width: 100%;
     height: 100px;
     fill: #55595c;
+}
+
+.input-group-prepend {
+    /*width: 85px !important;*/
+}
+
+.input-group-prepend span {
+    width: 100% !important;
+}
+
+.invalid-feedback p {
+    margin: 0 !important;
+    padding: 0 !important;
 }

@@ -51,7 +51,6 @@ server.get('/userrules', function (req, res) {
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
     con.query("SELECT * FROM blogs;", function (err, result) {
         if (err == null) {
-            console.log(result);
             res.write(pug.renderFile(__dirname + "/pugs/userrules.pug", {
                 blogs: result
             }));
@@ -69,6 +68,23 @@ server.get('/usefultips', function (req, res) {
     res.write(pug.renderFile(__dirname + "/pugs/usefultips.pug"));
     res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
+});
+server.get('/becomedriver', function (req, res) {
+    text.header['nowpage'] = "/becomedriver";
+    res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
+    var user = functions.getUserType();
+    if (user == 'driver') {
+        res.write(pug.renderFile(__dirname + "/pugs/alert-becomedriver.pug"));
+        res.write(pug.renderFile(__dirname + "/pugs/profile-driver.pug"));
+    } else {
+        con.query("SELECT producer FROM сar_producer;", function (err, result) {
+            res.write(pug.renderFile(__dirname + "/pugs/becomedriver.pug", {
+                producers: result
+            }));
+            res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+            res.end();
+        });
+    }
 });
 server.get('/contacts', function (req, res) {
     text.header['nowpage'] = "/contacts";
@@ -96,6 +112,21 @@ server.post('/login', function (req, res) {
             res.write(JSON.stringify(responseBody));
             res.end();
         }
+    });
+});
+server.post('/carmodel', function (req, res) {
+    var producer = req.body.producer;
+    if (req.body.secret_key != config.select_carmodel_token) {
+        res.statusCode = 400;
+        res.end();
+    }
+    con.query("SELECT model FROM car_models WHERE producer_id IN (SELECT id FROM сar_producer WHERE producer='" + req.body.producer + "');", function (err, result) {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.write(JSON.stringify({
+            "res": result
+        }));
+        res.end();
     });
 });
 server.post('/exit', function (req, res) {

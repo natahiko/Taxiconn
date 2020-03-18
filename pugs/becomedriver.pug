@@ -1,0 +1,111 @@
+div.container
+    div.row
+        h2
+            kbd Стати водієм
+            i  taxiconn.com.ua
+    form.row.needs-validation(novalidate style='width:60%' action='/' method='get')
+        h3(style="margin-top: 30px") Особиста інформація
+        div.input-group.mb-3
+            div.input-group-prepend
+                span.input-group-text Ім'я
+            input.form-control(required type="text" placeholder="Ім'я" maxlength=45 id='driver_name')
+            span.invalid-feedback Ім'я не повинно містити чисел чи символів
+        div.input-group.mb-3
+            div.input-group-prepend
+                span.input-group-text Ім'я
+            input.form-control(required type="text" placeholder="Прізвище" maxlength=45 id='driver_surname')
+            span.invalid-feedback Прізвище не повинно містити чисел чи символів
+        div.input-group.mb-3
+            div.input-group-prepend
+                span.input-group-text Логін
+            input.form-control(required type="text" placeholder="Логін" maxlength=20)
+            div.input-group-append
+                button.btn.btn-info(type="submit" data-toggle="tooltip" title="Перевірте чи вільний ваш логін") Перевірити
+        div.input-group.mb-3
+            div.input-group-prepend
+                span.input-group-text Email
+            input.form-control(required type="text" placeholder="Електронна пошта" maxlength=45)
+            select.btn-outline-info.input-group-append.form-control
+                option.form-control.btn-outline-info(href='#') @gmail.com
+                option.form-control.btn-outline-info(href='#') @ukma.edu.ua
+                option.form-control.btn-outline-info(href='#') @ukr.net
+                option.form-control.btn-outline-info(href='#') @mail.com
+        div.input-group.mb-3
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text Вік
+                input.form-control(required type="number" max=65 min=21 id='driver_age')
+        div.input-group.mb-3
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text Номер телефону
+                input.form-control.bfh-phone(required type="tel" placeholder="" id='driver_tel')
+                span.invalid-feedback Номер телефону повинен відповідати одному з шаблонів:
+                    p  (123) 456-7890
+                    p  (123)456-7890
+                    p  123-456-7890
+                    p  123.456.7890
+                    p  1234567890
+                    p  +31636363634
+                    p  075-63546725
+        h3 Додайте опис про себе:
+        div.input-group
+            textarea.form-control(rows=3 placeholder="Опишіть себе (за бажанням)...")
+        h3 Водійське посвідчення
+        div.input-group.mb-3
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text Серія та номер
+                input.form-control(required type="text" placeholder="ВАН" maxlength=3 id='driver_seria')
+                input.form-control(required type="text" placeholder="000000" id="driver_seria_num")
+        div.input-group.mb-3
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text Категорія
+                select.input-group-append.form-control(id='select_category')
+                    option.default_option(value="default") Оберіть категорію
+                    option.form-control.btn-outline-info(href='#') B
+                    option.form-control.btn-outline-info(href='#') B1
+                    option.form-control.btn-outline-info(href='#') C
+                    option.form-control.btn-outline-info(href='#') C1
+                    option.form-control.btn-outline-info(href='#') D
+                    option.form-control.btn-outline-info(href='#') D1
+                    option.form-control.btn-outline-info(href='#') BE
+                    option.form-control.btn-outline-info(href='#') CE
+                    option.form-control.btn-outline-info(href='#') C1E
+                    option.form-control.btn-outline-info(href='#') DE
+                    option.form-control.btn-outline-info(href='#') D1E
+        h3 Автомобіль
+        div.form-inline.row
+            div.input-group.col
+                div.input-group-prepend
+                    span.input-group-text Рік випуску
+                input.form-control(required type="number" placeholder="2018" min=2000 max=2020)
+            div.input-group.col
+                div.input-group-prepend
+                    span.input-group-text Виробник
+                select.input-group-append.form-control(onchange='renew_car_model()' id='select_carproducer')
+                    option.default_option(value="default") Оберіть виробника
+                    each prod in producers
+                        option.form-control(href='#') #{prod.producer}
+        div.input-group.mb-3
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text Марка
+                select.input-group-append.form-control(id="select_carmodel")
+                    option.default_option(value="default") Оберіть марка
+        h3 Оберіть пароль для входу
+        div.input-group.mb-3
+            div.input-group-prepend
+                span.input-group-text(data-toggle="tooltip" title="Пароль повинен бути мінімум 6 символів, має містити цифри") Пароль
+            input.form-control(required type="password" placeholder="Введіть пароль" maxlength=45 id='driver_pass')
+            span.invalid-feedback Пароль повинен містити літери нижнього та вищого регістру, цифри та може містити символи
+            input.form-control(required type="password" placeholder="Повторіть пароль" maxlength=45 id='driver_pass_conf')
+            span.invalid-feedback Паролі не збігаються
+        div.input-group.mb-3.align-content-center(style='width: 100%')
+            button.btn.btn-lg.btn-info(style='margin: auto' type='submit') Стати водієм
+
+script(type='text/javascript') renew_car_model()
+script(type='text/javascript') loadsubmit()
+script(type='text/javascript') setValues()
+

@@ -18,5 +18,8 @@ module.exports = {
     exit: function () {
         localStorage.setItem("authorized", "");
         localStorage.setItem("user_id", "");
+    },
+    getUserType: function () {
+        return localStorage.getItem("authorized");
     }
 };

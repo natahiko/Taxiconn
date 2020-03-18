@@ -6,5 +6,6 @@
     "database": "taxiconn"
   },
   "port": 1111,
-  "googlemapapi": "AIzaSyCJaUIhmWs9-8DxDUvS1dDg5CywPGutRQI"
+  "googlemapapi": "AIzaSyCJaUIhmWs9-8DxDUvS1dDg5CywPGutRQI",
+  "select_carmodel_token": "OiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4"
 }
