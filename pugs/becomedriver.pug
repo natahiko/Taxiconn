@@ -3,7 +3,7 @@ div.container
         h2
             kbd Стати водієм
             i  taxiconn.com.ua
-    form.row.needs-validation(novalidate style='width:60%' action='/' method='get')
+    form.row.needs-validation(novalidate style='width:60%' action='/confirmregistration' method='get')
         h3(style="margin-top: 30px") Особиста інформація
         div.input-group.mb-3
             div.input-group-prepend
@@ -12,20 +12,22 @@ div.container
             span.invalid-feedback Ім'я не повинно містити чисел чи символів
         div.input-group.mb-3
             div.input-group-prepend
-                span.input-group-text Ім'я
+                span.input-group-text Прізвище
             input.form-control(required type="text" placeholder="Прізвище" maxlength=45 id='driver_surname')
             span.invalid-feedback Прізвище не повинно містити чисел чи символів
         div.input-group.mb-3
             div.input-group-prepend
                 span.input-group-text Логін
-            input.form-control(required type="text" placeholder="Логін" maxlength=20)
+            input.form-control(required type="text" placeholder="Логін" maxlength=20 id='driver_login')
             div.input-group-append
-                button.btn.btn-info(type="submit" data-toggle="tooltip" title="Перевірте чи вільний ваш логін") Перевірити
+                input.btn.btn-info(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLogin()")
+                span.invalid-feedback Ваш логін зайнятий! Оберіть новий
         div.input-group.mb-3
             div.input-group-prepend
                 span.input-group-text Email
-            input.form-control(required type="text" placeholder="Електронна пошта" maxlength=45)
-            select.btn-outline-info.input-group-append.form-control
+            input.form-control(required name='email' type="text" placeholder="Електронна пошта" maxlength=45 id='driver_email')
+            span.invalid-feedback Перевірте вашу пошту
+            select.btn-outline-info.input-group-append.form-control(name='emend' id='select_email')
                 option.form-control.btn-outline-info(href='#') @gmail.com
                 option.form-control.btn-outline-info(href='#') @ukma.edu.ua
                 option.form-control.btn-outline-info(href='#') @ukr.net
@@ -50,7 +52,7 @@ div.container
                     p  075-63546725
         h3 Додайте опис про себе:
         div.input-group
-            textarea.form-control(rows=3 placeholder="Опишіть себе (за бажанням)...")
+            textarea.form-control(id='driver_desc' rows=3 placeholder="Опишіть себе (за бажанням)...")
         h3 Водійське посвідчення
         div.input-group.mb-3
             div.input-group
@@ -80,7 +82,7 @@ div.container
             div.input-group.col
                 div.input-group-prepend
                     span.input-group-text Рік випуску
-                input.form-control(required type="number" placeholder="2018" min=2000 max=2020)
+                input.form-control(id='car_year' required type="number" placeholder="2018" min=2000 max=2020)
             div.input-group.col
                 div.input-group-prepend
                     span.input-group-text Виробник
@@ -94,6 +96,20 @@ div.container
                     span.input-group-text Марка
                 select.input-group-append.form-control(id="select_carmodel")
                     option.default_option(value="default") Оберіть марка
+        div.input-group.mb-3
+            div.input-group(style='font-size: xx-large;')
+                div.form-check-inline
+                    label.form-check-label.input-group
+                        div.input-group-prepend
+                            div.input-group-text
+                                input.form-check-input(type="radio" checked name="car_class")
+                        span.form-control Економ
+                div.form-check-inline
+                    label.form-check-label.input-group
+                        div.input-group-prepend
+                            div.input-group-text
+                                input.form-check-input(type="radio" name="car_class")
+                        span.form-control Комфорт
         h3 Оберіть пароль для входу
         div.input-group.mb-3
             div.input-group-prepend

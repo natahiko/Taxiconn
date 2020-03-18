@@ -153,7 +153,6 @@ function validSelectors(selectorsids) {
     for (var i = 0; i < selectorsids.length; i++) {
         var id = selectorsids[i];
         var val = $(id).val();
-        alert(val);
         if (val == 'default') {
             $(id).addClass("is-invalid");
             $(id).click(function () {

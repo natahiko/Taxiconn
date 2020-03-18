@@ -100,6 +100,78 @@ function loadsubmit() {
                     || !validSelectors(selectorsids)) {
                     event.preventDefault();
                 }
+                var login = $("#driver_login").val();
+                var email = $("#driver_email").val();
+                if(login==""){
+                    event.preventDefault();
+                    return false;
+                }
+                if(email==""){
+                    $("#driver_email").addClass("is-invalid");
+                    $("#driver_email").keyup(function () {
+                        $("#driver_email").removeClass("is-invalid");
+                    });
+                    event.preventDefault();
+                    return false;
+                }
+                email += $("#select_email").val();
+                $("#driver_login").keyup(function () {
+                    $("#driver_login").removeClass("is-valid");
+                    $("#driver_login").removeClass("is-invalid");
+                });
+                $.ajax({
+                    url: '/isLoginFree',
+                    type: 'post',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (data) {
+                        if(data.free){
+                            $("#driver_login").addClass("is-valid");
+                            $("#driver_login").removeClass("is-invalid");
+                            $.ajax({
+                                url: '/sendmail',
+                                type: 'post',
+                                dataType: 'json',
+                                contentType: 'application/json',
+                                success: function (data) {
+                                    if(data.res){
+                                        return true;
+                                    } else{
+                                        $("#driver_email").addClass("is-invalid");
+                                        $("#driver_email").keyup(function () {
+                                            $("#driver_email").removeClass("is-invalid");
+                                        });
+                                        event.preventDefault();
+                                        return false;
+                                    }
+                                },
+                                data: JSON.stringify({
+                                    "email": email,
+                                    "name": $("#driver_name").val(),
+                                    "surname": $("#driver_surname").val(),
+                                    "age": $("#driver_age").val(),
+                                    "login": login,
+                                    "phone": $("#driver_tel").val(),
+                                    "description": $("#driver_desc").val(),
+                                    "licence": $("#driver_seria").val() + $("#driver_seria_num").val(),
+                                    "car_producer": $("#select_carproducer").val(),
+                                    "car_model": $("#select_carmodel").val(),
+                                    "car_year": $("#car_year").val(),
+                                    "password": $("#driver_pass").val(),
+                                    "car_class": $('input[name="car_class"]:checked').val()
+                                })
+                            });
+                        } else{
+                            $("#driver_login").addClass("is-invalid");
+                            $("#driver_login").removeClass("is-valid");
+                            event.preventDefault();
+                            return false;
+                        }
+                    },
+                    data: JSON.stringify({
+                        "login": login
+                    })
+                });
             }, false);
         });
     }, false);
@@ -120,4 +192,35 @@ function checkValueSelect() {
     } else {
         this.style.color = '#222222';
     }
+}
+
+async function checkFreeLogin() {
+    var login = $("#driver_login").val();
+    if(login==""){
+        return false;
+    }
+    $("#driver_login").keyup(function () {
+        $("#driver_login").removeClass("is-valid");
+        $("#driver_login").removeClass("is-invalid");
+    });
+    $.ajax({
+        url: '/isLoginFree',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (data) {
+            if(data.free){
+                $("#driver_login").addClass("is-valid");
+                $("#driver_login").removeClass("is-invalid");
+                return true;
+            } else{
+                $("#driver_login").addClass("is-invalid");
+                $("#driver_login").removeClass("is-valid");
+                return false;
+            }
+        },
+        data: JSON.stringify({
+            "login": login
+        })
+    });
 }
