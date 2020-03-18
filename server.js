@@ -74,7 +74,7 @@ server.get('/becomedriver', function (req, res) {
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
     var user = functions.getUserType();
 
-    if (user == 'driver') {
+    if (user === 'driver') {
         res.write(pug.renderFile(__dirname + "/pugs/alert-becomedriver.pug"));
         res.write(pug.renderFile(__dirname + "/pugs/profile-driver.pug"));
     } else {
@@ -90,11 +90,11 @@ server.get('/becomedriver', function (req, res) {
 server.get('/confirmregistration', function (req, res) {
     text.header['nowpage'] = "/confirmregistration";
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
-    if(functions.getUserType()!=""){
+    if (functions.getUserType() !== "") {
         res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
-    } else{
+    } else {
         var email = req.query.email + req.query.emend;
-        res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug",{
+        res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
             "email": email
         }));
     }
@@ -107,14 +107,14 @@ server.get('/confirmregistrcode', function (req, res) {
     var code = req.query.code;
     var email = req.query.email;
     var sql = functions.getRegisretDriverSQL(email, code);
-    if(code=="" || email=="" || sql==""){
+    if (code === "" || email === "" || sql === "") {
         res.write(pug.renderFile(__dirname + "/pugs/unsuccessRegistered.pug"));
-        res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug",{
+        res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
             "email": email
         }));
         res.end();
-    } else{
-        con.query(sql, function (err, result) {
+    } else {
+        con.query(sql, function () {
             res.write(pug.renderFile(__dirname + "/pugs/successRegistered.pug"));
             res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
             res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
@@ -152,11 +152,11 @@ server.post('/login', function (req, res) {
 });
 server.post('/carmodel', function (req, res) {
     var producer = req.body.producer;
-    if (req.body.secret_key != config.select_carmodel_token) {
+    if (req.body.secret_key !== config.select_carmodel_token) {
         res.statusCode = 400;
         res.end();
     }
-    con.query("SELECT model FROM car_models WHERE producer_id IN (SELECT id FROM сar_producer WHERE producer='" + req.body.producer + "');", function (err, result) {
+    con.query("SELECT model FROM car_models WHERE producer_id IN (SELECT id FROM сar_producer WHERE producer='" + producer + "');", function (err, result) {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify({
@@ -167,18 +167,18 @@ server.post('/carmodel', function (req, res) {
 });
 server.post('/isloginfree', function (req, res) {
     var login = req.body.login;
-    if(login==""){
+    if (login === "") {
         res.statusCode = 400;
         res.end();
     }
     con.query("SELECT * FROM drivers WHERE login='" + login + "';", function (err, result) {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        if(result.length<1){
+        if (result.length < 1) {
             res.write(JSON.stringify({
                 "free": true
             }));
-        } else{
+        } else {
             res.write(JSON.stringify({
                 "free": false
             }));
@@ -190,14 +190,14 @@ server.post('/sendmail', function (req, res) {
     var emailTo = req.body.email;
     var code = functions.generateCode();
     functions.setCode(emailTo, code);
-    if(send(emailTo, code)){
+    if (send(emailTo, code)) {
         functions.setRegisretDriverInfo(code, req.body);
         res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify({
             "res": true
         }));
         res.end();
-    } else{
+    } else {
         res.statusCode = 400;
         res.end();
     }
@@ -222,13 +222,13 @@ async function send(emailTo, code) {
         from: 'nata.shkarovska@gmail.com',
         to: emailTo,
         subject: 'Taxiconn.com.ua',
-        html: "<span style='text-align: center; align-items: center; color: black'><h1>"+email.header+"</h1><p>"+email.text+"</p>" +
-            "<div><a href='"+email.link+"/?email="+emailTo+"'>"+email.linktext+"</a></div>" +
+        html: "<span style='text-align: center; align-items: center; color: black'><h1>" + email.header + "</h1><p>" + email.text + "</p>" +
+            "<div><a href='" + email.link + "/?email=" + emailTo + "'>" + email.linktext + "</a></div>" +
             "<input style='width: 50%; margin: 7px 25%; text-align: center; padding: 5px; font-size: x-large; " +
-            "background: white; border-radius: 10px;' disabled type='text' value='"+code+"' id='code'>" +
+            "background: white; border-radius: 10px;' disabled type='text' value='" + code + "' id='code'>" +
             "</span>"
     };
-    transporter.sendMail(mailOptions, function(error, info){
+    transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log(error);
             return false;

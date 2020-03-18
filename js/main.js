@@ -3,15 +3,15 @@ function loginUser() {
     var pass = $("#log_pass").val();
     var type = $("#log_type").children("option:selected").val();
     var redirect_url = $("#nowpage").val();
-    if (type == 'Оберіть як ви хочете увійти...') {
+    if (type === "Оберіть як ви хочете увійти...") {
         return;
-    } else if (type == 'Клієнт') {
+    } else if (type === "Клієнт") {
         type = "clients";
-    } else if (type == 'Водій') {
+    } else if (type === "Водій") {
         type = "drivers";
     }
     $("#log_pass").val("");
-    if (login == "" || pass == "") {
+    if (login === "" || pass === "") {
         alert("Всі поля мають бути заповнені");
         return;
     }
@@ -102,11 +102,11 @@ function loadsubmit() {
                 }
                 var login = $("#driver_login").val();
                 var email = $("#driver_email").val();
-                if(login==""){
+                if (login == "") {
                     event.preventDefault();
                     return false;
                 }
-                if(email==""){
+                if (email == "") {
                     $("#driver_email").addClass("is-invalid");
                     $("#driver_email").keyup(function () {
                         $("#driver_email").removeClass("is-invalid");
@@ -125,7 +125,7 @@ function loadsubmit() {
                     dataType: 'json',
                     contentType: 'application/json',
                     success: function (data) {
-                        if(data.free){
+                        if (data.free) {
                             $("#driver_login").addClass("is-valid");
                             $("#driver_login").removeClass("is-invalid");
                             $.ajax({
@@ -134,9 +134,9 @@ function loadsubmit() {
                                 dataType: 'json',
                                 contentType: 'application/json',
                                 success: function (data) {
-                                    if(data.res){
+                                    if (data.res) {
                                         return true;
-                                    } else{
+                                    } else {
                                         $("#driver_email").addClass("is-invalid");
                                         $("#driver_email").keyup(function () {
                                             $("#driver_email").removeClass("is-invalid");
@@ -161,7 +161,7 @@ function loadsubmit() {
                                     "car_class": $('input[name="car_class"]:checked').val()
                                 })
                             });
-                        } else{
+                        } else {
                             $("#driver_login").addClass("is-invalid");
                             $("#driver_login").removeClass("is-valid");
                             event.preventDefault();
@@ -195,13 +195,14 @@ function checkValueSelect() {
 }
 
 async function checkFreeLogin() {
-    var login = $("#driver_login").val();
-    if(login==""){
+    var logSelector = $("#driver_login");
+    var login = logSelector.val();
+    if (login === "") {
         return false;
     }
-    $("#driver_login").keyup(function () {
-        $("#driver_login").removeClass("is-valid");
-        $("#driver_login").removeClass("is-invalid");
+    logSelector.keyup(function () {
+        logSelector.removeClass("is-valid");
+        logSelector.removeClass("is-invalid");
     });
     $.ajax({
         url: '/isLoginFree',
@@ -209,13 +210,13 @@ async function checkFreeLogin() {
         dataType: 'json',
         contentType: 'application/json',
         success: function (data) {
-            if(data.free){
-                $("#driver_login").addClass("is-valid");
-                $("#driver_login").removeClass("is-invalid");
+            if (data.free) {
+                logSelector.addClass("is-valid");
+                logSelector.removeClass("is-invalid");
                 return true;
-            } else{
-                $("#driver_login").addClass("is-invalid");
-                $("#driver_login").removeClass("is-valid");
+            } else {
+                logSelector.addClass("is-invalid");
+                logSelector.removeClass("is-valid");
                 return false;
             }
         },
