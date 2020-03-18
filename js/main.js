@@ -91,7 +91,7 @@ function becomedriver() {
 function loadsubmit() {
     window.addEventListener('load', function () {
         var forms = document.getElementsByClassName('needs-validation');
-        var validation = Array.prototype.filter.call(forms, function (form) {
+        Array.prototype.filter.call(forms, function (form) {
             form.addEventListener('submit', function (event) {
                 var selectorsids = ["#select_carmodel", "#select_carproducer", "#select_category"];
                 if (!validateName("#driver_name") || !validateName("#driver_surname") || !validAge("#driver_age")
