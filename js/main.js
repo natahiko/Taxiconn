@@ -1,6 +1,7 @@
 function loginUser() {
+    var passSelector = $("#log_pass");
     var login = $("#log_login").val();
-    var pass = $("#log_pass").val();
+    var pass = passSelector.val();
     var type = $("#log_type").children("option:selected").val();
     var redirect_url = $("#nowpage").val();
     if (type === "Оберіть як ви хочете увійти...") {
@@ -10,7 +11,7 @@ function loginUser() {
     } else if (type === "Водій") {
         type = "drivers";
     }
-    $("#log_pass").val("");
+    passSelector.val("");
     if (login === "" || pass === "") {
         alert("Всі поля мають бути заповнені");
         return;
@@ -25,7 +26,7 @@ function loginUser() {
         type: 'post',
         dataType: 'json',
         contentType: 'application/json',
-        success: function (data) {
+        success: function () {
             $("body").append("<form style='display: none' action='" + redirect_url + "' method='get'>" +
                 "<input type='submit' id='redirect'></form>");
             $("#redirect").click();
@@ -43,7 +44,7 @@ function exit() {
         type: 'post',
         dataType: 'json',
         contentType: 'application/json',
-        success: function (data) {
+        success: function () {
             $("body").append("<form style='display: none' action='/' method='get'>" +
                 "<input type='submit' id='redirect'></form>");
             $("#redirect").click();
@@ -61,7 +62,8 @@ function renew_car_model() {
         "producer": producer,
         "secret_key": "OiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4"
     };
-    $("#select_carmodel").empty();
+    var carModelSelector = $("#select_carmodel");
+    carModelSelector.empty();
     $.ajax({
         url: '/carmodel',
         type: 'post',
@@ -69,10 +71,9 @@ function renew_car_model() {
         contentType: 'application/json',
         success: function (data) {
             var res = data.res;
-            var selector = $("#select_carmodel");
-            selector.append("<option value='default' class='default_option'>Оберіть марку</option>");
+            carModelSelector.append("<option value='default' class='default_option'>Оберіть марку</option>");
             for (var i = 0; i < res.length; i++) {
-                selector.append("<option>" + res[i].model + "</option>");
+                carModelSelector.append("<option>" + res[i].model + "</option>");
             }
         },
         data: JSON.stringify(prods)
@@ -80,12 +81,11 @@ function renew_car_model() {
 }
 
 function becomedriver() {
-    var name = $("#name").val();
-    if (name == "" || !validName(name)) {
-        $("#name").css.background = "red";
+    var nameSelector = $("#name");
+    var name = nameSelector.val();
+    if (name === "" || !validName(name)) {
+        nameSelector.css.background = "red";
     }
-    var name = $("#name").val();
-
 }
 
 function loadsubmit() {
@@ -100,24 +100,26 @@ function loadsubmit() {
                     || !validSelectors(selectorsids)) {
                     event.preventDefault();
                 }
-                var login = $("#driver_login").val();
-                var email = $("#driver_email").val();
-                if (login == "") {
+                var emailSelector = $("#driver_email");
+                var loginSelector = $("#driver_login");
+                var login = loginSelector.val();
+                var email = emailSelector.val();
+                if (login === "") {
                     event.preventDefault();
                     return false;
                 }
-                if (email == "") {
-                    $("#driver_email").addClass("is-invalid");
-                    $("#driver_email").keyup(function () {
-                        $("#driver_email").removeClass("is-invalid");
+                if (email === "") {
+                    emailSelector.addClass("is-invalid");
+                    emailSelector.keyup(function () {
+                        emailSelector.removeClass("is-invalid");
                     });
                     event.preventDefault();
                     return false;
                 }
                 email += $("#select_email").val();
-                $("#driver_login").keyup(function () {
-                    $("#driver_login").removeClass("is-valid");
-                    $("#driver_login").removeClass("is-invalid");
+                loginSelector.keyup(function () {
+                    loginSelector.removeClass("is-valid");
+                    loginSelector.removeClass("is-invalid");
                 });
                 $.ajax({
                     url: '/isLoginFree',
@@ -126,8 +128,8 @@ function loadsubmit() {
                     contentType: 'application/json',
                     success: function (data) {
                         if (data.free) {
-                            $("#driver_login").addClass("is-valid");
-                            $("#driver_login").removeClass("is-invalid");
+                            loginSelector.addClass("is-valid");
+                            loginSelector.removeClass("is-invalid");
                             $.ajax({
                                 url: '/sendmail',
                                 type: 'post',
@@ -137,9 +139,9 @@ function loadsubmit() {
                                     if (data.res) {
                                         return true;
                                     } else {
-                                        $("#driver_email").addClass("is-invalid");
-                                        $("#driver_email").keyup(function () {
-                                            $("#driver_email").removeClass("is-invalid");
+                                        emailSelector.addClass("is-invalid");
+                                        emailSelector.keyup(function () {
+                                            emailSelector.removeClass("is-invalid");
                                         });
                                         event.preventDefault();
                                         return false;
@@ -162,8 +164,8 @@ function loadsubmit() {
                                 })
                             });
                         } else {
-                            $("#driver_login").addClass("is-invalid");
-                            $("#driver_login").removeClass("is-valid");
+                            loginSelector.addClass("is-invalid");
+                            loginSelector.removeClass("is-valid");
                             event.preventDefault();
                             return false;
                         }
@@ -187,7 +189,7 @@ function setValues() {
 
 function checkValueSelect() {
     var options = this.value;
-    if (options == "default") {
+    if (options === "default") {
         this.style.color = '#afb1b4';
     } else {
         this.style.color = '#222222';
