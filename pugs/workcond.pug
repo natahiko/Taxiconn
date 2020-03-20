@@ -37,3 +37,39 @@ section.mt-5
                         b  Ліцензію на перевезення пасажирів
                         span  та
                         b  Свідотцтво на авто
+section.mt-5
+    div.container
+        div.section-header
+            h2 Список дозволених машин
+            p
+        ul.nav.nav-tabs(style='font-size:x-large')
+            li.nav-item
+                a.nav-link.active(data-toggle="tab" href="#economTable") Економ
+            li.nav-item
+                a.nav-link(data-toggle="tab" href="#comforttable") Комфорт +
+        div.tab-content
+            div.tab-pane.container.active.wrap(id='economTable')
+                table.table
+                    thead
+                        tr
+                            th Виробник
+                            th Марка
+                    tbody
+                        each mod in allmodels
+                            if mod.class === "econom"
+                                tr
+                                    th.prod #{mod.producer}
+                                    th #{mod.model}
+
+            div.tab-pane.container.wrap(id='comforttable')
+                table.table
+                    thead
+                        tr
+                            th Виробник
+                            th Марка
+                    tbody
+                        each mod in allmodels
+                            if mod.class === "comfort"
+                                tr
+                                    th.prod #{mod.producer}
+                                    th #{mod.model}

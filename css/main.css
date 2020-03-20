@@ -337,3 +337,11 @@ footer {
     margin: 0 !important;
     padding: 0 !important;
 }
+.wrap{
+    column-count: 2;
+}
+.prod{
+    background-color: rgba(214, 255, 234, 0.59);
+    text-align: right;
+    padding-right: 15px;
+}

@@ -42,9 +42,14 @@ server.get('/404', function (req, res) {
 server.get('/workcond', function (req, res) {
     text.header['nowpage'] = "/workcond";
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
-    res.write(pug.renderFile(__dirname + "/pugs/workcond.pug"));
-    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
-    res.end();
+    con.query("SELECT * FROM car_models INNER JOIN сar_producer ON сar_producer.prodid = car_models.producer_id;", function (err, result) {
+        console.log(result);
+        res.write(pug.renderFile(__dirname + "/pugs/workcond.pug", {
+            allmodels: result
+        }));
+        res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+        res.end();
+    });
 });
 server.get('/userrules', function (req, res) {
     text.header['nowpage'] = "/userrules";

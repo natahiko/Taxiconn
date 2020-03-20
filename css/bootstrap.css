@@ -1703,6 +1703,9 @@ pre code {
 .table thead th {
   vertical-align: bottom;
   border-bottom: 2px solid #dee2e6;
+  background-color: rgba(195,241,255,0.67);
+  font-weight: bolder;
+  font-size: larger;
 }
 
 .table tbody + tbody {
