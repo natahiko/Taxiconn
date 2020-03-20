@@ -156,7 +156,12 @@ server.post('/carmodel', function (req, res) {
         res.statusCode = 400;
         res.end();
     }
-    con.query("SELECT model FROM car_models WHERE producer_id IN (SELECT id FROM сar_producer WHERE producer='" + producer + "');", function (err, result) {
+    var car_class = '';
+    console.log(req.body.carclass);
+    if(req.body.carclass==="comfort")
+        car_class = " AND class='comfort'";
+    con.query("SELECT model FROM car_models WHERE producer_id IN (" +
+        "SELECT id FROM сar_producer WHERE producer='" + producer + "'"+car_class+");", function (err, result) {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify({

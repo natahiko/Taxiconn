@@ -66,17 +66,17 @@ div.container
                     span.input-group-text Категорія
                 select.input-group-append.form-control(id='select_category')
                     option.default_option(value="default") Оберіть категорію
-                    option.form-control.btn-outline-info(href='#') B
-                    option.form-control.btn-outline-info(href='#') B1
-                    option.form-control.btn-outline-info(href='#') C
-                    option.form-control.btn-outline-info(href='#') C1
-                    option.form-control.btn-outline-info(href='#') D
-                    option.form-control.btn-outline-info(href='#') D1
-                    option.form-control.btn-outline-info(href='#') BE
-                    option.form-control.btn-outline-info(href='#') CE
-                    option.form-control.btn-outline-info(href='#') C1E
-                    option.form-control.btn-outline-info(href='#') DE
-                    option.form-control.btn-outline-info(href='#') D1E
+                    option.form-control.btn-outline-info B
+                    option.form-control.btn-outline-info B1
+                    option.form-control.btn-outline-info C
+                    option.form-control.btn-outline-info C1
+                    option.form-control.btn-outline-info D
+                    option.form-control.btn-outline-info D1
+                    option.form-control.btn-outline-info BE
+                    option.form-control.btn-outline-info CE
+                    option.form-control.btn-outline-info C1E
+                    option.form-control.btn-outline-info DE
+                    option.form-control.btn-outline-info D1E
         h3 Автомобіль
         div.form-inline.row
             div.input-group.col
@@ -102,13 +102,13 @@ div.container
                     label.form-check-label.input-group
                         div.input-group-prepend
                             div.input-group-text
-                                input.form-check-input(type="radio" checked name="car_class")
+                                input.form-check-input(type="radio" onclick='renew_car_model()' checked name="car_class" value='econom')
                         span.form-control Економ
                 div.form-check-inline
                     label.form-check-label.input-group
                         div.input-group-prepend
                             div.input-group-text
-                                input.form-check-input(type="radio" name="car_class")
+                                input.form-check-input(type="radio" onclick='renew_car_model()' name="car_class" value='comfort')
                         span.form-control Комфорт
         h3 Оберіть пароль для входу
         div.input-group.mb-3

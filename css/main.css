@@ -203,6 +203,36 @@
     }
 }
 
+@font-face {
+    font-family: 'FontAwesome';
+    src: local("FontAwesome"), url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'),
+    url('/fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'),
+    url('../fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype');
+    font-weight: normal;
+    font-style: normal
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 2em !important;
+}
+
+.fa-twitter:before {
+    content: "\f099";
+}
+
+.fa-instagram:before {
+    content: "\f16d";
+}
+
+.fa-facebook:before {
+    content: "\f09a";
+}
+
 @media screen and (max-width: 340px) {
     .wrapper {
         width: 150px;

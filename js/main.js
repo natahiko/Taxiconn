@@ -58,8 +58,10 @@ $(document).ready(function () {
 
 function renew_car_model() {
     var producer = $("#select_carproducer").children("option:selected").val();
+    var car_class = $('input[name="car_class"]:checked').val();
     var prods = {
         "producer": producer,
+        "carclass": car_class,
         "secret_key": "OiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4"
     };
     var carModelSelector = $("#select_carmodel");
