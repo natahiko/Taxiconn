@@ -56,10 +56,24 @@ function exit() {
 $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
+var selected = undefined;
+function setDefPofileCarModel() {
+       selected = $("#select_carmodel").children("option:selected").val();
+}
+
+function setDefaultProfileCarModel() {
+    $("#select_carmodel").children("option:selected").val(selected);
+}
 
 function renew_car_model() {
     var producer = $("#select_carproducer").children("option:selected").val();
-    var car_class = $('input[name="car_class"]:checked').val();
+    var classSel = $('#carclassprofile');
+    var car_class = undefined;
+    if (classSel === undefined) {
+        car_class = $('input[name="car_class"]:checked').val();
+    } else {
+        car_class = classSel.children("option:selected").val();
+    }
     var prods = {
         "producer": producer,
         "carclass": car_class,
@@ -74,6 +88,7 @@ function renew_car_model() {
         contentType: 'application/json',
         success: function (data) {
             var res = data.res;
+            console.log(res);
             carModelSelector.append("<option value='default' class='default_option'>Оберіть марку</option>");
             for (var i = 0; i < res.length; i++) {
                 carModelSelector.append("<option>" + res[i].model + "</option>");
@@ -237,16 +252,15 @@ function changePass() {
     const passSel2 = $("#change_pass2");
     var oldPass = oldPassSel.val();
     var pass = passSel.val();
-    var pass2 = passSel2.val();
 
-    if(oldPass.length<4){
+    if (oldPass.length < 4) {
         oldPassSel.addClass("is-invalid");
         oldPassSel.click(function () {
             oldPassSel.removeClass('is-invalid');
         });
         return false;
     }
-    if(!validPassword("#change_pass","#change_pass2")) {
+    if (!validPassword("#change_pass", "#change_pass2")) {
         return false;
     }
     const sended = {
@@ -259,18 +273,18 @@ function changePass() {
         dataType: 'json',
         contentType: 'application/json',
         success: function () {
-                $("#profilesection").prepend("<div class='alert alert-success alert-dismissible'>" +
-                    "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
-                    "<strong>Ваш пароль успішно змінено!</strong></div>");
-                $("#cancelchangepass").click();
+            $("#profilesection").prepend("<div class='alert alert-success alert-dismissible'>" +
+                "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
+                "<strong>Ваш пароль успішно змінено!</strong></div>");
+            $("#cancelchangepass").click();
 
-                oldPassSel.val("");
-                passSel.val("");
-                passSel2.val("");
-                return true;
+            oldPassSel.val("");
+            passSel.val("");
+            passSel2.val("");
+            return true;
         },
-        error: function(data){
-            if(data.err==='uncorect old'){
+        error: function (data) {
+            if (data.err === 'uncorect old') {
                 oldPassSel.addClass("is-invalid");
                 oldPassSel.click(function () {
                     oldPassSel.removeClass('is-invalid');
@@ -284,4 +298,42 @@ function changePass() {
         },
         data: JSON.stringify(sended)
     });
+}
+
+function editClientProfile() {
+    $(".driver_auto input").prop("disabled", false);
+    $(".main_profile_part input").prop("disabled", false);
+    $(".main_profile_part input:button").prop("disabled", true);
+    $("#editprofilebutton").hide();
+    $("#saveprofilebutton").show();
+}
+
+function editDriverProfile() {
+    $(".driver_auto input").prop("disabled", false);
+    $(".main_profile_part input").prop("disabled", false);
+    $(".driver_auto select").prop("disabled", false);
+    $(".main_profile_part input:button").prop("disabled", true);
+    $(".main_profile_part textarea").prop("disabled", false);
+    $("#editprofilebutton").hide();
+    $("#saveprofilebutton").show();
+}
+
+function saveDriverChanges() {
+    //TODO
+    $(".driver_auto input").prop("disabled", true);
+    $(".main_profile_part input").prop("disabled", true);
+    $(".main_profile_part input:button").prop("disabled", false);
+    $(".main_profile_part textarea").prop("disabled", true);
+    $(".driver_auto select").prop("disabled", true);
+    $("#editprofilebutton").show();
+    $("#saveprofilebutton").hide();
+}
+
+function saveClientChanges() {
+    //TODO
+    $(".driver_auto input").prop("disabled", true);
+    $(".main_profile_part input").prop("disabled", true);
+    $(".main_profile_part input:button").prop("disabled", false);
+    $("#editprofilebutton").show();
+    $("#saveprofilebutton").hide();
 }

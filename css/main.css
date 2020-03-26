@@ -286,6 +286,10 @@ footer {
     text-align: right;
     padding-right: 15px;
 }
+.driver_auto{
+    margin: 0 25px;
+    padding: 10px 25px 25px;
+}
 .profile{
     margin: 25px 25px 0;
     padding: 25px;
@@ -304,24 +308,22 @@ footer {
     float: right;
     width: 60%;
 }
-.personal_info .input-group-prepend{
+.personal_info .input-group-prepend, .driver_auto .input-group-prepend{
     width: 65px;
     margin: 7px 0;
 }
 .personal_info .input-group-text{
-
     background-color: #eeeeee;
     border: 1px solid #ced4da;
 }
-.personal_info input[disabled]{
+.personal_info input[disabled], .driver_auto input[disabled], .driver_auto select[disabled]{
     background-color: white;
     margin: 7px 0;
     border: 1px solid #ced4da;
 }
-.personal_info input{
-    background-color: white;
+.personal_info input, .driver_auto input, .driver_auto select{
+    background-color: #e3fdff;
     margin: 7px 0;
-    border: 3px solid #ced4da;
 }
 .login{
     background: transparent;
@@ -329,7 +331,7 @@ footer {
     font-weight: bolder;
     font-size: xx-large;
     color: black;
-    font-family: Arial;
+    font-family: Arial, serif;
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
 }
@@ -340,10 +342,13 @@ footer {
     font-size: medium;
     margin-bottom: 10px;
 }
-.personal_info .btn-info{
+.input-group .btn-info{
     color: #fff !important;
     background-color: #17a2b8 !important;
     border-color: #17a2b8 !important;
     width: 50%;
     margin: 0 25%;
+}
+.year{
+    width: 10px !important;
 }

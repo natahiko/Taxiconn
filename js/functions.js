@@ -36,7 +36,7 @@ module.exports = {
         jsonStorage.setItem(code, JSON.stringify(json));
     },
     getRegisretDriverSQL: function (email, code) {
-        if (localStorage.getItem(email) !== code) {
+        if (localStorage.getItem(email)===null || localStorage.getItem(email) !== code) {
             return "";
         }
         var json = jsonStorage.getItem(code);

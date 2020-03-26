@@ -82,12 +82,15 @@ server.get('/profile', function (req,res) {
             if(err){
                 res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
                 res.end();
-            } else {console.log(result);
-                res.write(pug.renderFile(__dirname + "/pugs/profile-driver.pug", {
-                    info: result[0]
-                }));
-                res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
-                res.end();
+            } else {
+                con.query("SELECT producer FROM сar_producer;", function (err, result2) {
+                    res.write(pug.renderFile(__dirname + "/pugs/profile-driver.pug", {
+                        producers: result2,
+                        info: result[0]
+                    }));
+                    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+                    res.end();
+                });
             }
         });
     } else if(user==='clients'){
@@ -110,14 +113,15 @@ server.get('/profile', function (req,res) {
 });
 server.get('/becomedriver', function (req, res) {
     text.header['nowpage'] = "/becomedriver";
-    res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
     var user = functions.getUserType();
-
     if (user === 'drivers') {
+        text.header['nowpage'] = "/aboutus";
+        res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
         res.write(pug.renderFile(__dirname + "/pugs/alert-becomedriver.pug"));
-        res.write(pug.renderFile(__dirname + "/pugs/profile-driver.pug"));
+        res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
         res.end();
     } else {
+        res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
         con.query("SELECT producer FROM сar_producer;", function (err, result) {
             res.write(pug.renderFile(__dirname + "/pugs/becomedriver.pug", {
                 producers: result
@@ -231,10 +235,11 @@ server.post('/carmodel', function (req, res) {
         res.end();
     }
     var car_class = '';
-    if(req.body.carclass==="comfort")
+    if(req.body.carclass==="comfort") {
         car_class = " AND class='comfort'";
+    }
     con.query("SELECT model FROM car_models WHERE producer_id IN (" +
-        "SELECT id FROM сar_producer WHERE producer='" + producer + "'"+car_class+");", function (err, result) {
+        "SELECT prodid FROM сar_producer WHERE producer='" + producer + "'"+car_class+");", function (err, result) {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify({

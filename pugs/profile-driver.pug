@@ -3,30 +3,30 @@ section.profile(id='profilesection')
         img(src='../images/defaul_driver_profile.jpeg' alt='')
         div.personal_info
             div.input-group
-                input.login(required type="text" value=info.login disabled)
+                input.login(type="text" value=info.login disabled)
             if info.description
                 div
                     textarea.status(disabled)  #{info.description}
             div.input-group
                 div.input-group-prepend
                     span.input-group-text ПІ
-                input.form-control(required type="text" value=info.surname disabled)
-                input.form-control(required type="text" value=info.name disabled)
+                input.form-control(type="text" value=info.surname disabled)
+                input.form-control(type="text" value=info.name disabled)
             div.input-group
                 div.input-group-prepend
                     span.input-group-text Email
-                input.form-control(required type="text" value=info.email disabled)
+                input.form-control(type="text" value=info.email disabled)
             div.form-inline.row
                 div.input-group.col
                     div.input-group-prepend
                         span.input-group-text Вік
-                    input.form-control(required type="text" value=info.age disabled)
+                    input.form-control(type="text" value=info.age disabled)
                 div.input-group.col
                     div.input-group-prepend
                         span.input-group-text Тел.
-                    input.form-control(required type="text" value=info.phone disabled)
+                    input.form-control(type="text" value=info.phone disabled)
             div.input-group
-                input.btn.btn-info(required type="button" value="Змінити пароль" data-toggle="modal" data-target="#changepass")
+                input.btn.btn-info(type="button" value="Змінити пароль" data-toggle="modal" data-target="#changepass")
 
     div.modal.fade(id="changepass" tabindex="-1" role="dialog" aria-hidden="true")
         div.modal-dialog(role="document")
@@ -55,3 +55,39 @@ section.profile(id='profilesection')
                 div.modal-footer
                     button.btn.btn-secondary(data-dismiss="modal" id='cancelchangepass') Назад
                     button.btn.btn-info(onclick="changePass()") Зберегти
+div.driver_auto
+    div.form-inline.row
+        div.input-group.col
+            div.input-group-prepend
+                span.input-group-text Права
+            input.form-control(type="text" value=info.licence disabled)
+        div.input-group.col
+            div.input-group-prepend
+                span.input-group-text Клас
+            select.form-control(disabled onchange='renew_car_model()' id='carclassprofile')
+                if info.carclass==='econom'
+                    option(selected) econom
+                    option comfort
+                else
+                    option econom
+                    option(selected) comfort
+    div.input-group
+        div.input-group-prepend
+            span.input-group-text Авто
+        select.form-control(disabled onchange='renew_car_model()' id='select_carproducer')
+            each prod in producers
+                if prod.producer===info.carproducer
+                    option.form-control(selected) #{prod.producer}
+                else
+                    option.form-control #{prod.producer}
+        select.form-control(disabled id="select_carmodel")
+            option(selected) #{info.carmodel}
+        input.form-control(type="number" min=2000 max=2020 value=info.caryear disabled)
+div.input-group
+    input.btn.btn-info(type="button" id='editprofilebutton' value="Редагувати профіль" onclick='editDriverProfile()')
+div.input-group
+    input.btn.btn-info(style='display:none' type="button" id='saveprofilebutton' value="Зберегти зміни" onclick='saveDriverChanges()')
+
+script(type='text/javascript') setDefPofileCarModel()
+script(type='text/javascript') renew_car_model()
+script(type='text/javascript') setDefaultProfileCarModel()

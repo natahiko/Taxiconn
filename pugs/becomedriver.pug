@@ -20,7 +20,7 @@ div.container
                 span.input-group-text Логін
             input.form-control(required type="text" placeholder="Логін" maxlength=20 id='driver_login')
             div.input-group-append
-                input.btn.btn-info(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLogin()")
+                input.btn.btn-outline-info(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLogin()")
                 span.invalid-feedback Ваш логін зайнятий! Оберіть новий
         div.input-group.mb-3
             div.input-group-prepend
@@ -28,10 +28,10 @@ div.container
             input.form-control(required name='email' type="text" placeholder="Електронна пошта" maxlength=45 id='driver_email')
             span.invalid-feedback Перевірте вашу пошту
             select.btn-outline-info.input-group-append.form-control(name='emend' id='select_email')
-                option.form-control.btn-outline-info(href='#') @gmail.com
-                option.form-control.btn-outline-info(href='#') @ukma.edu.ua
-                option.form-control.btn-outline-info(href='#') @ukr.net
-                option.form-control.btn-outline-info(href='#') @mail.com
+                option.form-control.btn-outline-info  @gmail.com
+                option.form-control.btn-outline-info  @ukma.edu.ua
+                option.form-control.btn-outline-info  @ukr.net
+                option.form-control.btn-outline-info  @mail.com
         div.input-group.mb-3
             div.input-group
                 div.input-group-prepend
