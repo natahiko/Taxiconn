@@ -1,0 +1,57 @@
+section.profile(id='profilesection')
+    div.main_profile_part
+        img(src='../images/defaul_driver_profile.jpeg' alt='')
+        div.personal_info
+            div.input-group
+                input.login(required type="text" value=info.login disabled)
+            if info.description
+                div
+                    textarea.status(disabled)  #{info.description}
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text ПІ
+                input.form-control(required type="text" value=info.surname disabled)
+                input.form-control(required type="text" value=info.name disabled)
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text Email
+                input.form-control(required type="text" value=info.email disabled)
+            div.form-inline.row
+                div.input-group.col
+                    div.input-group-prepend
+                        span.input-group-text Вік
+                    input.form-control(required type="text" value=info.age disabled)
+                div.input-group.col
+                    div.input-group-prepend
+                        span.input-group-text Тел.
+                    input.form-control(required type="text" value=info.phone disabled)
+            div.input-group
+                input.btn.btn-info(required type="button" value="Змінити пароль" data-toggle="modal" data-target="#changepass")
+
+    div.modal.fade(id="changepass" tabindex="-1" role="dialog" aria-hidden="true")
+        div.modal-dialog(role="document")
+            div.modal-content
+                div.modal-header
+                    h5.modal-title Змінити пароль
+                    button.close(data-dismiss="modal" aria-label="Close")
+                        span(aria-hidden="true") &times;
+                div.modal-body
+                    form
+                        div.input-group.mb-3
+                            div.input-group-prepend
+                                span.input-group-text Старий пароль:
+                            input.form-control(type="password" id="old_change_pass" )
+                            span.invalid-feedback Неправильний старий пароль
+                        div.input-group.mb-3
+                            div.input-group-prepend
+                                span.input-group-text Новий пароль:
+                            input.form-control(type="password" id="change_pass" )
+                            span.invalid-feedback Пароль повинен містити літери нижнього та вищого регістру, цифри та може містити символи
+                        div.input-group.mb-3
+                            div.input-group-prepend
+                                span.input-group-text Підтвердіть пароль:
+                            input.form-control(type="password" id="change_pass2" )
+                            span.invalid-feedback Паролі повинні збігатись
+                div.modal-footer
+                    button.btn.btn-secondary(data-dismiss="modal" id='cancelchangepass') Назад
+                    button.btn.btn-info(onclick="changePass()") Зберегти

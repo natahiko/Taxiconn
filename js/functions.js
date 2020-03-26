@@ -23,6 +23,9 @@ module.exports = {
     getUserType: function () {
         return localStorage.getItem("authorized");
     },
+    getUserid: function () {
+        return localStorage.getItem("user_id");
+    },
     generateCode: function () {
         return Math.random().toString(36).slice(2);
     },

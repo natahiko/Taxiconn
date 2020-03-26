@@ -14,7 +14,7 @@ function loginUser() {
     passSelector.val("");
     if (login === "" || pass === "") {
         alert("Всі поля мають бути заповнені");
-        return;
+        return false;
     }
     var person = {
         "login": login,
@@ -33,6 +33,7 @@ function loginUser() {
         },
         error: function () {
             alert("Перевірте правильність данних та спробуйте ще!");
+            return false;
         },
         data: JSON.stringify(person)
     });
@@ -227,5 +228,60 @@ async function checkFreeLogin() {
         data: JSON.stringify({
             "login": login
         })
+    });
+}
+
+function changePass() {
+    const oldPassSel = $("#old_change_pass");
+    const passSel = $("#change_pass");
+    const passSel2 = $("#change_pass2");
+    var oldPass = oldPassSel.val();
+    var pass = passSel.val();
+    var pass2 = passSel2.val();
+
+    if(oldPass.length<4){
+        oldPassSel.addClass("is-invalid");
+        oldPassSel.click(function () {
+            oldPassSel.removeClass('is-invalid');
+        });
+        return false;
+    }
+    if(!validPassword("#change_pass","#change_pass2")) {
+        return false;
+    }
+    const sended = {
+        "old": oldPass,
+        "now": pass
+    };
+    $.ajax({
+        url: '/changePass',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function () {
+                $("#profilesection").prepend("<div class='alert alert-success alert-dismissible'>" +
+                    "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
+                    "<strong>Ваш пароль успішно змінено!</strong></div>");
+                $("#cancelchangepass").click();
+
+                oldPassSel.val("");
+                passSel.val("");
+                passSel2.val("");
+                return true;
+        },
+        error: function(data){
+            if(data.err==='uncorect old'){
+                oldPassSel.addClass("is-invalid");
+                oldPassSel.click(function () {
+                    oldPassSel.removeClass('is-invalid');
+                });
+                passSel2.val("");
+            } else {
+                alert(data.err);
+                passSel2.val("");
+            }
+            return false;
+        },
+        data: JSON.stringify(sended)
     });
 }

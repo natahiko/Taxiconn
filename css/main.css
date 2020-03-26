@@ -1,41 +1,12 @@
-@media (min-width: 992px) {
-    .navbar-collapse .navbar-toggler {
-        display: none;
-    }
-
-    .navbar-nav .dropdown-menu {
-        opacity: 0;
-        transform-origin: top center;
-        transition: all .2s ease-in-out;
-        transition-property: opacity, visibility, transform;
-        visibility: hidden;
-        z-index: 1030;
-    }
-
-    .navbar-nav .dropdown > .dropdown-menu {
-        left: 20%;
-        transform: translate3d(-50%, 10px, 0);
-        display: block !important;
-    }
-
-    .navbar-nav .dropright > .dropdown-menu {
-        transform: translate3d(0, 10px, 0);
-    }
-
-    .navbar-nav .dropdown:hover > .dropdown-menu, .navbar-nav .dropright:hover > .dropdown-menu {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .navbar-nav .dropdown:hover > .dropdown-menu {
-        transform: translate3d(-50%, 0, 0);
-    }
-
-    .navbar-nav .dropright:hover > .dropdown-menu {
-        transform: translate3d(0, 0, 0);
-    }
+html{
+    min-width: 577px;
+    overflow-x: auto;
+    max-width: 100%;
 }
-
+body{
+    overflow-x: hidden;
+    width: 100%;
+}
 .active {
     text-decoration: underline !important;
     color: rgba(199, 116, 105, 0.69);
@@ -187,22 +158,6 @@
     font-size: medium;
 }
 
-/* media queries */
-
-@media screen and (max-width: 640px) {
-    .wrapper {
-        width: 350px;
-    }
-
-    .wrapper ul li {
-        margin-top: 10px;
-    }
-
-    .wrapper ul li.google {
-        margin-left: 60px;
-    }
-}
-
 @font-face {
     font-family: 'FontAwesome';
     src: local("FontAwesome"), url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'),
@@ -231,20 +186,6 @@
 
 .fa-facebook:before {
     content: "\f09a";
-}
-
-@media screen and (max-width: 340px) {
-    .wrapper {
-        width: 150px;
-    }
-
-    .wrapper ul li {
-        margin: 15px;
-    }
-
-    .wrapper ul li.google {
-        margin-left: 15px;
-    }
 }
 
 footer {
@@ -344,4 +285,65 @@ footer {
     background-color: rgba(214, 255, 234, 0.59);
     text-align: right;
     padding-right: 15px;
+}
+.profile{
+    margin: 25px 25px 0;
+    padding: 25px;
+    min-height: 70vh;
+}
+.main_profile_part{
+    width: 100%;
+}
+.main_profile_part img{
+    border-radius: 10%;
+    border: 1em solid #ced4da;
+    width: 28%;
+    margin: 0 3%;
+}
+.personal_info{
+    float: right;
+    width: 60%;
+}
+.personal_info .input-group-prepend{
+    width: 65px;
+    margin: 7px 0;
+}
+.personal_info .input-group-text{
+
+    background-color: #eeeeee;
+    border: 1px solid #ced4da;
+}
+.personal_info input[disabled]{
+    background-color: white;
+    margin: 7px 0;
+    border: 1px solid #ced4da;
+}
+.personal_info input{
+    background-color: white;
+    margin: 7px 0;
+    border: 3px solid #ced4da;
+}
+.login{
+    background: transparent;
+    border: 0 !important;
+    font-weight: bolder;
+    font-size: xx-large;
+    color: black;
+    font-family: Arial;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+.status{
+    width: 100%;
+    background: transparent;
+    border: 0;
+    font-size: medium;
+    margin-bottom: 10px;
+}
+.personal_info .btn-info{
+    color: #fff !important;
+    background-color: #17a2b8 !important;
+    border-color: #17a2b8 !important;
+    width: 50%;
+    margin: 0 25%;
 }
