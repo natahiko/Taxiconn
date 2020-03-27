@@ -272,22 +272,32 @@ server.post('/carmodel', function (req, res) {
 });
 server.post('/isloginfree', function (req, res) {
     var login = req.body.login;
-    if (login === "") {
-        res.statusCode = 400;
+    var phone = req.body.number;
+    var email = req.body.email;
+    if (login === "" || phone==="" || email==="") {
+        res.statusCode = 409;
         res.end();
     }
-    con.query("SELECT * FROM drivers WHERE login='" + login + "';", function (err, result) {
-        res.statusCode = 200;
+    con.query("SELECT * FROM drivers WHERE login='" + login + "' OR phone='"+phone+"' OR email='"+email+"';", function (err, result) {
         res.setHeader('Content-Type', 'application/json');
         if (result.length < 1) {
-            res.write(JSON.stringify({
-                "free": true
-            }));
+            res.statusCode = 200;
         } else {
-            res.write(JSON.stringify({
-                "free": false
-            }));
+            var user = result[0];
+            res.statusCode = 409;
+            var datares = {
+              "email": false,
+              "phone": false,
+              "login": false
+            };
+            if(email===user.email)
+                datares['email'] = true;
+            if(phone===user.phone)
+                datares['phone'] = true;
+            if(login===user.login)
+                datares['login'] = true;
         }
+        res.write(JSON.stringify(datares));
         res.end();
     });
 });

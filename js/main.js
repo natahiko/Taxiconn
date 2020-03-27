@@ -107,6 +107,10 @@ function loadsubmit() {
                     event.preventDefault();
                 }
                 var emailSelector = $("#driver_email");
+                emailSelector.keyup(function () {
+                    emailSelector.removeClass("is-valid");
+                    emailSelector.removeClass("is-invalid");
+                });
                 var loginSelector = $("#driver_login");
                 var login = loginSelector.val();
                 var email = emailSelector.val();
@@ -116,9 +120,6 @@ function loadsubmit() {
                 }
                 if (email === "") {
                     emailSelector.addClass("is-invalid");
-                    emailSelector.keyup(function () {
-                        emailSelector.removeClass("is-invalid");
-                    });
                     event.preventDefault();
                     return false;
                 }
@@ -128,13 +129,18 @@ function loadsubmit() {
                     loginSelector.removeClass("is-invalid");
                 });
                 var licence = $("#driver_seria").val() + $("#driver_seria_num").val();
+                var phoneSel = $("#driver_tel");
+                phoneSel.keyup(function () {
+                    phoneSel.removeClass("is-valid");
+                    phoneSel.removeClass("is-invalid");
+                });
+                var phone = phoneSel.val();
                 $.ajax({
                     url: '/isLoginFree',
                     type: 'post',
                     dataType: 'json',
                     contentType: 'application/json',
-                    success: function (data) {
-                        if (data.free) {
+                    success: function () {
                             loginSelector.addClass("is-valid");
                             loginSelector.removeClass("is-invalid");
                             $.ajax({
@@ -147,9 +153,6 @@ function loadsubmit() {
                                         return true;
                                     } else {
                                         emailSelector.addClass("is-invalid");
-                                        emailSelector.keyup(function () {
-                                            emailSelector.removeClass("is-invalid");
-                                        });
                                         event.preventDefault();
                                         return false;
                                     }
@@ -160,7 +163,7 @@ function loadsubmit() {
                                     "surname": $("#driver_surname").val(),
                                     "age": $("#driver_age").val(),
                                     "login": login,
-                                    "phone": $("#driver_tel").val(),
+                                    "phone": phone,
                                     "description": $("#driver_desc").val(),
                                     "licence": licence,
                                     "car_producer": $("#select_carproducer").val(),
@@ -170,15 +173,30 @@ function loadsubmit() {
                                     "car_class": $('input[name="car_class"]:checked').val()
                                 })
                             });
-                        } else {
-                            loginSelector.addClass("is-invalid");
-                            loginSelector.removeClass("is-valid");
-                            event.preventDefault();
-                            return false;
+                    },
+                    error: function(data){
+                        consol.log(data);
+                        if(data.login){
+                        loginSelector.addClass("is-invalid");
+                        loginSelector.removeClass("is-valid");
                         }
+                        if(data.email){
+                            emailSelector.addClass("is-invalid");
+                            emailSelector.removeClass("is-valid");
+                        }
+                        if(data.phone){
+                            phoneSel.addClass("is-invalid");
+                            phoneSel.removeClass("is-valid");
+                        }else{
+                            alert("Перевірте всі поля на правильність");
+                        }
+                        event.preventDefault();
+                        return false;
                     },
                     data: JSON.stringify({
-                        "login": login
+                        "login": login,
+                        "number": phone,
+                        "email": email
                     })
                 });
             }, false);
