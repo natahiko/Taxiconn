@@ -1,3 +1,5 @@
+var selected = undefined;
+
 function loginUser() {
     var passSelector = $("#log_pass");
     var login = $("#log_login").val();
@@ -53,12 +55,8 @@ function exit() {
     });
 }
 
-$(document).ready(function () {
-    $('[data-toggle="tooltip"]').tooltip();
-});
-var selected = undefined;
 function setDefPofileCarModel() {
-       selected = $("#select_carmodel").children("option:selected").val();
+    selected = $("#select_carmodel").children("option:selected").val();
 }
 
 function setDefaultProfileCarModel() {
@@ -68,7 +66,7 @@ function setDefaultProfileCarModel() {
 function renew_car_model() {
     var producer = $("#select_carproducer").children("option:selected").val();
     var classSel = $('#carclassprofile');
-    var car_class = undefined;
+    var car_class;
     if (classSel === undefined) {
         car_class = $('input[name="car_class"]:checked').val();
     } else {

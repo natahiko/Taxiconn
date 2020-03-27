@@ -26,3 +26,5 @@ function myMap() {
         map.setCenter(marker.getPosition());
     });
 }
+
+myMap();

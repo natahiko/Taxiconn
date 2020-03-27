@@ -5,7 +5,6 @@ let config = require('./config/conf.json');
 var functions = require('./js/functions');
 let text = require('./config/main.json');
 const bodyParser = require('body-parser');
-var nodemailer = require('nodemailer');
 
 let server = express();
 server.listen(config['port']);
@@ -37,6 +36,7 @@ server.get('/404', function (req, res) {
     functions.exit();
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
     res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
+    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
 server.get('/workcond', function (req, res) {
@@ -62,6 +62,7 @@ server.get('/userrules', function (req, res) {
             res.end();
         } else {
             res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
+            res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
             res.end();
         }
     });
@@ -81,6 +82,7 @@ server.get('/profile', function (req,res) {
         con.query("SELECT * FROM drivers WHERE id='"+functions.getUserid()+"'", function (err, result) {
             if(err){
                 res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
+                res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
                 res.end();
             } else {
                 con.query("SELECT producer FROM сar_producer;", function (err, result2) {
@@ -97,6 +99,7 @@ server.get('/profile', function (req,res) {
         con.query("SELECT * FROM clients WHERE id='"+functions.getUserid()+"'", function (err, result) {
             if(err){
                 res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
+                res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
                 res.end();
             } else {
                 res.write(pug.renderFile(__dirname + "/pugs/profile-client.pug", {
@@ -108,6 +111,7 @@ server.get('/profile', function (req,res) {
         });
     } else{
         res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
+        res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
         res.end();
     }
 });
@@ -136,11 +140,13 @@ server.get('/confirmregistration', function (req, res) {
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
     if (functions.getUserType() !== "") {
         res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
+        res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     } else {
         var email = req.query.email + req.query.emend;
         res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
             "email": email
         }));
+        res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     }
     res.end();
 });
@@ -170,7 +176,9 @@ server.get('/contacts', function (req, res) {
     text.header['nowpage'] = "/contacts";
     text.header['googlemapapi'] = config.googlemapapi;
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
-    res.write(pug.renderFile(__dirname + "/pugs/contacts.pug"));
+    res.write(pug.renderFile(__dirname + "/pugs/contacts.pug",{
+        "googlemapapi": config.googlemapapi
+    }));
     res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
@@ -273,7 +281,7 @@ server.post('/sendmail', function (req, res) {
     var emailTo = req.body.email;
     var code = functions.generateCode();
     functions.setCode(emailTo, code);
-    if (send(emailTo, code)) {
+    if (functions.send(emailTo, code, config.email, text.email)) {
         functions.setRegisretDriverInfo(code, req.body);
         res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify({
@@ -290,34 +298,3 @@ server.post('/exit', function (req, res) {
     res.end();
 });
 
-async function send(emailTo, code) {
-    var email = text.email;
-    var transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        auth: {
-            user: 'nata.shkarovska@gmail.com',
-            pass: 'Nix_23032000'
-        }
-    });
-    var mailOptions = {
-        from: 'nata.shkarovska@gmail.com',
-        to: emailTo,
-        subject: 'Taxiconn.com.ua',
-        html: "<span style='text-align: center; align-items: center; color: black'><h1>" + email.header + "</h1><p>" + email.text + "</p>" +
-            "<div><a href='" + email.link + "/?email=" + emailTo + "'>" + email.linktext + "</a></div>" +
-            "<input style='width: 50%; margin: 7px 25%; text-align: center; padding: 5px; font-size: x-large; " +
-            "background: white; border-radius: 10px;' disabled type='text' value='" + code + "' id='code'>" +
-            "</span>"
-    };
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-            return false;
-        } else {
-            console.log('Email sent: ' + info.response);
-            return true;
-        }
-    });
-}

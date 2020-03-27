@@ -1,5 +1,6 @@
 var LocalStorage = require('node-localstorage').LocalStorage, localStorage = new LocalStorage('./scratch');
 var JSONStorage = require('node-localstorage').JSONStorage, jsonStorage = new JSONStorage('./scratch');
+var nodemailer = require('nodemailer');
 
 module.exports = {
     getHeader: function () {
@@ -49,5 +50,32 @@ module.exports = {
         localStorage.removeItem(email);
         localStorage.removeItem(code);
         return sql;
+    },
+    send: async function(emailTo, code, config, email) {
+        var transporter = nodemailer.createTransport({
+            host: config.host,
+            port: config.port,
+            secure: false,
+            auth: config.auth
+        });
+        var mailOptions = {
+            from: config.auth.user,
+            to: emailTo,
+            subject: config.subject,
+            html: "<span style='text-align: center; align-items: center; color: black'><h1>" + email.header + "</h1><p>" + email.text + "</p>" +
+                "<div><a href='" + email.link + "/?email=" + emailTo + "'>" + email.linktext + "</a></div>" +
+                "<input style='width: 50%; margin: 7px 25%; text-align: center; padding: 5px; font-size: x-large; " +
+                "background: white; border-radius: 10px;' disabled type='text' value='" + code + "' id='code'>" +
+                "</span>"
+        };
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+                return false;
+            } else {
+                console.log('Email sent: ' + info.response);
+                return true;
+            }
+        });
     }
 };

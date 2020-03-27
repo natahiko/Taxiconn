@@ -218,6 +218,7 @@ footer {
 .error404 {
     margin: 40px;
     padding: 20px;
+    width: 90vh;
 }
 
 .pict-with-caption {
