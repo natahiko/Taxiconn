@@ -1,5 +1,3 @@
-var selected = undefined;
-
 function loginUser() {
     var passSelector = $("#log_pass");
     var login = $("#log_login").val();
@@ -55,16 +53,8 @@ function exit() {
     });
 }
 
-function setDefPofileCarModel() {
-    selected = $("#select_carmodel").children("option:selected").val();
-}
-
-function setDefaultProfileCarModel() {
-    $("#select_carmodel").children("option:selected").val(selected);
-}
-
-function renew_car_model() {
-    var producer = $("#select_carproducer").children("option:selected").val();
+function renew_car_model(value) {
+    var producerid = $("#select_carproducer").children("option:selected").val();
     var classSel = $('#carclassprofile');
     var car_class;
     if (classSel === undefined) {
@@ -73,7 +63,7 @@ function renew_car_model() {
         car_class = classSel.children("option:selected").val();
     }
     var prods = {
-        "producer": producer,
+        "producer": producerid,
         "carclass": car_class,
         "secret_key": "OiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4"
     };
@@ -86,11 +76,11 @@ function renew_car_model() {
         contentType: 'application/json',
         success: function (data) {
             var res = data.res;
-            console.log(res);
             carModelSelector.append("<option value='default' class='default_option'>Оберіть марку</option>");
             for (var i = 0; i < res.length; i++) {
-                carModelSelector.append("<option>" + res[i].model + "</option>");
+                carModelSelector.append("<option value='"+res[i].id+"'>" + res[i].model + "</option>");
             }
+            $("#select_carmodel option[value="+value+"]").attr('selected', true);
         },
         data: JSON.stringify(prods)
     });
@@ -137,6 +127,7 @@ function loadsubmit() {
                     loginSelector.removeClass("is-valid");
                     loginSelector.removeClass("is-invalid");
                 });
+                var licence = $("#driver_seria").val() + $("#driver_seria_num").val();
                 $.ajax({
                     url: '/isLoginFree',
                     type: 'post',
@@ -171,7 +162,7 @@ function loadsubmit() {
                                     "login": login,
                                     "phone": $("#driver_tel").val(),
                                     "description": $("#driver_desc").val(),
-                                    "licence": $("#driver_seria").val() + $("#driver_seria_num").val(),
+                                    "licence": licence,
                                     "car_producer": $("#select_carproducer").val(),
                                     "car_model": $("#select_carmodel").val(),
                                     "car_year": $("#car_year").val(),

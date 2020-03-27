@@ -36,17 +36,23 @@ module.exports = {
     setRegisretDriverInfo: function (code, json) {
         jsonStorage.setItem(code, JSON.stringify(json));
     },
-    getRegisretDriverSQL: function (email, code) {
+    getCarModel: function(code){
+        var json = jsonStorage.getItem(code);
+        if (json === "") return "";
+        json = JSON.parse(json);
+        return json.car_model
+    },
+    getRegisretDriverSQL: function (email, code, carmodelid) {
         if (localStorage.getItem(email)===null || localStorage.getItem(email) !== code) {
             return "";
         }
         var json = jsonStorage.getItem(code);
         if (json === "") return "";
         json = JSON.parse(json);
-        var sql = "INSERT INTO drivers (login, name, surname, age, licence, carproducer, carmodel, carclass, caryear," +
+        var sql = "INSERT INTO drivers (login, name, surname, age, licence, carmodelid, caryear," +
             "password, phone, description, email) VALUES ('" + json.login + "','" + json.name + "','" + json.surname + "'," +
-            "'" + json.age + "','" + json.licence + "','" + json.car_producer + "','" + json.car_model + "','" + json.car_class + "'," +
-            "'" + json.car_year + "','" + json.password + "','" + json.phone + "','" + json.description + "','" + json.email + "')";
+            "'" + json.age + "','" + json.licence + "','" + carmodelid +
+        "', '" + json.car_year + "','" + json.password + "','" + json.phone + "','" + json.description + "','" + json.email + "')";
         localStorage.removeItem(email);
         localStorage.removeItem(code);
         return sql;

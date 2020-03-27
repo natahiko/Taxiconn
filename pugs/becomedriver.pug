@@ -89,7 +89,7 @@ div.container
                 select.input-group-append.form-control(onchange='renew_car_model()' id='select_carproducer')
                     option.default_option(value="default") Оберіть виробника
                     each prod in producers
-                        option.form-control(href='#') #{prod.producer}
+                        option.form-control(value=prod.prodid) #{prod.producer}
         div.input-group.mb-3
             div.input-group
                 div.input-group-prepend

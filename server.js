@@ -74,18 +74,18 @@ server.get('/usefultips', function (req, res) {
     res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
-server.get('/profile', function (req,res) {
+server.get('/profile', function (req, res) {
     text.header['nowpage'] = "/profile";
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
     var user = functions.getUserType();
     if (user === 'drivers') {
-        con.query("SELECT * FROM drivers WHERE id='"+functions.getUserid()+"'", function (err, result) {
-            if(err){
+        con.query("SELECT * FROM drivers INNER JOIN car_models ON car_models.id=drivers.carmodelid WHERE drivers.id=" + functions.getUserid(), function (err, result) {
+            if (err) {
                 res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
                 res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
                 res.end();
             } else {
-                con.query("SELECT producer FROM сar_producer;", function (err, result2) {
+                con.query("SELECT prodid,producer FROM сar_producer;", function (err, result2) {
                     res.write(pug.renderFile(__dirname + "/pugs/profile-driver.pug", {
                         producers: result2,
                         info: result[0]
@@ -95,9 +95,9 @@ server.get('/profile', function (req,res) {
                 });
             }
         });
-    } else if(user==='clients'){
-        con.query("SELECT * FROM clients WHERE id='"+functions.getUserid()+"'", function (err, result) {
-            if(err){
+    } else if (user === 'clients') {
+        con.query("SELECT * FROM clients WHERE id='" + functions.getUserid() + "'", function (err, result) {
+            if (err) {
                 res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
                 res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
                 res.end();
@@ -109,7 +109,7 @@ server.get('/profile', function (req,res) {
                 res.end();
             }
         });
-    } else{
+    } else {
         res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
         res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
         res.end();
@@ -126,7 +126,7 @@ server.get('/becomedriver', function (req, res) {
         res.end();
     } else {
         res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
-        con.query("SELECT producer FROM сar_producer;", function (err, result) {
+        con.query("SELECT prodid,producer FROM сar_producer;", function (err, result) {
             res.write(pug.renderFile(__dirname + "/pugs/becomedriver.pug", {
                 producers: result
             }));
@@ -156,27 +156,32 @@ server.get('/confirmregistrcode', function (req, res) {
 
     var code = req.query.code;
     var email = req.query.email;
-    var sql = functions.getRegisretDriverSQL(email, code);
-    if (code === "" || email === "" || sql === "") {
-        res.write(pug.renderFile(__dirname + "/pugs/unsuccessRegistered.pug"));
-        res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
-            "email": email
-        }));
-        res.end();
-    } else {
-        con.query(sql, function () {
-            res.write(pug.renderFile(__dirname + "/pugs/successRegistered.pug"));
-            res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
-            res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+    var carmodel = functions.getCarModel(code);
+    con.query("SELECT id FROM car_models WHERE model='" + carmodel + "'", function (err, modresult) {
+        var carmodelid = modresult[0].id;
+        var sql = functions.getRegisretDriverSQL(email, code, carmodelid);
+        console.log(sql);
+        if (code === "" || email === "" || sql === "") {
+            res.write(pug.renderFile(__dirname + "/pugs/unsuccessRegistered.pug"));
+            res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
+                "email": email
+            }));
             res.end();
-        });
-    }
+        } else {
+            con.query(sql, function () {
+                res.write(pug.renderFile(__dirname + "/pugs/successRegistered.pug"));
+                res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
+                res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+                res.end();
+            });
+        }
+    });
 });
 server.get('/contacts', function (req, res) {
     text.header['nowpage'] = "/contacts";
     text.header['googlemapapi'] = config.googlemapapi;
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
-    res.write(pug.renderFile(__dirname + "/pugs/contacts.pug",{
+    res.write(pug.renderFile(__dirname + "/pugs/contacts.pug", {
         "googlemapapi": config.googlemapapi
     }));
     res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
@@ -203,10 +208,10 @@ server.post('/login', function (req, res) {
     });
 });
 
-server.post('/changePass', function (req,res) {
+server.post('/changePass', function (req, res) {
     var old = req.body.old;
     var now = req.body.now;
-    if(old==="" || old===undefined || now==="" || now===undefined){
+    if (old === "" || old === undefined || now === "" || now === undefined) {
         res.statusCode = 400;
         res.write(JSON.stringify({
             "err": 'lost some data'
@@ -214,9 +219,9 @@ server.post('/changePass', function (req,res) {
         res.end();
     }
     let userid = functions.getUserid();
-    con.query("SELECT * FROM drivers WHERE id="+userid+
-                " AND password='" + old + "';", function (err, result) {
-        if(result.length<1){
+    con.query("SELECT * FROM drivers WHERE id=" + userid +
+        " AND password='" + old + "';", function (err, result) {
+        if (result.length < 1) {
             res.statusCode = 400;
             res.write(JSON.stringify({
                 "id": userid,
@@ -224,8 +229,8 @@ server.post('/changePass', function (req,res) {
             }));
             res.end();
         } else {
-            con.query("UPDATE drivers SET password='"+now+"' WHERE id='" + userid + "';", function (err, result) {
-                if(err){
+            con.query("UPDATE drivers SET password='" + now + "' WHERE id='" + userid + "';", function (err, result) {
+                if (err) {
                     console.log(err);
                 } else {
                     console.log(result);
@@ -242,12 +247,13 @@ server.post('/carmodel', function (req, res) {
         res.statusCode = 400;
         res.end();
     }
-    var car_class = '';
-    if(req.body.carclass==="comfort") {
+    var car_class;
+    if (req.body.carclass === "comfort") {
         car_class = " AND class='comfort'";
+    } else{
+        car_class = " AND class='econom'";
     }
-    con.query("SELECT model FROM car_models WHERE producer_id IN (" +
-        "SELECT prodid FROM сar_producer WHERE producer='" + producer + "'"+car_class+");", function (err, result) {
+    con.query("SELECT id,model FROM car_models WHERE producer_id='" + producer + "'" + car_class + ";", function (err, result) {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify({

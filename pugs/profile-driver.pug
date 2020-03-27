@@ -65,7 +65,7 @@ div.driver_auto
             div.input-group-prepend
                 span.input-group-text Клас
             select.form-control(disabled onchange='renew_car_model()' id='carclassprofile')
-                if info.carclass==='econom'
+                if info.class==='econom'
                     option(selected) econom
                     option comfort
                 else
@@ -76,18 +76,15 @@ div.driver_auto
             span.input-group-text Авто
         select.form-control(disabled onchange='renew_car_model()' id='select_carproducer')
             each prod in producers
-                if prod.producer===info.carproducer
-                    option.form-control(selected) #{prod.producer}
+                if prod.prodid===info.producer_id
+                    option.form-control(selected value=prod.prodid) #{prod.producer}
                 else
-                    option.form-control #{prod.producer}
+                    option.form-control(value=prod.prodid) #{prod.producer}
         select.form-control(disabled id="select_carmodel")
-            option(selected) #{info.carmodel}
         input.form-control(type="number" min=2000 max=2020 value=info.caryear disabled)
 div.input-group
     input.btn.btn-info(type="button" id='editprofilebutton' value="Редагувати профіль" onclick='editDriverProfile()')
 div.input-group
     input.btn.btn-info(style='display:none' type="button" id='saveprofilebutton' value="Зберегти зміни" onclick='saveDriverChanges()')
 
-script(type='text/javascript') setDefPofileCarModel()
-script(type='text/javascript') renew_car_model()
-script(type='text/javascript') setDefaultProfileCarModel()
+script(type='text/javascript') renew_car_model(`#{info.carmodelid}`)
