@@ -235,7 +235,7 @@ async function checkFreeLogin() {
     });
 }
 
-function changePass() {
+function changePass(usertype) {
     const oldPassSel = $("#old_change_pass");
     const passSel = $("#change_pass");
     const passSel2 = $("#change_pass2");
@@ -254,7 +254,8 @@ function changePass() {
     }
     const sended = {
         "old": oldPass,
-        "now": pass
+        "now": pass,
+        "type": usertype
     };
     $.ajax({
         url: '/changePass',
@@ -308,7 +309,7 @@ function editDriverProfile() {
 }
 
 function saveDriverChanges() {
-    //TODO
+    //TODO saveDriverChanges
     $(".driver_auto input").prop("disabled", true);
     $(".main_profile_part input").prop("disabled", true);
     $(".main_profile_part input:button").prop("disabled", false);
@@ -319,7 +320,7 @@ function saveDriverChanges() {
 }
 
 function saveClientChanges() {
-    //TODO
+    //TODO saveClientChanges
     $(".driver_auto input").prop("disabled", true);
     $(".main_profile_part input").prop("disabled", true);
     $(".main_profile_part input:button").prop("disabled", false);

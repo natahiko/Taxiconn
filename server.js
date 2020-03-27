@@ -75,16 +75,18 @@ server.get('/usefultips', function (req, res) {
     res.end();
 });
 server.get('/profile', function (req, res) {
-    text.header['nowpage'] = "/profile";
-    res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
     var user = functions.getUserType();
     if (user === 'drivers') {
         con.query("SELECT * FROM drivers INNER JOIN car_models ON car_models.id=drivers.carmodelid WHERE drivers.id=" + functions.getUserid(), function (err, result) {
             if (err) {
+                text.header['nowpage'] = "/";
+                res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
                 res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
                 res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
                 res.end();
             } else {
+                text.header['nowpage'] = "/profile";
+                res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
                 con.query("SELECT prodid,producer FROM сar_producer;", function (err, result2) {
                     res.write(pug.renderFile(__dirname + "/pugs/profile-driver.pug", {
                         producers: result2,
@@ -98,18 +100,24 @@ server.get('/profile', function (req, res) {
     } else if (user === 'clients') {
         con.query("SELECT * FROM clients WHERE id='" + functions.getUserid() + "'", function (err, result) {
             if (err) {
+                text.header['nowpage'] = "/";
+                res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
                 res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
                 res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
                 res.end();
             } else {
+                text.header['nowpage'] = "/profile";
+                res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
                 res.write(pug.renderFile(__dirname + "/pugs/profile-client.pug", {
-                    info: result
+                    info: result[0]
                 }));
                 res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
                 res.end();
             }
         });
     } else {
+        text.header['nowpage'] = "/";
+        res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
         res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
         res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
         res.end();
@@ -136,7 +144,7 @@ server.get('/becomedriver', function (req, res) {
     }
 });
 server.get('/confirmregistration', function (req, res) {
-    text.header['nowpage'] = "/confirmregistration";
+    text.header['nowpage'] = "/";
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
     if (functions.getUserType() !== "") {
         res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
@@ -151,9 +159,8 @@ server.get('/confirmregistration', function (req, res) {
     res.end();
 });
 server.get('/confirmregistrcode', function (req, res) {
-    text.header['nowpage'] = "/confirmregistrcode";
+    text.header['nowpage'] = "/";
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
-
     var code = req.query.code;
     var email = req.query.email;
     var carmodel = functions.getCarModel(code);
@@ -211,6 +218,7 @@ server.post('/login', function (req, res) {
 server.post('/changePass', function (req, res) {
     var old = req.body.old;
     var now = req.body.now;
+    var type = req.body.type;
     if (old === "" || old === undefined || now === "" || now === undefined) {
         res.statusCode = 400;
         res.write(JSON.stringify({
@@ -219,7 +227,7 @@ server.post('/changePass', function (req, res) {
         res.end();
     }
     let userid = functions.getUserid();
-    con.query("SELECT * FROM drivers WHERE id=" + userid +
+    con.query("SELECT * FROM "+type+" WHERE id=" + userid +
         " AND password='" + old + "';", function (err, result) {
         if (result.length < 1) {
             res.statusCode = 400;
@@ -229,7 +237,7 @@ server.post('/changePass', function (req, res) {
             }));
             res.end();
         } else {
-            con.query("UPDATE drivers SET password='" + now + "' WHERE id='" + userid + "';", function (err, result) {
+            con.query("UPDATE "+type+" SET password='" + now + "' WHERE id='" + userid + "';", function (err, result) {
                 if (err) {
                     console.log(err);
                 } else {
