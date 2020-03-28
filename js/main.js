@@ -207,9 +207,7 @@ function checkValueSelect() {
         this.style.color = '#222222';
     }
 }
-
-async function checkFreeLogin() {
-    let logSelector = $("#driver_login");
+function checkLogin(logSelector, type){
     let login = logSelector.val();
     if (login === "") {
         return false;
@@ -223,6 +221,7 @@ async function checkFreeLogin() {
         type: 'post',
         dataType: 'json',
         contentType: 'application/json',
+        accept: 'application/json',
         success: function (data) {
             if (data.free) {
                 logSelector.addClass("is-valid");
@@ -233,9 +232,37 @@ async function checkFreeLogin() {
             }
         },
         data: JSON.stringify({
-            "login": login
+            "login": login,
+            "type": type
         })
     });
+}
+async function checkFreeLoginClient(){
+    let logSelector = $("#profile_login");
+    if(logSelector.val()===JSON.parse(sessionStorage.getItem("profile"))){
+        logSelector.addClass("is-valid");
+        logSelector.keyup(function () {
+            logSelector.removeClass("is-valid");
+            logSelector.removeClass("is-invalid");
+        });
+        return;
+    }
+    return checkLogin(logSelector,"clients");
+}
+async function checkFreeLogin() {
+    let logSelector = $("#driver_login");
+    if(logSelector.val()===undefined){
+        logSelector = $("#profile_login");
+        if(logSelector.val()===JSON.parse(sessionStorage.getItem("profile")).login){
+            logSelector.addClass("is-valid");
+            logSelector.keyup(function () {
+                logSelector.removeClass("is-valid");
+                logSelector.removeClass("is-invalid");
+            });
+            return true;
+        }
+    }
+    return checkLogin(logSelector,"drivers");
 }
 
 function changePass(usertype) {
@@ -300,6 +327,7 @@ function showEditingProfile(val) {
         $(".main_profile_part input").prop("disabled", true);
         $("#change_password").prop("disabled", false);
         $("#profile_desc").prop("disabled", true);
+        $("#checkLogin").hide();
         $("#editprofilebutton").show();
         $("#saveprofilebutton").hide();
         $("#canselprofilebutton").hide();
@@ -311,6 +339,7 @@ function showEditingProfile(val) {
         $("#profile_email").prop("disabled", true);
         $("#change_password").prop("disabled", true);
         $("#editprofilebutton").hide();
+        $("#checkLogin").show();
         $("#saveprofilebutton").show();
         $("#canselprofilebutton").show();
     }
@@ -432,4 +461,8 @@ function saveClientChanges() {
         },
         data: JSON.stringify(profileData)
     });
+}
+
+function checkFreeLoginClient() {
+
 }

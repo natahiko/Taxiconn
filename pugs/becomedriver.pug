@@ -19,9 +19,9 @@ div.container
             div.input-group-prepend
                 span.input-group-text Логін
             input.form-control(required type="text" placeholder="Логін" maxlength=20 id='driver_login')
+            span.invalid-feedback Ваш логін зайнятий! Оберіть новий
             div.input-group-append
                 input.btn.btn-outline-info(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLogin()")
-                span.invalid-feedback Ваш логін зайнятий! Оберіть новий
         div.input-group.mb-3
             div.input-group-prepend
                 span.input-group-text Email

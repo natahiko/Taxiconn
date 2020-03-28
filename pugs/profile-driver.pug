@@ -2,8 +2,12 @@ section.profile(id='profilesection')
     div.main_profile_part
         img(src='../images/defaul_driver_profile.jpeg' alt='')
         div.personal_info
-            div.input-group
-                input.login(type="text" id='profile_login' value=info.login disabled)
+            div.input-group.mb-3
+                input.form-control.login(type="text" id='profile_login' value=info.login disabled)
+                span.invalid-feedback Ваш логін зайнятий! Оберіть новий
+                div.input-group-append(id='checkLogin' style='display: none')
+                    input.btn.btn-outline-info(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLogin()")
+
             if info.description
                 div
                     textarea.status(disabled id='profile_desc')  #{info.description}

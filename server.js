@@ -255,7 +255,7 @@ server.post('/isLoginFree', function (req, res) {
         res.statusCode = 406;
         res.end();
     }
-    con.query("SELECT * FROM drivers WHERE login='" + login + "';", function (err, result) {
+    con.query("SELECT * FROM "+req.body.type+" WHERE login='" + login + "';", function (err, result) {
         res.setHeader('Content-Type', 'application/json');
         let datares = {"free": false};
         if (result.length < 1) {
