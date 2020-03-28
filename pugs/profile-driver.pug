@@ -3,30 +3,30 @@ section.profile(id='profilesection')
         img(src='../images/defaul_driver_profile.jpeg' alt='')
         div.personal_info
             div.input-group
-                input.login(type="text" value=info.login disabled)
+                input.login(type="text" id='profile_login' value=info.login disabled)
             if info.description
                 div
-                    textarea.status(disabled)  #{info.description}
+                    textarea.status(disabled id='profile_desc')  #{info.description}
             div.input-group
                 div.input-group-prepend
                     span.input-group-text ПІ
-                input.form-control(type="text" value=info.surname disabled)
-                input.form-control(type="text" value=info.name disabled)
+                input.form-control(type="text" id='profile_surname' value=info.surname disabled)
+                input.form-control(type="text" id='profile_name' value=info.name disabled)
             div.input-group
                 div.input-group-prepend
                     span.input-group-text Email
-                input.form-control(type="text" value=info.email disabled)
+                input.form-control(type="text" id='profile_email' value=info.email disabled)
             div.form-inline.row
                 div.input-group.col
                     div.input-group-prepend
                         span.input-group-text Вік
-                    input.form-control(type="text" value=info.age disabled)
+                    input.form-control(type="text" id='profile_age' value=info.age disabled)
                 div.input-group.col
                     div.input-group-prepend
                         span.input-group-text Тел.
-                    input.form-control(type="text" value=info.phone disabled)
+                    input.form-control(type="text" id='profile_phone' value=info.phone disabled)
             div.input-group
-                input.btn.btn-info(type="button" value="Змінити пароль" data-toggle="modal" data-target="#changepass")
+                input.btn.btn-info(type="button" id='change_password' value="Змінити пароль" data-toggle="modal" data-target="#changepass")
 
     div.modal.fade(id="changepass" tabindex="-1" role="dialog" aria-hidden="true")
         div.modal-dialog(role="document")
@@ -81,10 +81,11 @@ div.driver_auto
                 else
                     option.form-control(value=prod.prodid) #{prod.producer}
         select.form-control(disabled id="select_carmodel")
-        input.form-control(type="number" min=2000 max=2020 value=info.caryear disabled)
+        input.form-control(type="number" id='profile_carid' min=2000 max=2020 value=info.caryear disabled)
 div.input-group
     input.btn.btn-info(type="button" id='editprofilebutton' value="Редагувати профіль" onclick='editDriverProfile()')
 div.input-group
     input.btn.btn-info(style='display:none' type="button" id='saveprofilebutton' value="Зберегти зміни" onclick='saveDriverChanges()')
+    input.btn.btn-outline-secondary(style='display:none' type="button" id='canselprofilebutton' value="Скасувати" onclick='canselDriverChanges()')
 
 script(type='text/javascript') renew_car_model(`#{info.carmodelid}`)

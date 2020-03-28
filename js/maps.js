@@ -1,14 +1,14 @@
-var main_zoom = 15;
+let main_zoom = 15;
 
 function myMap() {
-    var mapProp = {
+    let mapProp = {
         center: new google.maps.LatLng(50.46000699004913, 30.52081012508188),
         zoom: 15,
     };
-    var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+    let map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 
-    var myCenter = new google.maps.LatLng(50.46000699004913, 30.52081012508188);
-    var marker = new google.maps.Marker({
+    let myCenter = new google.maps.LatLng(50.46000699004913, 30.52081012508188);
+    let marker = new google.maps.Marker({
         position: myCenter,
         animation: google.maps.Animation.BOUNCE,
         icon: "../images/map.png"

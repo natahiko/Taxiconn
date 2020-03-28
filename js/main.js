@@ -1,9 +1,9 @@
 function loginUser() {
-    var passSelector = $("#log_pass");
-    var login = $("#log_login").val();
-    var pass = passSelector.val();
-    var type = $("#log_type").children("option:selected").val();
-    var redirect_url = $("#nowpage").val();
+    let passSelector = $("#log_pass");
+    let login = $("#log_login").val();
+    let pass = passSelector.val();
+    let type = $("#log_type").children("option:selected").val();
+    let redirect_url = $("#nowpage").val();
     if (type === "Оберіть як ви хочете увійти...") {
         return;
     } else if (type === "Клієнт") {
@@ -16,7 +16,7 @@ function loginUser() {
         alert("Всі поля мають бути заповнені");
         return false;
     }
-    var person = {
+    let person = {
         "login": login,
         "password": pass,
         "type": type
@@ -54,20 +54,20 @@ function exit() {
 }
 
 function renew_car_model(value) {
-    var producerid = $("#select_carproducer").children("option:selected").val();
-    var classSel = $('#carclassprofile');
-    var car_class;
+    let producerid = $("#select_carproducer").children("option:selected").val();
+    let classSel = $('#carclassprofile');
+    let car_class;
     if (classSel === undefined) {
         car_class = $('input[name="car_class"]:checked').val();
     } else {
         car_class = classSel.children("option:selected").val();
     }
-    var prods = {
+    let prods = {
         "producer": producerid,
         "carclass": car_class,
         "secret_key": "OiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4"
     };
-    var carModelSelector = $("#select_carmodel");
+    let carModelSelector = $("#select_carmodel");
     carModelSelector.empty();
     $.ajax({
         url: '/carmodel',
@@ -75,20 +75,20 @@ function renew_car_model(value) {
         dataType: 'json',
         contentType: 'application/json',
         success: function (data) {
-            var res = data.res;
+            let res = data.res;
             carModelSelector.append("<option value='default' class='default_option'>Оберіть марку</option>");
-            for (var i = 0; i < res.length; i++) {
-                carModelSelector.append("<option value='"+res[i].id+"'>" + res[i].model + "</option>");
+            for (let i = 0; i < res.length; i++) {
+                carModelSelector.append("<option value='" + res[i].id + "'>" + res[i].model + "</option>");
             }
-            $("#select_carmodel option[value="+value+"]").attr('selected', true);
+            $("#select_carmodel option[value=" + value + "]").attr('selected', true);
         },
         data: JSON.stringify(prods)
     });
 }
 
 function becomedriver() {
-    var nameSelector = $("#name");
-    var name = nameSelector.val();
+    let nameSelector = $("#name");
+    let name = nameSelector.val();
     if (name === "" || !validName(name)) {
         nameSelector.css.background = "red";
     }
@@ -96,24 +96,24 @@ function becomedriver() {
 
 function loadsubmit() {
     window.addEventListener('load', function () {
-        var forms = document.getElementsByClassName('needs-validation');
+        let forms = document.getElementsByClassName('needs-validation');
         Array.prototype.filter.call(forms, function (form) {
             form.addEventListener('submit', function (event) {
-                var selectorsids = ["#select_carmodel", "#select_carproducer", "#select_category"];
+                let selectorsids = ["#select_carmodel", "#select_carproducer", "#select_category"];
                 if (!validateName("#driver_name") || !validateName("#driver_surname") || !validAge("#driver_age")
                     || !validateTel("#driver_tel") || !validSeria("#driver_seria") ||
                     !validSeriaNum("#driver_seria_num") || !validPassword("#driver_pass", "#driver_pass_conf")
                     || !validSelectors(selectorsids)) {
                     event.preventDefault();
                 }
-                var emailSelector = $("#driver_email");
+                let emailSelector = $("#driver_email");
                 emailSelector.keyup(function () {
                     emailSelector.removeClass("is-valid");
                     emailSelector.removeClass("is-invalid");
                 });
-                var loginSelector = $("#driver_login");
-                var login = loginSelector.val();
-                var email = emailSelector.val();
+                let loginSelector = $("#driver_login");
+                let login = loginSelector.val();
+                let email = emailSelector.val();
                 if (login === "") {
                     event.preventDefault();
                     return false;
@@ -128,66 +128,66 @@ function loadsubmit() {
                     loginSelector.removeClass("is-valid");
                     loginSelector.removeClass("is-invalid");
                 });
-                var licence = $("#driver_seria").val() + $("#driver_seria_num").val();
-                var phoneSel = $("#driver_tel");
+                let licence = $("#driver_seria").val() + $("#driver_seria_num").val();
+                let phoneSel = $("#driver_tel");
                 phoneSel.keyup(function () {
                     phoneSel.removeClass("is-valid");
                     phoneSel.removeClass("is-invalid");
                 });
-                var phone = phoneSel.val();
+                let phone = phoneSel.val();
                 $.ajax({
                     url: '/isLoginFree',
                     type: 'post',
                     dataType: 'json',
                     contentType: 'application/json',
                     success: function () {
-                            loginSelector.addClass("is-valid");
-                            loginSelector.removeClass("is-invalid");
-                            $.ajax({
-                                url: '/sendmail',
-                                type: 'post',
-                                dataType: 'json',
-                                contentType: 'application/json',
-                                success: function (data) {
-                                    if (data.res) {
-                                        return true;
-                                    } else {
-                                        emailSelector.addClass("is-invalid");
-                                        event.preventDefault();
-                                        return false;
-                                    }
-                                },
-                                data: JSON.stringify({
-                                    "email": email,
-                                    "name": $("#driver_name").val(),
-                                    "surname": $("#driver_surname").val(),
-                                    "age": $("#driver_age").val(),
-                                    "login": login,
-                                    "phone": phone,
-                                    "description": $("#driver_desc").val(),
-                                    "licence": licence,
-                                    "car_producer": $("#select_carproducer").val(),
-                                    "car_model": $("#select_carmodel").val(),
-                                    "car_year": $("#car_year").val(),
-                                    "password": $("#driver_pass").val(),
-                                    "car_class": $('input[name="car_class"]:checked').val()
-                                })
-                            });
+                        loginSelector.addClass("is-valid");
+                        loginSelector.removeClass("is-invalid");
+                        $.ajax({
+                            url: '/sendmail',
+                            type: 'post',
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            success: function (data) {
+                                if (data.res) {
+                                    return true;
+                                } else {
+                                    emailSelector.addClass("is-invalid");
+                                    event.preventDefault();
+                                    return false;
+                                }
+                            },
+                            data: JSON.stringify({
+                                "email": email,
+                                "name": $("#driver_name").val(),
+                                "surname": $("#driver_surname").val(),
+                                "age": $("#driver_age").val(),
+                                "login": login,
+                                "phone": phone,
+                                "description": $("#driver_desc").val(),
+                                "licence": licence,
+                                "car_producer": $("#select_carproducer").val(),
+                                "car_model": $("#select_carmodel").val(),
+                                "car_year": $("#car_year").val(),
+                                "password": $("#driver_pass").val(),
+                                "car_class": $('input[name="car_class"]:checked').val()
+                            })
+                        });
                     },
-                    error: function(data){
+                    error: function (data) {
                         consol.log(data);
-                        if(data.login){
-                        loginSelector.addClass("is-invalid");
-                        loginSelector.removeClass("is-valid");
+                        if (data.login) {
+                            loginSelector.addClass("is-invalid");
+                            loginSelector.removeClass("is-valid");
                         }
-                        if(data.email){
+                        if (data.email) {
                             emailSelector.addClass("is-invalid");
                             emailSelector.removeClass("is-valid");
                         }
-                        if(data.phone){
+                        if (data.phone) {
                             phoneSel.addClass("is-invalid");
                             phoneSel.removeClass("is-valid");
-                        }else{
+                        } else {
                             alert("Перевірте всі поля на правильність");
                         }
                         event.preventDefault();
@@ -205,15 +205,15 @@ function loadsubmit() {
 }
 
 function setValues() {
-    var docs = document.getElementsByTagName("select");
-    for (var i = 0; i < docs.length; i++) {
+    let docs = document.getElementsByTagName("select");
+    for (let i = 0; i < docs.length; i++) {
         docs[i].addEventListener("change", checkValueSelect);
         docs[i].style.color = '#afb1b4';
     }
 }
 
 function checkValueSelect() {
-    var options = this.value;
+    let options = this.value;
     if (options === "default") {
         this.style.color = '#afb1b4';
     } else {
@@ -222,8 +222,8 @@ function checkValueSelect() {
 }
 
 async function checkFreeLogin() {
-    var logSelector = $("#driver_login");
-    var login = logSelector.val();
+    let logSelector = $("#driver_login");
+    let login = logSelector.val();
     if (login === "") {
         return false;
     }
@@ -257,8 +257,8 @@ function changePass(usertype) {
     const oldPassSel = $("#old_change_pass");
     const passSel = $("#change_pass");
     const passSel2 = $("#change_pass2");
-    var oldPass = oldPassSel.val();
-    var pass = passSel.val();
+    let oldPass = oldPassSel.val();
+    let pass = passSel.val();
 
     if (oldPass.length < 4) {
         oldPassSel.addClass("is-invalid");
@@ -308,40 +308,92 @@ function changePass(usertype) {
     });
 }
 
+function showEditingProfile(val) {
+    if (val) {
+        $(".driver_auto input[type=number]").prop("disabled", true);
+        $(".driver_auto select").prop("disabled", true);
+        $(".main_profile_part input").prop("disabled", true);
+        $("#change_password").prop("disabled", false);
+        $("#profile_desc").prop("disabled", true);
+        $("#editprofilebutton").show();
+        $("#saveprofilebutton").hide();
+        $("#canselprofilebutton").hide();
+    } else {
+        $(".driver_auto input[type=number]").prop("disabled", false);
+        $(".driver_auto select").prop("disabled", false);
+        $(".main_profile_part input").prop("disabled", false);
+        $("#profile_desc").prop("disabled", false);
+        $("#profile_email").prop("disabled", true);
+        $("#change_password").prop("disabled", true);
+        $("#editprofilebutton").hide();
+        $("#saveprofilebutton").show();
+        $("#canselprofilebutton").show();
+    }
+}
+
 function editClientProfile() {
-    $(".driver_auto input").prop("disabled", false);
-    $(".main_profile_part input").prop("disabled", false);
-    $(".main_profile_part input:button").prop("disabled", true);
-    $("#editprofilebutton").hide();
-    $("#saveprofilebutton").show();
+    let profileData = {
+        "login": $("#profile_login").val(),
+        "name": $("#profile_name").val(),
+        "surname": $("#profile_surname").val(),
+        "age": $("#profile_age").val(),
+        "phone": $("#profile_phone").val(),
+        "desc": $("#profile_desc").val()
+    };
+    sessionStorage.setItem("profile",JSON.stringify(profileData));
+    showEditingProfile(false);
 }
 
 function editDriverProfile() {
-    $(".driver_auto input").prop("disabled", false);
-    $(".main_profile_part input").prop("disabled", false);
-    $(".driver_auto select").prop("disabled", false);
-    $(".main_profile_part input:button").prop("disabled", true);
-    $(".main_profile_part textarea").prop("disabled", false);
-    $("#editprofilebutton").hide();
-    $("#saveprofilebutton").show();
+    let profileData = {
+        "login": $("#profile_login").val(),
+        "name": $("#profile_name").val(),
+        "surname": $("#profile_surname").val(),
+        "age": $("#profile_age").val(),
+        "phone": $("#profile_phone").val(),
+        "desc": $("#profile_desc").val(),
+        "class": $("#carclassprofile").children("option:selected").val(),
+        "producer": $("#select_carproducer").children("option:selected").val(),
+        "model": $("#select_carmodel").children("option:selected").val(),
+        "year": $("#profile_carid").val(),
+    };
+    console.log(profileData);
+    sessionStorage.setItem("profile",JSON.stringify(profileData));
+    showEditingProfile(false);
+}
+
+function canselDriverChanges() {
+    let arr = JSON.parse(sessionStorage.getItem("profile"));
+    $("#profile_login").val(arr.login);
+    $("#profile_name").val(arr.name);
+    $("#profile_surname").val(arr.surname);
+    $("#profile_age").val(arr.age);
+    $("#profile_phone").val(arr.phone);
+    $("#profile_desc").val(arr.desc);
+    $("#profile_carid").val(arr.year);
+    showEditingProfile(true);
+    $("#carclassprofile").val(arr.class);
+    $("#select_carproducer").val(arr.producer);
+    renew_car_model(arr.model);
+}
+
+function cancelClientChanges() {
+    let arr = JSON.parse(sessionStorage.getItem("profile"));
+    $("#profile_login").val(arr.login);
+    $("#profile_name").val(arr.name);
+    $("#profile_surname").val(arr.surname);
+    $("#profile_age").val(arr.age);
+    $("#profile_phone").val(arr.phone);
+    $("#profile_desc").val(arr.desc);
+    showEditingProfile(true);
 }
 
 function saveDriverChanges() {
     //TODO saveDriverChanges
-    $(".driver_auto input").prop("disabled", true);
-    $(".main_profile_part input").prop("disabled", true);
-    $(".main_profile_part input:button").prop("disabled", false);
-    $(".main_profile_part textarea").prop("disabled", true);
-    $(".driver_auto select").prop("disabled", true);
-    $("#editprofilebutton").show();
-    $("#saveprofilebutton").hide();
+    showEditingProfile(true);
 }
 
 function saveClientChanges() {
     //TODO saveClientChanges
-    $(".driver_auto input").prop("disabled", true);
-    $(".main_profile_part input").prop("disabled", true);
-    $(".main_profile_part input:button").prop("disabled", false);
-    $("#editprofilebutton").show();
-    $("#saveprofilebutton").hide();
+    showEditingProfile(true);
 }

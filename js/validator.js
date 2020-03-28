@@ -3,13 +3,13 @@ function validName(name) {
 }
 
 function validateName(nameId) {
-    var name = $(nameId).val();
-    if (name == "" || !validName(name)) {
+    let name = $(nameId).val();
+    if (name === "" || !validName(name)) {
         $(nameId).removeClass('is-valid');
         $(nameId).addClass('is-invalid');
         $(nameId).keyup(function () {
-            var val = $(nameId).val();
-            if (val != "" && validName(val)) {
+            let val = $(nameId).val();
+            if (val !== "" && validName(val)) {
                 $(nameId).removeClass('is-invalid');
                 $(nameId).addClass('is-valid');
             } else {
@@ -22,22 +22,22 @@ function validateName(nameId) {
 }
 
 function validTel(tel) {
-    var pattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    let pattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
     return pattern.test(tel);
 }
 
 function validateTel(telId) {
-    var tel = $(telId).val();
-    if (tel == "" || !validTel(tel)) {
+    let tel = $(telId).val();
+    if (tel === "" || !validTel(tel)) {
         $(telId).removeClass('is-valid');
         $(telId).addClass('is-invalid');
         $(telId).keyup(function () {
-            var val = $(telId).val();
+            let val = $(telId).val();
             if (val.length > 0 && val.length < 10) {
                 $(telId).removeClass('is-valid');
                 $(telId).removeClass('is-invalid');
             }
-            if (val != "" && validTel(val)) {
+            if (val !== "" && validTel(val)) {
                 $(telId).removeClass('is-invalid');
                 $(telId).addClass('is-valid');
             } else {
@@ -50,13 +50,13 @@ function validateTel(telId) {
 }
 
 function validSeria(seriaid) {
-    var seria = $(seriaid).val();
-    if (seria.length != 3 || !validateName(seria)) {
+    let seria = $(seriaid).val();
+    if (seria.length !== 3 || !validateName(seria)) {
         $(seriaid).removeClass('is-valid');
         $(seriaid).addClass('is-invalid');
         $(seriaid).keyup(function () {
-            var val = $(seriaid).val();
-            if (val.length == 3 || validateName(val)) {
+            let val = $(seriaid).val();
+            if (val.length === 3 || validateName(val)) {
                 $(seriaid).removeClass('is-invalid');
                 $(seriaid).addClass('is-valid');
             } else {
@@ -77,12 +77,12 @@ function validateSeriaNum(val) {
 }
 
 function validSeriaNum(numId) {
-    var seria = $(numId).val();
+    let seria = $(numId).val();
     if (!validateSeriaNum(seria)) {
         $(numId).removeClass('is-valid');
         $(numId).addClass('is-invalid');
         $(numId).keyup(function () {
-            var val = $(numId).val();
+            let val = $(numId).val();
             if (validateSeriaNum(val)) {
                 $(numId).removeClass('is-invalid');
                 $(numId).addClass('is-valid');
@@ -102,19 +102,15 @@ function validatePass(pass) {
     if (/^[0-9]+$/.test(pass) || /^[a-zA-ZА-Яа-яІ-і]+$/.test(pass)) {
         return false;
     }
-    if (pass == pass.toLowerCase() || pass == pass.toUpperCase()) {
-        return false;
-    }
-    return true;
-
+    return !(pass === pass.toLowerCase() || pass === pass.toUpperCase());
 }
 
 function validPassword(passid, confid) {
-    var pass = $(passid).val();
+    let pass = $(passid).val();
     if (!validatePass(pass)) {
         $(passid).addClass('is-invalid');
         $(passid).keyup(function () {
-            var pass = $(passid).val();
+            let pass = $(passid).val();
             if (validatePass(pass)) {
                 $(passid).removeClass('is-invalid');
                 $(passid).addClass('is-valid');
@@ -126,7 +122,7 @@ function validPassword(passid, confid) {
         $(confid).val("");
         return false;
     }
-    if ($(confid).val() != pass) {
+    if ($(confid).val() !== pass) {
         $(confid).addClass('is-invalid');
         $(confid).keyup(function () {
             $(confid).removeClass('is-invalid');
@@ -138,8 +134,8 @@ function validPassword(passid, confid) {
 }
 
 function validAge(ageid) {
-    var age = $(ageid).val();
-    if (age == "" || age < 21 || age > 65) {
+    let age = $(ageid).val();
+    if (age === "" || age < 21 || age > 65) {
         $(ageid).addClass('is-invalid');
         $(ageid).click(function () {
             $(ageid).removeClass('is-invalid');
@@ -150,10 +146,10 @@ function validAge(ageid) {
 }
 
 function validSelectors(selectorsids) {
-    for (var i = 0; i < selectorsids.length; i++) {
-        var id = selectorsids[i];
-        var val = $(id).val();
-        if (val == 'default') {
+    for (let i = 0; i < selectorsids.length; i++) {
+        let id = selectorsids[i];
+        let val = $(id).val();
+        if (val === 'default') {
             $(id).addClass("is-invalid");
             $(id).click(function () {
                 $(id).removeClass('is-invalid');

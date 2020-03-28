@@ -1,10 +1,10 @@
-var LocalStorage = require('node-localstorage').LocalStorage, localStorage = new LocalStorage('./scratch');
-var JSONStorage = require('node-localstorage').JSONStorage, jsonStorage = new JSONStorage('./scratch');
-var nodemailer = require('nodemailer');
+let LocalStorage = require('node-localstorage').LocalStorage, localStorage = new LocalStorage('./scratch');
+let JSONStorage = require('node-localstorage').JSONStorage, jsonStorage = new JSONStorage('./scratch');
+let nodemailer = require('nodemailer');
 
 module.exports = {
     getHeader: function () {
-        var autorised = localStorage.getItem("authorized");
+        let autorised = localStorage.getItem("authorized");
         if (autorised === 'drivers') {
             return "header-driver.pug";
         } else if (autorised === 'clients') {
@@ -37,7 +37,7 @@ module.exports = {
         jsonStorage.setItem(code, JSON.stringify(json));
     },
     getCarModel: function(code){
-        var json = jsonStorage.getItem(code);
+        let json = jsonStorage.getItem(code);
         if (json === "") return "";
         json = JSON.parse(json);
         return json.car_model
@@ -46,10 +46,10 @@ module.exports = {
         if (localStorage.getItem(email)===null || localStorage.getItem(email) !== code) {
             return "";
         }
-        var json = jsonStorage.getItem(code);
+        let json = jsonStorage.getItem(code);
         if (json === "") return "";
         json = JSON.parse(json);
-        var sql = "INSERT INTO drivers (login, name, surname, age, licence, carmodelid, caryear," +
+        let sql = "INSERT INTO drivers (login, name, surname, age, licence, carmodelid, caryear," +
             "password, phone, description, email) VALUES ('" + json.login + "','" + json.name + "','" + json.surname + "'," +
             "'" + json.age + "','" + json.licence + "','" + carmodelid +
         "', '" + json.car_year + "','" + json.password + "','" + json.phone + "','" + json.description + "','" + json.email + "')";
@@ -58,13 +58,13 @@ module.exports = {
         return sql;
     },
     send: async function(emailTo, code, config, email) {
-        var transporter = nodemailer.createTransport({
+        let transporter = nodemailer.createTransport({
             host: config.host,
             port: config.port,
             secure: false,
             auth: config.auth
         });
-        var mailOptions = {
+        let mailOptions = {
             from: config.auth.user,
             to: emailTo,
             subject: config.subject,

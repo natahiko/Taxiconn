@@ -1,8 +1,8 @@
-var mysql = require('mysql');
+let mysql = require('mysql');
 const pug = require('pug');
 let express = require('express');
 let config = require('./config/conf.json');
-var functions = require('./js/functions');
+let functions = require('./js/functions');
 let text = require('./config/main.json');
 const bodyParser = require('body-parser');
 
@@ -15,7 +15,7 @@ server.use(express.static('files'));
 server.use(bodyParser.urlencoded({extended: true}));
 
 server.use(bodyParser.json());
-var con = mysql.createConnection(config.database);
+let con = mysql.createConnection(config.database);
 
 server.get('/', function (req, res) {
     text.header['nowpage'] = "/";
@@ -75,7 +75,7 @@ server.get('/usefultips', function (req, res) {
     res.end();
 });
 server.get('/profile', function (req, res) {
-    var user = functions.getUserType();
+    let user = functions.getUserType();
     if (user === 'drivers') {
         con.query("SELECT * FROM drivers INNER JOIN car_models ON car_models.id=drivers.carmodelid WHERE drivers.id=" + functions.getUserid(), function (err, result) {
             if (err) {
@@ -125,7 +125,7 @@ server.get('/profile', function (req, res) {
 });
 server.get('/becomedriver', function (req, res) {
     text.header['nowpage'] = "/becomedriver";
-    var user = functions.getUserType();
+    let user = functions.getUserType();
     if (user === 'drivers') {
         text.header['nowpage'] = "/aboutus";
         res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
@@ -150,7 +150,7 @@ server.get('/confirmregistration', function (req, res) {
         res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
         res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     } else {
-        var email = req.query.email + req.query.emend;
+        let email = req.query.email + req.query.emend;
         res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
             "email": email
         }));
@@ -161,12 +161,12 @@ server.get('/confirmregistration', function (req, res) {
 server.get('/confirmregistrcode', function (req, res) {
     text.header['nowpage'] = "/";
     res.write(pug.renderFile(__dirname + "/pugs/" + functions.getHeader(), text.header));
-    var code = req.query.code;
-    var email = req.query.email;
-    var carmodel = functions.getCarModel(code);
+    let code = req.query.code;
+    let email = req.query.email;
+    let carmodel = functions.getCarModel(code);
     con.query("SELECT id FROM car_models WHERE model='" + carmodel + "'", function (err, modresult) {
-        var carmodelid = modresult[0].id;
-        var sql = functions.getRegisretDriverSQL(email, code, carmodelid);
+        let carmodelid = modresult[0].id;
+        let sql = functions.getRegisretDriverSQL(email, code, carmodelid);
         console.log(sql);
         if (code === "" || email === "" || sql === "") {
             res.write(pug.renderFile(__dirname + "/pugs/unsuccessRegistered.pug"));
@@ -195,8 +195,8 @@ server.get('/contacts', function (req, res) {
     res.end();
 });
 server.post('/login', function (req, res) {
-    var login = req.body.login;
-    var type = req.body.type;
+    let login = req.body.login;
+    let type = req.body.type;
     con.query("SELECT * FROM " + type + " WHERE password='" + req.body.password + "' AND (email='" + login + "' OR login='" +
         login + "' OR phone='" + login + "');", function (err, result) {
         if (result.length < 1) {
@@ -206,7 +206,7 @@ server.post('/login', function (req, res) {
             functions.autorise(type, result[0]['id']);
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            var responseBody = {
+            let responseBody = {
                 "data": "ok"
             };
             res.write(JSON.stringify(responseBody));
@@ -216,9 +216,9 @@ server.post('/login', function (req, res) {
 });
 
 server.post('/changePass', function (req, res) {
-    var old = req.body.old;
-    var now = req.body.now;
-    var type = req.body.type;
+    let old = req.body.old;
+    let now = req.body.now;
+    let type = req.body.type;
     if (old === "" || old === undefined || now === "" || now === undefined) {
         res.statusCode = 400;
         res.write(JSON.stringify({
@@ -250,12 +250,12 @@ server.post('/changePass', function (req, res) {
     });
 });
 server.post('/carmodel', function (req, res) {
-    var producer = req.body.producer;
+    let producer = req.body.producer;
     if (req.body.secret_key !== config.select_carmodel_token) {
         res.statusCode = 400;
         res.end();
     }
-    var car_class;
+    let car_class;
     if (req.body.carclass === "comfort") {
         car_class = " AND class='comfort'";
     } else{
@@ -271,9 +271,9 @@ server.post('/carmodel', function (req, res) {
     });
 });
 server.post('/isloginfree', function (req, res) {
-    var login = req.body.login;
-    var phone = req.body.number;
-    var email = req.body.email;
+    let login = req.body.login;
+    let phone = req.body.number;
+    let email = req.body.email;
     if (login === "" || phone==="" || email==="") {
         res.statusCode = 409;
         res.end();
@@ -283,9 +283,9 @@ server.post('/isloginfree', function (req, res) {
         if (result.length < 1) {
             res.statusCode = 200;
         } else {
-            var user = result[0];
+            let user = result[0];
             res.statusCode = 409;
-            var datares = {
+            let datares = {
               "email": false,
               "phone": false,
               "login": false
@@ -302,8 +302,8 @@ server.post('/isloginfree', function (req, res) {
     });
 });
 server.post('/sendmail', function (req, res) {
-    var emailTo = req.body.email;
-    var code = functions.generateCode();
+    let emailTo = req.body.email;
+    let code = functions.generateCode();
     functions.setCode(emailTo, code);
     if (functions.send(emailTo, code, config.email, text.email)) {
         functions.setRegisretDriverInfo(code, req.body);
