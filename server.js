@@ -313,11 +313,26 @@ server.post('/sendmail', function (req, res) {
         res.end();
     }
 });
-server.post('/updateDriver', function (req, res) {
-    //TODO /updateDriver
-    res.end();
+server.put('/driver', function (req, res) {
+    const sql = functions.getDriverSQlUpdate(req.cookies.userid, req.body);
+    console.log(sql);
+    con.query(sql, function (err) {
+        if (err) {
+            res.statusCode = 400;
+        } else {
+            res.statusCode = 200;
+        }
+        res.end();
+    });
 });
-server.post('/updateClient', function (req, res) {
-    //TODO /updateClient
-    res.end();
+server.put('/client', function (req, res) {
+    const sql = functions.getClientSQlUpdate(req.cookies.userid, req.body);
+    con.query(sql, function (err) {
+        if (err) {
+            res.statusCode = 400;
+        } else {
+            res.statusCode = 200;
+        }
+        res.end();
+    });
 });

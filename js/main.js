@@ -376,39 +376,60 @@ function cancelClientChanges() {
 }
 
 function saveDriverChanges() {
+    const profileData = {
+        "login": $("#profile_login").val(),
+        "name": $("#profile_name").val(),
+        "surname": $("#profile_surname").val(),
+        "age": $("#profile_age").val(),
+        "phone": $("#profile_phone").val(),
+        "desc": $("#profile_desc").val(),
+        "class": $("#carclassprofile").children("option:selected").val(),
+        "producer": $("#select_carproducer").children("option:selected").val(),
+        "model": $("#select_carmodel").children("option:selected").val(),
+        "year": $("#profile_carid").val(),
+    };
     $.ajax({
-        url: '/updateDriver',
-        type: 'post',
-        dataType: 'json',
+        url: '/driver',
+        type: 'put',
         contentType: 'application/json',
+        accept: '*/*',
         success: function () {
             showEditingProfile(true);
             sessionStorage.removeItem("profile");
         },
-        error: function (data) {
-            alert(data.err);
+        error: function () {
             canselDriverChanges();
+            alert("<b>На сервері виникла якась помилка. Ваші дані не було змінено!</b><br/><span>" +
+                "Можливо номер телефону який ви намагалися вказати вже вказаний у іншого водія</span>");
             sessionStorage.removeItem("profile");
         },
-        data: sessionStorage.getItem("profile")
+        data: JSON.stringify(profileData)
     });
 }
 
 function saveClientChanges() {
+    const profileData = {
+        "login": $("#profile_login").val(),
+        "name": $("#profile_name").val(),
+        "surname": $("#profile_surname").val(),
+        "age": $("#profile_age").val(),
+        "phone": $("#profile_phone").val(),
+        "desc": $("#profile_desc").val()
+    };
     $.ajax({
-        url: '/updateClient',
-        type: 'post',
+        url: '/сlient',
+        type: 'put',
         dataType: 'json',
         contentType: 'application/json',
         success: function () {
             showEditingProfile(true);
             sessionStorage.removeItem("profile");
         },
-        error: function (data) {
-            alert(data.err);
+        error: function () {
             cancelClientChanges();
+            alert("На сервері виникла якась помилка. Ваші дані не було змінено");
             sessionStorage.removeItem("profile");
         },
-        data: sessionStorage.getItem("profile")
+        data: JSON.stringify(profileData)
     });
 }

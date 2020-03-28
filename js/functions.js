@@ -69,5 +69,14 @@ module.exports = {
                 return true;
             }
         });
+    },
+    getDriverSQlUpdate: function (userid, data) {
+        return "UPDATE drivers SET login='" + data.login + "', name='" + data.name + "', surname='" + data.surname +
+            "', age=" + data.age + ", carmodelid=" + data.model + ", caryear=" + data.year + ", phone='" + data.phone +
+            "', description='" + data.desc + "' WHERE id='" + userid + "';";
+    },
+    getClientSQlUpdate: function (userid, data) {
+        return "UPDATE drivers SET login='" + data.login + "', name='" + data.name + "', surname='" + data.surname +
+            "', age='" + data.age + "', phone='" + data.phone + "', description='" + data.desc + "' WHERE id='" + userid + "';";
     }
 };

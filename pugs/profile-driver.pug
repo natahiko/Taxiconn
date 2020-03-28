@@ -20,7 +20,7 @@ section.profile(id='profilesection')
                 div.input-group.col
                     div.input-group-prepend
                         span.input-group-text Вік
-                    input.form-control(type="text" id='profile_age' value=info.age disabled)
+                    input.form-control(type="number" min=21 max=65 id='profile_age' value=info.age disabled)
                 div.input-group.col
                     div.input-group-prepend
                         span.input-group-text Тел.
