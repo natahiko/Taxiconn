@@ -3,20 +3,15 @@ function loginUser() {
     let login = $("#log_login").val();
     let pass = passSelector.val();
     let type = $("#log_type").children("option:selected").val();
-    let redirect_url = $("#nowpage").val();
     if (type === "Оберіть як ви хочете увійти...") {
         return;
-    } else if (type === "Клієнт") {
-        type = "clients";
-    } else if (type === "Водій") {
-        type = "drivers";
     }
     passSelector.val("");
     if (login === "" || pass === "") {
         alert("Всі поля мають бути заповнені");
         return false;
     }
-    let person = {
+    const person = {
         "login": login,
         "password": pass,
         "type": type
@@ -26,10 +21,10 @@ function loginUser() {
         type: 'post',
         dataType: 'json',
         contentType: 'application/json',
-        success: function () {
-            $("body").append("<form style='display: none' action='" + redirect_url + "' method='get'>" +
-                "<input type='submit' id='redirect'></form>");
-            $("#redirect").click();
+        success: function (data) {
+            document.cookie = "userid=" + data.userid;
+            document.cookie = 'autorised=' + type;
+            window.location = '/profile';
         },
         error: function () {
             alert("Перевірте правильність данних та спробуйте ще!");
@@ -40,17 +35,9 @@ function loginUser() {
 }
 
 function exit() {
-    $.ajax({
-        url: '/exit',
-        type: 'post',
-        dataType: 'json',
-        contentType: 'application/json',
-        success: function () {
-            $("body").append("<form style='display: none' action='/' method='get'>" +
-                "<input type='submit' id='redirect'></form>");
-            $("#redirect").click();
-        }
-    });
+    window.location = '/';
+    document.cookie = 'userid=null;max-age=-1';
+    document.cookie = 'autorised=null;max-age=-1';
 }
 
 function renew_car_model(value) {
@@ -136,7 +123,7 @@ function loadsubmit() {
                 });
                 let phone = phoneSel.val();
                 $.ajax({
-                    url: '/isLoginFree',
+                    url: '/isAllFree',
                     type: 'post',
                     dataType: 'json',
                     contentType: 'application/json',
@@ -240,11 +227,9 @@ async function checkFreeLogin() {
             if (data.free) {
                 logSelector.addClass("is-valid");
                 logSelector.removeClass("is-invalid");
-                return true;
             } else {
                 logSelector.addClass("is-invalid");
                 logSelector.removeClass("is-valid");
-                return false;
             }
         },
         data: JSON.stringify({
@@ -340,7 +325,7 @@ function editClientProfile() {
         "phone": $("#profile_phone").val(),
         "desc": $("#profile_desc").val()
     };
-    sessionStorage.setItem("profile",JSON.stringify(profileData));
+    sessionStorage.setItem("profile", JSON.stringify(profileData));
     showEditingProfile(false);
 }
 
@@ -358,7 +343,7 @@ function editDriverProfile() {
         "year": $("#profile_carid").val(),
     };
     console.log(profileData);
-    sessionStorage.setItem("profile",JSON.stringify(profileData));
+    sessionStorage.setItem("profile", JSON.stringify(profileData));
     showEditingProfile(false);
 }
 
@@ -375,6 +360,7 @@ function canselDriverChanges() {
     $("#carclassprofile").val(arr.class);
     $("#select_carproducer").val(arr.producer);
     renew_car_model(arr.model);
+    sessionStorage.removeItem("profile");
 }
 
 function cancelClientChanges() {
@@ -386,14 +372,43 @@ function cancelClientChanges() {
     $("#profile_phone").val(arr.phone);
     $("#profile_desc").val(arr.desc);
     showEditingProfile(true);
+    sessionStorage.removeItem("profile");
 }
 
 function saveDriverChanges() {
-    //TODO saveDriverChanges
-    showEditingProfile(true);
+    $.ajax({
+        url: '/updateDriver',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function () {
+            showEditingProfile(true);
+            sessionStorage.removeItem("profile");
+        },
+        error: function (data) {
+            alert(data.err);
+            canselDriverChanges();
+            sessionStorage.removeItem("profile");
+        },
+        data: sessionStorage.getItem("profile")
+    });
 }
 
 function saveClientChanges() {
-    //TODO saveClientChanges
-    showEditingProfile(true);
+    $.ajax({
+        url: '/updateClient',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function () {
+            showEditingProfile(true);
+            sessionStorage.removeItem("profile");
+        },
+        error: function (data) {
+            alert(data.err);
+            cancelClientChanges();
+            sessionStorage.removeItem("profile");
+        },
+        data: sessionStorage.getItem("profile")
+    });
 }

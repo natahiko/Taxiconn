@@ -42,7 +42,7 @@ body
             div.modal-content
                 div.modal-header
                     h5.modal-title Вхід
-                    button.close(data-dismiss="modal" aria-label="Close")
+                    button.close(id='login_modal_dismiss' data-dismiss="modal" aria-label="Close")
                         span(aria-hidden="true") &times;
                 div.modal-body
                     form
@@ -59,8 +59,8 @@ body
                                 span.input-group-text Увійти як:
                             select.form-control(id="log_type")
                                 option(selected='true') Оберіть як ви хочете увійти...
-                                option Клієнт
-                                option Водій
+                                option(value='clients') Клієнт
+                                option(value='drivers') Водій
                 div.modal-footer
                     button.btn.btn-secondary(data-dismiss="modal") Назад
                     button.btn.btn-success(onclick="loginUser()") Увійти
