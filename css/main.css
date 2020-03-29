@@ -218,9 +218,9 @@ footer {
 }
 
 .error404 {
-    margin: 40px;
-    padding: 20px;
-    width: 90vh;
+    margin: 20px;
+    padding: 10px;
+    min-height: 65vh;
 }
 
 .pict-with-caption {
@@ -251,7 +251,7 @@ footer {
 .condition {
     margin: 20px 7%;
     font-size: larger;
-
+    min-height: 65vh;
 }
 
 .tip-img {

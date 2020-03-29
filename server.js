@@ -10,6 +10,8 @@ var cookieParser = require('cookie-parser');
 let server = express();
 server.use(cookieParser());
 server.listen(config['port']);
+// server.use(server.router);
+
 console.log('Server is running on port ' + config['port']);
 server.use(express.static(__dirname));
 server.use(express.static('public'));
@@ -170,6 +172,13 @@ server.get('/contacts', function (req, res) {
     res.write(pug.renderFile(__dirname + "/pugs/contacts.pug", {
         "googlemapapi": config.googlemapapi
     }));
+    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+    res.end();
+});
+server.get('/thankspage', function (req, res) {
+    text.header['nowpage'] = "/";
+    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
+    res.write(pug.renderFile(__dirname + "/pugs/thanks.pug"));
     res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
@@ -393,4 +402,15 @@ server.post('/createorder', function (req, res) {
             res.end();
         }
     });
+});
+
+
+//default error page
+server.use(function(req, res){
+    res.status(404);
+    text.header['nowpage'] = "/404";
+    res.write(pug.renderFile(__dirname + "/pugs/header-unauthorized.pug", text.header));
+    res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
+    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+    res.end();
 });

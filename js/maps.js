@@ -48,9 +48,11 @@ function AutocompleteDirectionsHandler(map) {
     var originInput = document.getElementById('address_from');
     var destinationInput = document.getElementById('address_to');
     var originAutocomplete = new google.maps.places.Autocomplete(originInput);
+    originAutocomplete.setComponentRestrictions({'country': ['ua']});
     originAutocomplete.setFields(['place_id']);
 
     var destinationAutocomplete = new google.maps.places.Autocomplete(destinationInput);
+    destinationAutocomplete.setComponentRestrictions({'country': ['ua']});
     destinationAutocomplete.setFields(['place_id']);
 
     this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
