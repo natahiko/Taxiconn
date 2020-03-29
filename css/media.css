@@ -1,4 +1,3 @@
-
 @media screen and (max-width: 640px) {
     .wrapper {
         width: 350px;
@@ -11,7 +10,8 @@
     .wrapper ul li.google {
         margin-left: 60px;
     }
-    .profile{
+
+    .profile {
         margin-left: 10px;
         padding-left: 5px;
     }
@@ -56,7 +56,7 @@
 }
 
 @media (max-width: 992px) {
-    .main_profile_part img{
+    .main_profile_part img {
         border-radius: 5px;
         border: 1em solid #ced4da;
         width: 35%;

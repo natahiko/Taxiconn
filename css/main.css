@@ -383,10 +383,12 @@ footer {
     height: 45vh;
     margin-bottom: 12px;
 }
-#becomedriverpage #select_email{
+
+#becomedriverpage #select_email {
     max-width: 200px;
 }
-#becomedriverpage{
+
+#becomedriverpage {
     margin: 0 7%;
     width: 85%;
 }

@@ -73,7 +73,7 @@ div.driver_auto
             div.input-group-prepend
                 span.input-group-text Клас
             select.form-control(disabled onchange='renew_car_model()' id='carclassprofile')
-                if info.class==='econom'
+                if info.class === 'econom'
                     option(selected) econom
                     option comfort
                 else
@@ -84,7 +84,7 @@ div.driver_auto
             span.input-group-text Авто
         select.form-control(disabled onchange='renew_car_model()' id='select_carproducer')
             each prod in producers
-                if prod.prodid===info.producer_id
+                if prod.prodid === info.producer_id
                     option.form-control(selected value=prod.prodid) #{prod.producer}
                 else
                     option.form-control(value=prod.prodid) #{prod.producer}
