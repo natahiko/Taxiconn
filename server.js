@@ -141,12 +141,10 @@ server.get('/confirmregistration', function (req, res) {
 server.get('/confirmregistrcode', function (req, res) {
     text.header['nowpage'] = "/";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
-    let code = req.query.code;
     let email = req.query.email;
     let carmodel = functions.getCarModel(code);
     con.query("SELECT id FROM car_models WHERE model='" + carmodel + "'", function (err, modresult) {
         let carmodelid = modresult[0].id;
-        let sql = functions.getRegisretDriverSQL(email, code, carmodelid);
         if (code === "" || email === "" || sql === "") {
             res.write(pug.renderFile(__dirname + "/pugs/unsuccessRegistered.pug"));
             res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
@@ -154,14 +152,12 @@ server.get('/confirmregistrcode', function (req, res) {
             }));
             res.end();
         } else {
-            do {
-                con.query(sql, function () {
-                    res.write(pug.renderFile(__dirname + "/pugs/successRegistered.pug"));
-                    res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
-                    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
-                    res.end();
-                });
-            } while (err!==undefined);
+            con.query(sql, function () {
+                res.write(pug.renderFile(__dirname + "/pugs/successRegistered.pug"));
+                res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
+                res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+                res.end();
+            });
         }
     });
 });
@@ -179,19 +175,19 @@ server.get('/ordertaxi', function (req, res) {
     text.header['nowpage'] = "/ordertaxi";
     text.header['googlemapapi'] = config.googlemapapi;
     const usertype = req.cookies.authorised;
-    if(usertype==='drivers'){
+    if (usertype === 'drivers') {
         res.redirect("/mydrives");
-    } else if(usertype==='clients'){
-        con.query('SELECT * FROM payments', function(err,result){
+    } else if (usertype === 'clients') {
+        con.query('SELECT * FROM payments', function (err, result) {
             res.write(pug.renderFile(__dirname + "/pugs/header-client.pug", text.header));
-            res.write(pug.renderFile(__dirname + "/pugs/ordertaxi.pug",{
+            res.write(pug.renderFile(__dirname + "/pugs/ordertaxi.pug", {
                 "pay_types": result,
                 "googlemapapi": config.googlemapapi
             }));
             res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
             res.end();
         });
-    } else{
+    } else {
         res.redirect("/registeruser");
     }
 });
@@ -214,7 +210,7 @@ server.post('/login', function (req, res) {
         }
     });
 });
-server.get('/getRandCode', function (req,res) {
+server.get('/getRandCode', function (req, res) {
     let code = functions.generateCode();
     res.write(code);
     res.end();
@@ -342,11 +338,11 @@ server.post('/sendmail', function (req, res) {
 server.put('/profile', function (req, res) {
     let sql;
     const type = req.cookies.authorised;
-    if(type==='drivers'){
+    if (type === 'drivers') {
         sql = functions.getDriverSQlUpdate(req.cookies.userid, req.body);
-    } else if(type==='clients'){
+    } else if (type === 'clients') {
         sql = functions.getClientSQlUpdate(req.cookies.userid, req.body);
-    }else{
+    } else {
         res.statusCode = 401;
         res.end();
         return;
@@ -359,5 +355,40 @@ server.put('/profile', function (req, res) {
             res.statusCode = 200;
         }
         res.end();
+    });
+});
+server.post('/createorder', function (req, res) {
+    const userid = req.cookies.userid;
+    if (userid === undefined) {
+        res.statusCode = 401;
+        res.write(JSON.stringify({"err": "no user id in cookies"}));
+        res.end();
+        return;
+    }
+    const from = req.body.address_from;
+    const to = req.body.address_to;
+    const clas = req.body.clas;
+    const pay_type = req.body.pay_type;
+    if (from === '' || to === "" || clas === "" || pay_type === "") {
+        res.statusCode = 402;
+        res.write(JSON.stringify({"err": "not enough parameters"}));
+        res.end();
+        return;
+    }
+    let notes = req.body.notes;
+    if (notes === "") notes = 'NULL';
+    else notes = "'" + notes + "'";
+    const code = functions.generateCode();
+    const dirurl = "https://www.google.com/maps/dir/?api=1&origin=" + encodeURI(from) + "&destination=" +
+        encodeURI(to) + "&travelmode=driving&dir_action=navigate";
+    con.query("INSERT INTO orders (id, user_id, class, pay_type_id, notes, address_from, address_to, url) VALUES " +
+        "('" + code + "', '" + userid + "', '" + clas + "', " + pay_type + ", " + notes + ", '" + from + "', '" + to + "', '" + dirurl + "');", function (err) {
+        if (err) {
+            res.redirect("/createorder");
+        } else {
+            res.statusCode = 201;
+            res.write(JSON.stringify({"status": "ok"}));
+            res.end();
+        }
     });
 });

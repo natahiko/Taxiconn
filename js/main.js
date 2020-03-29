@@ -207,7 +207,8 @@ function checkValueSelect() {
         this.style.color = '#222222';
     }
 }
-function checkLogin(logSelector, type){
+
+function checkLogin(logSelector, type) {
     let login = logSelector.val();
     if (login === "") {
         return false;
@@ -237,9 +238,10 @@ function checkLogin(logSelector, type){
         })
     });
 }
-async function checkFreeLoginClient(){
+
+async function checkFreeLoginClient() {
     let logSelector = $("#profile_login");
-    if(logSelector.val()===JSON.parse(sessionStorage.getItem("profile"))){
+    if (logSelector.val() === JSON.parse(sessionStorage.getItem("profile"))) {
         logSelector.addClass("is-valid");
         logSelector.keyup(function () {
             logSelector.removeClass("is-valid");
@@ -247,13 +249,14 @@ async function checkFreeLoginClient(){
         });
         return;
     }
-    return checkLogin(logSelector,"clients");
+    return checkLogin(logSelector, "clients");
 }
+
 async function checkFreeLogin() {
     let logSelector = $("#driver_login");
-    if(logSelector.val()===undefined){
+    if (logSelector.val() === undefined) {
         logSelector = $("#profile_login");
-        if(logSelector.val()===JSON.parse(sessionStorage.getItem("profile")).login){
+        if (logSelector.val() === JSON.parse(sessionStorage.getItem("profile")).login) {
             logSelector.addClass("is-valid");
             logSelector.keyup(function () {
                 logSelector.removeClass("is-valid");
@@ -262,7 +265,7 @@ async function checkFreeLogin() {
             return true;
         }
     }
-    return checkLogin(logSelector,"drivers");
+    return checkLogin(logSelector, "drivers");
 }
 
 function changePass(usertype) {
@@ -460,5 +463,38 @@ function saveClientChanges() {
             sessionStorage.removeItem("profile");
         },
         data: JSON.stringify(profileData)
+    });
+}
+
+function ordertaxi() {
+    const address_from = $("#address_from").val();
+    const address_to = $("#address_to").val();
+    if (address_to === "" || address_from === "") {
+        alert("Всі поля мають бути заповнені!");
+        return;
+    }
+    const data = {
+        "address_from": address_from,
+        "address_to": address_to,
+        "pay_type": $("#pay_type").val(),
+        "clas": $("input[name='class']:checked").val(),
+        "notes": $("#notes").val()
+    };
+    $.ajax({
+        url: '/createorder',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function () {
+            window.location = "/thankspage";
+        },
+        error: function (data) {
+            $("#foralert").prepend("<div class='alert alert-danger alert-dismissible'>" +
+                "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
+                "<strong>Помилка!</strong> Чомусь не вдалося обробити вашу заявку" +
+                "</div>");
+            console.log(data.err);
+        },
+        data: JSON.stringify(data)
     });
 }

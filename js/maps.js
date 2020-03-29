@@ -64,11 +64,6 @@ AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function (
 
     autocomplete.addListener('place_changed', function () {
         var place = autocomplete.getPlace();
-
-        if (!place.place_id) {
-            window.alert('Please select an option from the dropdown list.');
-            return;
-        }
         if (mode === 'ORIG') {
             me.originPlaceId = place.place_id;
         } else {
