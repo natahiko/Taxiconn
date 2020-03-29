@@ -90,7 +90,7 @@ function loadsubmit() {
                 if (!validateName("#driver_name") || !validateName("#driver_surname") || !validAge("#driver_age")
                     || !validateTel("#driver_tel") || !validSeria("#driver_seria") ||
                     !validSeriaNum("#driver_seria_num") || !validPassword("#driver_pass", "#driver_pass_conf")
-                    || !validSelectors(selectorsids)) {
+                    || !validSelectors(selectorsids) || validAutoNum("driver_autonum")) {
                     event.preventDefault();
                 }
                 let emailSelector = $("#driver_email");
@@ -122,6 +122,7 @@ function loadsubmit() {
                     phoneSel.removeClass("is-invalid");
                 });
                 let phone = phoneSel.val();
+                const autonum = $("#driver_autonum1").val()+$("#driver_autonum2").val()+$("#driver_autonum3").val();
                 $.ajax({
                     url: '/isAllFree',
                     type: 'post',
@@ -157,7 +158,8 @@ function loadsubmit() {
                                 "car_model": $("#select_carmodel").val(),
                                 "car_year": $("#car_year").val(),
                                 "password": $("#driver_pass").val(),
-                                "car_class": $('input[name="car_class"]:checked').val()
+                                "car_class": $('input[name="car_class"]:checked').val(),
+                                "autonum": autonum
                             })
                         });
                     },
@@ -340,6 +342,7 @@ function showEditingProfile(val) {
         $(".main_profile_part input").prop("disabled", false);
         $("#profile_desc").prop("disabled", false);
         $("#profile_email").prop("disabled", true);
+        $("#carnumber").prop("disabled", true);
         $("#change_password").prop("disabled", true);
         $("#editprofilebutton").hide();
         $("#checkLogin").show();

@@ -36,9 +36,9 @@ module.exports = {
         json = JSON.parse(json);
         const useid = this.generateCode();
         let sql = "INSERT INTO drivers (id, login, name, surname, age, licence, carmodelid, caryear," +
-            "password, phone, description, email) VALUES ('" + useid + "', '" + json.login + "','" + json.name + "','" + json.surname + "'," +
+            "password, phone, description, email, carnumber) VALUES ('" + useid + "', '" + json.login + "','" + json.name + "','" + json.surname + "'," +
             "'" + json.age + "','" + json.licence + "','" + carmodelid +
-            "', '" + json.car_year + "','" + json.password + "','" + json.phone + "','" + json.description + "','" + json.email + "')";
+            "', '" + json.car_year + "','" + json.password + "','" + json.phone + "','" + json.description + "','" + json.email + "', '"+json.autonum+"')";
         localStorage.removeItem(email);
         localStorage.removeItem(code);
         return sql;

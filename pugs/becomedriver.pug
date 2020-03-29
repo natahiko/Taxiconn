@@ -1,9 +1,9 @@
-div.container
+div.container(id='becomedriverpage')
     div.row
         h2
             kbd Стати водієм
             i  taxiconn.com.ua
-    form.row.needs-validation(novalidate style='width:60%' action='/confirmregistration' method='get')
+    form.row.needs-validation(novalidate action='/confirmregistration' method='get')
         h3(style="margin-top: 30px") Особиста інформація
         div.input-group.mb-3
             div.input-group-prepend
@@ -53,6 +53,7 @@ div.container
         h3 Додайте опис про себе:
         div.input-group
             textarea.form-control(id='driver_desc' rows=3 placeholder="Опишіть себе (за бажанням)...")
+        hr
         h3 Водійське посвідчення
         div.input-group.mb-3
             div.input-group
@@ -77,13 +78,23 @@ div.container
                     option.form-control.btn-outline-info C1E
                     option.form-control.btn-outline-info DE
                     option.form-control.btn-outline-info D1E
+
+        hr
         h3 Автомобіль
-        div.form-inline.row
-            div.input-group.col
+        br
+        div.input-group.mb-3
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text Номер авто
+                input.form-control(type="text" placeholder="ХХ" maxlength=2 id='driver_autonum1')
+                input.form-control(type="text" placeholder="0000" maxlength=4 id='driver_autonum2')
+                input.form-control(type="text" placeholder="ХХ" maxlength=2 id='driver_autonum3')
+        div.form-inline
+            div.input-group.mb-3
                 div.input-group-prepend
                     span.input-group-text Рік випуску
                 input.form-control(id='car_year' required type="number" placeholder="2018" min=2000 max=2020)
-            div.input-group.col
+            div.input-group.mb-3
                 div.input-group-prepend
                     span.input-group-text Виробник
                 select.input-group-append.form-control(onchange='renew_car_model()' id='select_carproducer')
@@ -91,7 +102,6 @@ div.container
                     each prod in producers
                         option.form-control(value=prod.prodid) #{prod.producer}
         div.input-group.mb-3
-            div.input-group
                 div.input-group-prepend
                     span.input-group-text Марка
                 select.input-group-append.form-control(id="select_carmodel")
@@ -110,6 +120,7 @@ div.container
                             div.input-group-text
                                 input.form-check-input(type="radio" onclick='renew_car_model()' name="car_class" value='comfort')
                         span.form-control Комфорт
+        hr
         h3 Оберіть пароль для входу
         div.input-group.mb-3
             div.input-group-prepend

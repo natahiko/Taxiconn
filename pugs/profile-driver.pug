@@ -67,6 +67,10 @@ div.driver_auto
             input.form-control(type="text" value=info.licence disabled)
         div.input-group.col
             div.input-group-prepend
+                span.input-group-text Номер
+            input.form-control(type="text" id='carnumber' value=info.carnumber disabled)
+        div.input-group.col
+            div.input-group-prepend
                 span.input-group-text Клас
             select.form-control(disabled onchange='renew_car_model()' id='carclassprofile')
                 if info.class==='econom'
