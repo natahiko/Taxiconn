@@ -122,7 +122,7 @@ function loadsubmit() {
                     phoneSel.removeClass("is-invalid");
                 });
                 let phone = phoneSel.val();
-                const autonum = $("#driver_autonum1").val()+$("#driver_autonum2").val()+$("#driver_autonum3").val();
+                const autonum = $("#driver_autonum1").val() + $("#driver_autonum2").val() + $("#driver_autonum3").val();
                 $.ajax({
                     url: '/isAllFree',
                     type: 'post',

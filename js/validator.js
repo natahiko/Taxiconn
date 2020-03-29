@@ -161,21 +161,21 @@ function validSelectors(selectorsids) {
 }
 
 function validAutoNum(id) {
-    const sel2 = $("#"+id+"2");
+    const sel2 = $("#" + id + "2");
     let val2 = sel2.val();
-    if(val2==="" || val2.length!==4 || !(/^[a-zA-ZА-Яа-яІ-і]+$/.test(val2))){
+    if (val2 === "" || val2.length !== 4 || !(/^[a-zA-ZА-Яа-яІ-і]+$/.test(val2))) {
         sel2.addClass("is-invalid");
         sel2.click(function () {
             sel2.removeClass('is-invalid');
         });
         return false;
     }
-    return validAutoLetter($("#"+id+"1")) && validAutoLetter($("#"+id+"3"));
+    return validAutoLetter($("#" + id + "1")) && validAutoLetter($("#" + id + "3"));
 }
 
 function validAutoLetter(sel) {
     const val = sel.val();
-    if(val==="" || val.length!==2 || !(/^[a-zA-ZА-Яа-яІ-і]+$/.test(val))){
+    if (val === "" || val.length !== 2 || !(/^[a-zA-ZА-Яа-яІ-і]+$/.test(val))) {
         sel.addClass("is-invalid");
         sel.click(function () {
             sel.removeClass('is-invalid');

@@ -406,7 +406,7 @@ server.post('/createorder', function (req, res) {
 
 
 //default error page
-server.use(function(req, res){
+server.use(function (req, res) {
     res.status(404);
     text.header['nowpage'] = "/404";
     res.write(pug.renderFile(__dirname + "/pugs/header-unauthorized.pug", text.header));
