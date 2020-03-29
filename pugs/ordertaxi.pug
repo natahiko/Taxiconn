@@ -1,0 +1,43 @@
+section.condition
+    h2
+        kbd Замовити таксі
+    hr
+    div.address_info
+        div.ordercart(id="map")
+        div(style='width:55%')
+            div.form-group
+                label(for="address_from") Адреса відправлення
+                input.form-control(type=text id='address_from')
+            div.form-group
+                label(for="address_to") Адреса відправлення
+                input.form-control(type=text id='address_to')
+            div(style='margin-bottom: 12px')
+                div.form-check-inline
+                    label.form-check-label
+                        input.form-check-input(type='radio' name='class' checked)
+                        apsn Econom
+                div.form-check-inline
+                    label.form-check-label
+                        input.form-check-input(type='radio' name='class')
+                        span Comfort
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text Оплата
+                select.input-group-append.form-control(id="pay_type")
+                    each type in pay_types
+                        option.default_option(value=type.id data-toggle="tooltip" title=type.notes) #{type.name}
+    div
+        div.form-group
+            label(for="address_from") Адреса відправлення
+            textarea.form-control(id='notes' placeholder='Допишіть ваш коментар...')
+        div.input-group.mb-3.align-content-center(style='width: 100%')
+            button.btn.btn-lg.btn-info(style='margin: auto' type='submit') Замовити
+div(id="infowindow-content")
+    img(src="" width="16" height="16" id="place-icon")
+    span.title(id="place-name")
+    br
+    span(id="place-address")
+
+script(type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key="+googlemapapi+"&libraries=places&callback=initMap")
+script(src='../js/maps.js' type="text/javascript")
+script(type='text/javascript') initAutocomplete();

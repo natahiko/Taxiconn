@@ -353,3 +353,15 @@ footer {
 .year{
     width: 10px !important;
 }
+
+.ordercart{
+    background: aquamarine;
+    width: 40%;
+    margin: 10px;
+    height: 100%;
+    float: right;
+}
+.address_info{
+    height: 45vh;
+    margin-bottom: 12px;
+}

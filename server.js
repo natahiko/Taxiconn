@@ -21,7 +21,7 @@ let con = mysql.createConnection(config.database);
 
 server.get(['/aboutus', '/'], function (req, res) {
     text.header['nowpage'] = "/aboutus";
-    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.autorised), text.header));
+    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
     res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
@@ -35,7 +35,7 @@ server.get('/404', function (req, res) {
 });
 server.get('/workcond', function (req, res) {
     text.header['nowpage'] = "/workcond";
-    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.autorised), text.header));
+    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     con.query("SELECT * FROM car_models INNER JOIN сar_producer ON сar_producer.prodid = car_models.producer_id;", function (err, result) {
         res.write(pug.renderFile(__dirname + "/pugs/workcond.pug", {
             allmodels: result
@@ -46,7 +46,7 @@ server.get('/workcond', function (req, res) {
 });
 server.get('/userrules', function (req, res) {
     text.header['nowpage'] = "/userrules";
-    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.autorised), text.header));
+    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     con.query("SELECT * FROM blogs;", function (err, result) {
         res.write(pug.renderFile(__dirname + "/pugs/userrules.pug", {
             blogs: result
@@ -57,13 +57,13 @@ server.get('/userrules', function (req, res) {
 });
 server.get('/usefultips', function (req, res) {
     text.header['nowpage'] = "/usefultips";
-    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.autorised), text.header));
+    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(pug.renderFile(__dirname + "/pugs/usefultips.pug"));
     res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
 server.get('/profile', function (req, res) {
-    const user = req.cookies.autorised;
+    const user = req.cookies.authorised;
     const userid = req.cookies.userid;
     text.header['nowpage'] = "/profile";
     if (user === 'drivers') {
@@ -109,11 +109,11 @@ server.get('/profile', function (req, res) {
 });
 server.get('/becomedriver', function (req, res) {
     text.header['nowpage'] = "/becomedriver";
-    let user = req.cookies.autorised;
+    let user = req.cookies.authorised;
     if (user === 'drivers') {
         res.redirect("/profile");
     } else {
-        res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.autorised), text.header));
+        res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
         con.query("SELECT prodid,producer FROM сar_producer;", function (err, result) {
             res.write(pug.renderFile(__dirname + "/pugs/becomedriver.pug", {
                 producers: result
@@ -125,7 +125,7 @@ server.get('/becomedriver', function (req, res) {
 });
 server.get('/confirmregistration', function (req, res) {
     text.header['nowpage'] = "/";
-    const usertype = req.cookies.autorised;
+    const usertype = req.cookies.authorised;
     if (usertype === 'clients' || usertype === 'drivers') {
         res.redirect("/404");
     } else {
@@ -140,7 +140,7 @@ server.get('/confirmregistration', function (req, res) {
 });
 server.get('/confirmregistrcode', function (req, res) {
     text.header['nowpage'] = "/";
-    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.autorised), text.header));
+    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     let code = req.query.code;
     let email = req.query.email;
     let carmodel = functions.getCarModel(code);
@@ -154,24 +154,46 @@ server.get('/confirmregistrcode', function (req, res) {
             }));
             res.end();
         } else {
-            con.query(sql, function () {
-                res.write(pug.renderFile(__dirname + "/pugs/successRegistered.pug"));
-                res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
-                res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
-                res.end();
-            });
+            do {
+                con.query(sql, function () {
+                    res.write(pug.renderFile(__dirname + "/pugs/successRegistered.pug"));
+                    res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
+                    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+                    res.end();
+                });
+            } while (err!==undefined);
         }
     });
 });
 server.get('/contacts', function (req, res) {
     text.header['nowpage'] = "/contacts";
     text.header['googlemapapi'] = config.googlemapapi;
-    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.autorised), text.header));
+    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(pug.renderFile(__dirname + "/pugs/contacts.pug", {
         "googlemapapi": config.googlemapapi
     }));
     res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
+});
+server.get('/ordertaxi', function (req, res) {
+    text.header['nowpage'] = "/ordertaxi";
+    text.header['googlemapapi'] = config.googlemapapi;
+    const usertype = req.cookies.authorised;
+    if(usertype==='drivers'){
+        res.redirect("/mydrives");
+    } else if(usertype==='clients'){
+        con.query('SELECT * FROM payments', function(err,result){
+            res.write(pug.renderFile(__dirname + "/pugs/header-client.pug", text.header));
+            res.write(pug.renderFile(__dirname + "/pugs/ordertaxi.pug",{
+                "pay_types": result,
+                "googlemapapi": config.googlemapapi
+            }));
+            res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+            res.end();
+        });
+    } else{
+        res.redirect("/registeruser");
+    }
 });
 server.post('/login', function (req, res) {
     let login = req.body.login;
@@ -192,7 +214,11 @@ server.post('/login', function (req, res) {
         }
     });
 });
-
+server.get('/getRandCode', function (req,res) {
+    let code = functions.generateCode();
+    res.write(code);
+    res.end();
+});
 server.post('/changePass', function (req, res) {
     let old = req.body.old;
     let now = req.body.now;
@@ -255,7 +281,7 @@ server.post('/isLoginFree', function (req, res) {
         res.statusCode = 406;
         res.end();
     }
-    con.query("SELECT * FROM "+req.body.type+" WHERE login='" + login + "';", function (err, result) {
+    con.query("SELECT * FROM " + req.body.type + " WHERE login='" + login + "';", function (err, result) {
         res.setHeader('Content-Type', 'application/json');
         let datares = {"free": false};
         if (result.length < 1) {
@@ -313,20 +339,19 @@ server.post('/sendmail', function (req, res) {
         res.end();
     }
 });
-server.put('/driver', function (req, res) {
-    const sql = functions.getDriverSQlUpdate(req.cookies.userid, req.body);
-    console.log(sql);
-    con.query(sql, function (err) {
-        if (err) {
-            res.statusCode = 400;
-        } else {
-            res.statusCode = 200;
-        }
+server.put('/profile', function (req, res) {
+    let sql;
+    const type = req.cookies.authorised;
+    if(type==='drivers'){
+        sql = functions.getDriverSQlUpdate(req.cookies.userid, req.body);
+    } else if(type==='clients'){
+        sql = functions.getClientSQlUpdate(req.cookies.userid, req.body);
+    }else{
+        res.statusCode = 401;
         res.end();
-    });
-});
-server.put('/client', function (req, res) {
-    const sql = functions.getClientSQlUpdate(req.cookies.userid, req.body);
+        return;
+    }
+    console.log(sql);
     con.query(sql, function (err) {
         if (err) {
             res.statusCode = 400;

@@ -23,7 +23,7 @@ function loginUser() {
         contentType: 'application/json',
         success: function (data) {
             document.cookie = "userid=" + data.userid;
-            document.cookie = 'autorised=' + type;
+            document.cookie = 'authorised=' + type;
             window.location = '/profile';
         },
         error: function () {
@@ -37,7 +37,7 @@ function loginUser() {
 function exit() {
     window.location = '/';
     document.cookie = 'userid=null;max-age=-1';
-    document.cookie = 'autorised=null;max-age=-1';
+    document.cookie = 'authorised=null;max-age=-1';
 }
 
 function renew_car_model(value) {
@@ -418,7 +418,7 @@ function saveDriverChanges() {
         "year": $("#profile_carid").val(),
     };
     $.ajax({
-        url: '/driver',
+        url: '/profile',
         type: 'put',
         contentType: 'application/json',
         accept: '*/*',
@@ -446,7 +446,7 @@ function saveClientChanges() {
         "desc": $("#profile_desc").val()
     };
     $.ajax({
-        url: '/сlient',
+        url: '/profile',
         type: 'put',
         dataType: 'json',
         contentType: 'application/json',
@@ -461,8 +461,4 @@ function saveClientChanges() {
         },
         data: JSON.stringify(profileData)
     });
-}
-
-function checkFreeLoginClient() {
-
 }
