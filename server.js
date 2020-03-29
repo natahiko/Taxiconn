@@ -141,10 +141,12 @@ server.get('/confirmregistration', function (req, res) {
 server.get('/confirmregistrcode', function (req, res) {
     text.header['nowpage'] = "/";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
+    let code = req.query.code;
     let email = req.query.email;
     let carmodel = functions.getCarModel(code);
     con.query("SELECT id FROM car_models WHERE model='" + carmodel + "'", function (err, modresult) {
         let carmodelid = modresult[0].id;
+        let sql = functions.getRegisretDriverSQL(email, code, carmodelid);
         if (code === "" || email === "" || sql === "") {
             res.write(pug.renderFile(__dirname + "/pugs/unsuccessRegistered.pug"));
             res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
