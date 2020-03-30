@@ -82,115 +82,109 @@ function becomedriver() {
 }
 
 function loadsubmit() {
-    window.addEventListener('load', function () {
-        let forms = document.getElementsByClassName('needs-validation');
-        Array.prototype.filter.call(forms, function (form) {
-            form.addEventListener('submit', function (event) {
-                let selectorsids = ["#select_carmodel", "#select_carproducer", "#select_category"];
-                if (!validateName("#driver_name") || !validateName("#driver_surname") || !validAge("#driver_age")
-                    || !validateTel("#driver_tel") || !validSeria("#driver_seria") ||
-                    !validSeriaNum("#driver_seria_num") || !validPassword("#driver_pass", "#driver_pass_conf")
-                    || !validSelectors(selectorsids) || validAutoNum("driver_autonum")) {
-                    event.preventDefault();
-                }
-                let emailSelector = $("#driver_email");
-                emailSelector.keyup(function () {
-                    emailSelector.removeClass("is-valid");
-                    emailSelector.removeClass("is-invalid");
-                });
-                let loginSelector = $("#driver_login");
-                let login = loginSelector.val();
-                let email = emailSelector.val();
-                if (login === "") {
-                    event.preventDefault();
-                    return false;
-                }
-                if (email === "") {
-                    emailSelector.addClass("is-invalid");
-                    event.preventDefault();
-                    return false;
-                }
-                email += $("#select_email").val();
-                loginSelector.keyup(function () {
-                    loginSelector.removeClass("is-valid");
-                    loginSelector.removeClass("is-invalid");
-                });
-                let licence = $("#driver_seria").val() + $("#driver_seria_num").val();
-                let phoneSel = $("#driver_tel");
-                phoneSel.keyup(function () {
-                    phoneSel.removeClass("is-valid");
-                    phoneSel.removeClass("is-invalid");
-                });
-                let phone = phoneSel.val();
-                const autonum = $("#driver_autonum1").val() + $("#driver_autonum2").val() + $("#driver_autonum3").val();
-                $.ajax({
-                    url: '/isAllFree',
-                    type: 'post',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    success: function () {
-                        loginSelector.addClass("is-valid");
-                        loginSelector.removeClass("is-invalid");
-                        $.ajax({
-                            url: '/sendmail',
-                            type: 'post',
-                            dataType: 'json',
-                            contentType: 'application/json',
-                            success: function (data) {
-                                if (data.res) {
-                                    return true;
-                                } else {
-                                    emailSelector.addClass("is-invalid");
-                                    event.preventDefault();
-                                    return false;
-                                }
-                            },
-                            data: JSON.stringify({
-                                "email": email,
-                                "name": $("#driver_name").val(),
-                                "surname": $("#driver_surname").val(),
-                                "age": $("#driver_age").val(),
-                                "login": login,
-                                "phone": phone,
-                                "description": $("#driver_desc").val(),
-                                "licence": licence,
-                                "car_producer": $("#select_carproducer").val(),
-                                "car_model": $("#select_carmodel").val(),
-                                "car_year": $("#car_year").val(),
-                                "password": $("#driver_pass").val(),
-                                "car_class": $('input[name="car_class"]:checked').val(),
-                                "autonum": autonum
-                            })
-                        });
-                    },
-                    error: function (data) {
-                        consol.log(data);
-                        if (data.login) {
-                            loginSelector.addClass("is-invalid");
-                            loginSelector.removeClass("is-valid");
-                        }
-                        if (data.email) {
-                            emailSelector.addClass("is-invalid");
-                            emailSelector.removeClass("is-valid");
-                        }
-                        if (data.phone) {
-                            phoneSel.addClass("is-invalid");
-                            phoneSel.removeClass("is-valid");
-                        } else {
-                            alert("Перевірте всі поля на правильність");
-                        }
+    let selectorsids = ["#select_carmodel", "#select_carproducer", "#select_category"];
+    if (!validateName("#driver_name") || !validateName("#driver_surname") || !validAge("#driver_age")
+        || !validateTel("#driver_tel") || !validSeria("#driver_seria") ||
+        !validSeriaNum("#driver_seria_num") || !validPassword("#driver_pass", "#driver_pass_conf")
+        || !validSelectors(selectorsids) || !validAutoNum("driver_autonum")) {
+        event.preventDefault();
+    }
+    let emailSelector = $("#driver_email");
+    emailSelector.keyup(function () {
+        emailSelector.removeClass("is-valid");
+        emailSelector.removeClass("is-invalid");
+    });
+    let loginSelector = $("#driver_login");
+    let login = loginSelector.val();
+    let email = emailSelector.val();
+    if (login === "") {
+        event.preventDefault();
+        return false;
+    }
+    if (email === "") {
+        emailSelector.addClass("is-invalid");
+        event.preventDefault();
+        return false;
+    }
+    email += $("#select_email").val();
+    loginSelector.keyup(function () {
+        loginSelector.removeClass("is-valid");
+        loginSelector.removeClass("is-invalid");
+    });
+    let licence = $("#driver_seria").val() + $("#driver_seria_num").val();
+    let phoneSel = $("#driver_tel");
+    phoneSel.keyup(function () {
+        phoneSel.removeClass("is-valid");
+        phoneSel.removeClass("is-invalid");
+    });
+    let phone = phoneSel.val();
+    const autonum = $("#driver_autonum1").val() + $("#driver_autonum2").val() + $("#driver_autonum3").val();
+    $.ajax({
+        url: '/isAllFree',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function () {
+            loginSelector.addClass("is-valid");
+            loginSelector.removeClass("is-invalid");
+            $.ajax({
+                url: '/sendmail',
+                type: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                accept: 'application/json',
+                success: function (data) {
+                    alert(data);
+                    if (data.res) {
+                        return true;
+                    } else {
+                        emailSelector.addClass("is-invalid");
                         event.preventDefault();
                         return false;
-                    },
-                    data: JSON.stringify({
-                        "login": login,
-                        "number": phone,
-                        "email": email
-                    })
-                });
-            }, false);
-        });
-    }, false);
+                    }
+                },
+                data: JSON.stringify({
+                    "email": email,
+                    "name": $("#driver_name").val(),
+                    "surname": $("#driver_surname").val(),
+                    "age": $("#driver_age").val(),
+                    "login": login,
+                    "phone": phone,
+                    "description": $("#driver_desc").val(),
+                    "licence": licence,
+                    "car_producer": $("#select_carproducer").val(),
+                    "car_model": $("#select_carmodel").val(),
+                    "car_year": $("#car_year").val(),
+                    "password": $("#driver_pass").val(),
+                    "car_class": $('input[name="car_class"]:checked').val(),
+                    "autonum": autonum
+                })
+            });
+        },
+        error: function (data) {
+            if (data.login) {
+                loginSelector.addClass("is-invalid");
+                loginSelector.removeClass("is-valid");
+            }
+            if (data.email) {
+                emailSelector.addClass("is-invalid");
+                emailSelector.removeClass("is-valid");
+            }
+            if (data.phone) {
+                phoneSel.addClass("is-invalid");
+                phoneSel.removeClass("is-valid");
+            } else {
+                alert("Перевірте ваш логін, номер телефону та пошту на унікальність!");
+            }
+            event.preventDefault();
+            return false;
+        },
+        data: JSON.stringify({
+            "login": login,
+            "number": phone,
+            "email": email
+        })
+    });
 }
 
 function setValues() {

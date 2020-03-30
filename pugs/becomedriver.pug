@@ -3,7 +3,7 @@ div.container(id='becomedriverpage')
         h2
             kbd Стати водієм
             i  taxiconn.com.ua
-    form.row.needs-validation(novalidate action='/confirmregistration' method='get')
+    form.row.needs-validation(novalidate action='/confirmregistration' method='get' onSubmit='return loadSumbit()')
         h3(style="margin-top: 30px") Особиста інформація
         div.input-group.mb-3
             div.input-group-prepend
@@ -133,6 +133,5 @@ div.container(id='becomedriverpage')
             button.btn.btn-lg.btn-info(style='margin: auto' type='submit') Стати водієм
 
 script(type='text/javascript') renew_car_model()
-script(type='text/javascript') loadsubmit()
 script(type='text/javascript') setValues()
 

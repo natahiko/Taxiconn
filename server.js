@@ -10,7 +10,6 @@ var cookieParser = require('cookie-parser');
 let server = express();
 server.use(cookieParser());
 server.listen(config['port']);
-// server.use(server.router);
 
 console.log('Server is running on port ' + config['port']);
 server.use(express.static(__dirname));
@@ -145,25 +144,31 @@ server.get('/confirmregistrcode', function (req, res) {
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     let code = req.query.code;
     let email = req.query.email;
-    let carmodel = functions.getCarModel(code);
-    con.query("SELECT id FROM car_models WHERE model='" + carmodel + "'", function (err, modresult) {
-        let carmodelid = modresult[0].id;
-        let sql = functions.getRegisretDriverSQL(email, code, carmodelid);
-        if (code === "" || email === "" || sql === "") {
+    let carmodel = functions.getCarModelId(code);
+        if (code === "" || email === "") {
             res.write(pug.renderFile(__dirname + "/pugs/unsuccessRegistered.pug"));
             res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
                 "email": email
             }));
             res.end();
         } else {
-            con.query(sql, function () {
-                res.write(pug.renderFile(__dirname + "/pugs/successRegistered.pug"));
-                res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
-                res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
-                res.end();
-            });
+                let sql = functions.getRegisretDriverSQL(email, code, carmodel);
+                con.query(sql, function (err) {
+                    if(err){
+                        res.write(pug.renderFile(__dirname + "/pugs/unsuccessRegistered.pug"));
+                        res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
+                            "email": email
+                        }));
+                        res.end();
+                    }
+                    else {
+                        res.write(pug.renderFile(__dirname + "/pugs/successRegistered.pug"));
+                        res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
+                        res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+                        res.end();
+                    }
+                });
         }
-    });
 });
 server.get('/contacts', function (req, res) {
     text.header['nowpage'] = "/contacts";
@@ -205,7 +210,8 @@ server.get('/ordertaxi', function (req, res) {
 server.post('/login', function (req, res) {
     let login = req.body.login;
     let type = req.body.type;
-    con.query("SELECT * FROM " + type + " WHERE password='" + req.body.password + "' AND (email='" + login + "' OR login='" +
+    let password = functions.hashPassword(req.body.password);
+    con.query("SELECT * FROM " + type + " WHERE password='" + password + "' AND (email='" + login + "' OR login='" +
         login + "' OR phone='" + login + "');", function (err, result) {
         if (result.length < 1) {
             res.statusCode = 401;
@@ -226,6 +232,11 @@ server.get('/getRandCode', function (req, res) {
     res.write(code);
     res.end();
 });
+server.get('/getPassHash', function (req, res) {
+    let hash = functions.hashPassword(req.query.pass);
+    res.write(hash);
+    res.end();
+});
 server.post('/changePass', function (req, res) {
     let old = req.body.old;
     let now = req.body.now;
@@ -237,6 +248,8 @@ server.post('/changePass', function (req, res) {
         }));
         res.end();
     }
+    now = functions.hashPassword(now);
+    old = hashPassword(old);
     let userid = req.cookies.userid;
     con.query("SELECT * FROM " + type + " WHERE id='" + userid +
         "' AND password='" + old + "';", function (err, result) {
@@ -309,7 +322,8 @@ server.post('/isAllFree', function (req, res) {
     con.query("SELECT * FROM drivers WHERE login='" + login + "' OR phone='" + phone + "' OR email='" + email + "';", function (err, result) {
         res.setHeader('Content-Type', 'application/json');
         if (result.length < 1) {
-            res.statusCode = 202;
+            res.statusCode = 200;
+            res.write(JSON.stringify({}));
             res.end();
         } else {
             let user = result[0];
@@ -337,9 +351,7 @@ server.post('/sendmail', function (req, res) {
     if (functions.send(emailTo, code, config.email, text.email)) {
         functions.setRegisretDriverInfo(code, req.body);
         res.setHeader('Content-Type', 'application/json');
-        res.write(JSON.stringify({
-            "res": true
-        }));
+        res.write(JSON.stringify({"res": true}));
         res.end();
     } else {
         res.statusCode = 400;

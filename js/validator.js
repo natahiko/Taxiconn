@@ -163,7 +163,7 @@ function validSelectors(selectorsids) {
 function validAutoNum(id) {
     const sel2 = $("#" + id + "2");
     let val2 = sel2.val();
-    if (val2 === "" || val2.length !== 4 || !(/^[a-zA-ZА-Яа-яІ-і]+$/.test(val2))) {
+    if (val2 === "" || val2.length !== 4 || !(/^[0-9]+$/.test(val2))) {
         sel2.addClass("is-invalid");
         sel2.click(function () {
             sel2.removeClass('is-invalid');

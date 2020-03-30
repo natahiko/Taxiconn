@@ -1,6 +1,7 @@
 let LocalStorage = require('node-localstorage').LocalStorage, localStorage = new LocalStorage('./scratch');
 let JSONStorage = require('node-localstorage').JSONStorage, jsonStorage = new JSONStorage('./scratch');
 let nodemailer = require('nodemailer');
+var md5 = require('md5');
 
 module.exports = {
     getHeader: function (autorised) {
@@ -12,6 +13,10 @@ module.exports = {
             return "/pugs/header-unauthorized.pug";
         }
     },
+    hashPassword: function (passStr) {
+        let result = md5(passStr);
+        return md5(result + 'taxiconn');
+    },
     generateCode: function () {
         return Math.random().toString(36).slice(2);
     },
@@ -19,9 +24,10 @@ module.exports = {
         localStorage.setItem(email, code);
     },
     setRegisretDriverInfo: function (code, json) {
+        json['password'] = this.hashPassword(json.password);
         jsonStorage.setItem(code, JSON.stringify(json));
     },
-    getCarModel: function (code) {
+    getCarModelId: function (code) {
         let json = jsonStorage.getItem(code);
         if (json === "") return "";
         json = JSON.parse(json);
@@ -34,9 +40,9 @@ module.exports = {
         let json = jsonStorage.getItem(code);
         if (json === "") return "";
         json = JSON.parse(json);
-        const useid = this.generateCode();
+        const userid = this.generateCode();
         let sql = "INSERT INTO drivers (id, login, name, surname, age, licence, carmodelid, caryear," +
-            "password, phone, description, email, carnumber) VALUES ('" + useid + "', '" + json.login + "','" + json.name + "','" + json.surname + "'," +
+            "password, phone, description, email, carnumber) VALUES ('" + userid + "', '" + json.login + "','" + json.name + "','" + json.surname + "'," +
             "'" + json.age + "','" + json.licence + "','" + carmodelid +
             "', '" + json.car_year + "','" + json.password + "','" + json.phone + "','" + json.description + "','" + json.email + "', '" + json.autonum + "')";
         localStorage.removeItem(email);
