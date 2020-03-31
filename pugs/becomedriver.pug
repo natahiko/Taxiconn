@@ -98,14 +98,14 @@ div.container(id='becomedriverpage')
                 div.input-group-prepend
                     span.input-group-text Виробник
                 select.input-group-append.form-control(onchange='renew_car_model()' id='select_carproducer')
-                    option.default_option(value="default") Оберіть виробника
+                    option.default_option(value="default" selected) Оберіть виробника
                     each prod in producers
                         option.form-control(value=prod.prodid) #{prod.producer}
         div.input-group.mb-3
             div.input-group-prepend
                 span.input-group-text Марка
             select.input-group-append.form-control(id="select_carmodel")
-                option.default_option(value="default") Оберіть марка
+                option.default_option(value="default" selected) Оберіть марка
         div.input-group.mb-3
             div.input-group(style='font-size: xx-large;')
                 div.form-check-inline
@@ -132,6 +132,6 @@ div.container(id='becomedriverpage')
         div.input-group.mb-3.align-content-center(style='width: 100%')
             button.btn.btn-lg.btn-info(style='margin: auto' type='submit') Стати водієм
 
-script(type='text/javascript') renew_car_model()
 script(type='text/javascript') setValues()
+script(type='text/javascript') renew_car_model()
 

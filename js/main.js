@@ -68,6 +68,7 @@ function renew_car_model(value) {
                 carModelSelector.append("<option value='" + res[i].id + "'>" + res[i].model + "</option>");
             }
             $("#select_carmodel option[value=" + value + "]").attr('selected', true);
+            carModelSelector.style.color = '#afb1b4';
         },
         data: JSON.stringify(prods)
     });
@@ -191,7 +192,11 @@ function setValues() {
     let docs = document.getElementsByTagName("select");
     for (let i = 0; i < docs.length; i++) {
         docs[i].addEventListener("change", checkValueSelect);
-        docs[i].style.color = '#afb1b4';
+        if (docs[i].value === "default") {
+            docs[i].style.color = '#afb1b4';
+        } else {
+            docs[i].style.color = '#222222';
+        }
     }
 }
 
@@ -488,7 +493,7 @@ function ordertaxi() {
         error: function (data) {
             $("#foralert").prepend("<div class='alert alert-danger alert-dismissible'>" +
                 "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
-                "<strong>Помилка!</strong> Чомусь не вдалося обробити вашу заявку" +
+                "<strong>Помилка!</strong> Чомусь не вдалося обробити вашу заявку. <a href='#' onclick='ordertaxi()'>Спробуйте ще!</a>" +
                 "</div>");
             console.log(data.err);
         },

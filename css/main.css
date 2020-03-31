@@ -383,7 +383,15 @@ footer {
     height: 45vh;
     margin-bottom: 12px;
 }
-
+.alert a{
+    color: black;
+    text-decoration: underline;
+}
+.alert a:hover{
+    color: black;
+    text-decoration: none;
+    font-weight: bolder;
+}
 #becomedriverpage #select_email {
     max-width: 200px;
 }
