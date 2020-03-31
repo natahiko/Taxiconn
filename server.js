@@ -232,7 +232,7 @@ server.get('/orders', function (req, res) {
 });
 server.get('/allorders', function (req, res) {
     const clas = functions.getCarModelIdLocal(req.cookies.userid);
-    if(clas===null){
+    if (clas === null) {
         res.statusCode = 403;
         res.write(JSON.stringify({"err": "no user founded"}));
         res.end();
@@ -244,20 +244,18 @@ server.get('/allorders', function (req, res) {
     }
 });
 server.param('userid', function (req, res, next, userid) {
-    // ... Perform database query and
-    // ... Store the user object from the database in the req object
     req.userid = userid;
     return next();
 });
 server.get('/userprofile/:userid', function (req, res) {
     const userid = req.userid;
-    con.query("SELECT * FROM clients WHERE id='"+userid+"';", function (err, result) {
-        if(err || result.length<1){
+    con.query("SELECT * FROM clients WHERE id='" + userid + "';", function (err, result) {
+        if (err || result.length < 1) {
             res.redirect("/404");
-        } else{
-            text.header['nowpage'] = "/userprofile/"+userid;
+        } else {
+            text.header['nowpage'] = "/userprofile/" + userid;
             res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
-            res.write(pug.renderFile(__dirname + "/pugs/userprofile.pug",{
+            res.write(pug.renderFile(__dirname + "/pugs/userprofile.pug", {
                 "info": result[0]
             }));
             res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
@@ -265,6 +263,31 @@ server.get('/userprofile/:userid', function (req, res) {
         }
     });
 });
+server.param('driverid', function (req, res, next, driverid) {
+    req.userid = driverid;
+    return next();
+});
+server.get('/driverprofile/:driverid', function (req, res) {
+    const userid = req.userid;
+    con.query("SELECT * FROM drivers WHERE id='" + userid + "';", function (err, result) {
+        if (err || result.length < 1) {
+            res.redirect("/404");
+        } else {
+            con.query("SELECT * FROM сar_producer INNER JOIN car_models ON сar_producer.prodid=car_models.producer_id" +
+                " WHERE id=" + result[0].carmodelid + ";", function (err2, result2) {
+                text.header['nowpage'] = "/driverprofile/" + userid;
+                res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
+                res.write(pug.renderFile(__dirname + "/pugs/driverprofile.pug", {
+                    info: result[0],
+                    producer: result2[0]
+                }));
+                res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+                res.end();
+            });
+        }
+    });
+})
+;
 server.get('/getRandCode', function (req, res) {
     let code = functions.generateCode();
     res.write(code);

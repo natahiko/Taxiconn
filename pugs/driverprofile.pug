@@ -1,0 +1,51 @@
+section.profile(id='profilesection')
+    div.main_profile_part
+        img(src='../images/defaul_driver_profile.jpeg' alt='')
+        div.personal_info
+            div.input-group.mb-3
+                input.form-control.login(type="text" id='profile_login' value=info.login disabled)
+            if info.description
+                div
+                    textarea.status(disabled id='profile_desc')  #{info.description}
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text ПІ
+                input.form-control(type="text" id='profile_surname' value=info.surname disabled)
+                input.form-control(type="text" id='profile_name' value=info.name disabled)
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text Email
+                input.form-control(type="text" id='profile_email' value=info.email disabled)
+            div.form-inline.row
+                div.input-group.col
+                    div.input-group-prepend
+                        span.input-group-text Вік
+                    input.form-control(type="number" min=21 max=65 id='profile_age' value=info.age disabled)
+                div.input-group.col
+                    div.input-group-prepend
+                        span.input-group-text Тел.
+                    input.form-control(type="text" id='profile_phone' value=info.phone disabled)
+
+div.driver_auto
+    div.form-inline.row
+        div.input-group.col
+            div.input-group-prepend
+                span.input-group-text Права
+            input.form-control(type="text" value=info.licence disabled)
+        div.input-group.col
+            div.input-group-prepend
+                span.input-group-text Номер
+            input.form-control(type="text" id='carnumber' value=info.carnumber disabled)
+        div.input-group.col
+            div.input-group-prepend
+                span.input-group-text Клас
+            select.form-control(disabled onchange='renew_car_model()' id='carclassprofile')
+                option(selected) #{producer.class}
+    div.input-group
+        div.input-group-prepend
+            span.input-group-text Авто
+        select.form-control(disabled onchange='renew_car_model()' id='select_carproducer')
+                    option.form-control(selected) #{producer.producer}
+        select.form-control(disabled id="select_carmodel")
+            option.form-control(selected) #{producer.model}
+        input.form-control(type="number" id='profile_carid' min=2000 max=2020 value=info.caryear disabled)
