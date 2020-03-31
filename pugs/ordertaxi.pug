@@ -26,7 +26,7 @@ section.condition
                     span.input-group-text Оплата
                 select.input-group-append.form-control(id="pay_type")
                     each type in pay_types
-                        option.default_option(value=type.id data-toggle="tooltip" title=type.notes) #{type.name}
+                        option.default_option(value=type.pay_id data-toggle="tooltip" title=type.notes) #{type.name}
     div
         div.form-group
             label(for="address_from") Коментар до замовлення:

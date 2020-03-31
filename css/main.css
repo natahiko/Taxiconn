@@ -400,3 +400,38 @@ footer {
     margin: 0 7%;
     width: 85%;
 }
+.empty{
+    display: none;
+    font-weight: bolder;
+    font-size: x-large;
+    color: #0b2e13;
+}
+.card-header{
+    padding: 5px !important;
+}
+.card-body{
+    padding: 10px !important;
+    font-size: large;
+}
+.card{
+    margin-bottom: 20px !important;
+}
+.card-footer{
+    padding: 7px!important;
+}
+.card-footer a, .ord_buttons a{
+    margin-right: 12px !important;
+}
+.kbdord{
+    color: black !important;
+    background: white !important;
+    font-size: medium !important;
+}
+.comment_order{
+    font-size: medium;
+    color: #303334 !important;
+}
+.order_price{
+    margin-left: 10px;
+    font-weight: bolder;
+}

@@ -292,8 +292,8 @@ function changePass(usertype) {
         "type": usertype
     };
     $.ajax({
-        url: '/changePass',
-        type: 'post',
+        url: '/password',
+        type: 'put',
         dataType: 'json',
         contentType: 'application/json',
         success: function () {
@@ -498,5 +498,64 @@ function ordertaxi() {
             console.log(data.err);
         },
         data: JSON.stringify(data)
+    });
+}
+
+function getOrder(id) {
+    $.ajax({
+        url: '/acceptOrder',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function () {
+            window.location = '/myorders';
+        },
+        error: function (data) {
+            alert(data.err);
+        },
+        data: JSON.stringify({
+            "orderid": id
+        })
+    });
+}
+
+function renew_orders() {
+    setInterval(renew_orders_method, 3000);
+}
+
+function renew_orders_method() {
+    $.ajax({
+        url: '/allorders',
+        type: 'get',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (data) {
+            let elem = $("<div></div>");
+            data.forEach((order) => {
+                let res = "<div class='card'>";
+                if (order.pay_type_id === 1) {
+                    res += "<div class='card-header bg-info'><span class='order_price'>" + order.price + " ₴</span>" +
+                        "<span style='float: right'><kbd class='kbdord'>Готівка</kbd></span></div>";
+                } else {
+                    res += "<div class='card-header bg-success'><span class='order_price'>" + order.price + " ₴</span>" +
+                        "<span style='float: right'><kbd class='kbdord'>" + order.name + "</kbd></span></div>";
+                }
+                res += "<div class='card-body'><b>Місце посадки:</b> " + order.address_from + "<br>" +
+                    "<b>Місце висадки:</b> " + order.address_to;
+                if (order.comment !== null) {
+                    res += "<br><span class='comment_order'><b>Коментар:</b> " + order.comment + "</span>";
+                }
+                res += "<div class='mt-2 ord_buttons'><a class='btn btn-info' href='/userprofile/" + order.user_id +
+                    "'>Переглянути профіль клієнта</a><a class='btn btn-success' href='" + order.url + "' target='blank'>Відкрити маршрут</a></div></div>";
+                res += "<div class='card-footer'><button class='btn btn-danger float-right' onclick='getOrder('" + order.id + "')'>Взяти поїздку</button></div></div>";
+                $(res).appendTo(elem);
+            });
+            $("#orders").html("");
+            elem.appendTo("#orders");
+        },
+        error: function (data) {
+            console.log(data.err);
+        },
+        data: JSON.stringify({})
     });
 }

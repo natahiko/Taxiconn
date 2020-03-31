@@ -145,30 +145,29 @@ server.get('/confirmregistrcode', function (req, res) {
     let code = req.query.code;
     let email = req.query.email;
     let carmodel = functions.getCarModelId(code);
-        if (code === "" || email === "") {
-            res.write(pug.renderFile(__dirname + "/pugs/unsuccessRegistered.pug"));
-            res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
-                "email": email
-            }));
-            res.end();
-        } else {
-                let sql = functions.getRegisretDriverSQL(email, code, carmodel);
-                con.query(sql, function (err) {
-                    if(err){
-                        res.write(pug.renderFile(__dirname + "/pugs/unsuccessRegistered.pug"));
-                        res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
-                            "email": email
-                        }));
-                        res.end();
-                    }
-                    else {
-                        res.write(pug.renderFile(__dirname + "/pugs/successRegistered.pug"));
-                        res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
-                        res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
-                        res.end();
-                    }
-                });
-        }
+    if (code === "" || email === "") {
+        res.write(pug.renderFile(__dirname + "/pugs/unsuccessRegistered.pug"));
+        res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
+            "email": email
+        }));
+        res.end();
+    } else {
+        let sql = functions.getRegisretDriverSQL(email, code, carmodel);
+        con.query(sql, function (err) {
+            if (err) {
+                res.write(pug.renderFile(__dirname + "/pugs/unsuccessRegistered.pug"));
+                res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
+                    "email": email
+                }));
+                res.end();
+            } else {
+                res.write(pug.renderFile(__dirname + "/pugs/successRegistered.pug"));
+                res.write(pug.renderFile(__dirname + "/pugs/aboutus.pug"));
+                res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+                res.end();
+            }
+        });
+    }
 });
 server.get('/contacts', function (req, res) {
     text.header['nowpage'] = "/contacts";
@@ -207,6 +206,75 @@ server.get('/ordertaxi', function (req, res) {
         res.redirect("/registeruser");
     }
 });
+server.get('/orders', function (req, res) {
+    if (req.cookies.authorised !== 'drivers') {
+        text.header['nowpage'] = "/";
+        res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
+        res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
+        res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+        res.end();
+    } else {
+        text.header['nowpage'] = "/orders";
+        res.write(pug.renderFile(__dirname + "/pugs/header-driver.pug", text.header));
+        const userid = req.cookies.userid;
+        con.query("SELECT class FROM car_models WHERE id IN (SELECT carmodelid FROM drivers WHERE id='" +
+            userid + "');", function (err0, result0) {
+            const clas = functions.setCarModelId(userid, result0);
+            con.query("SELECT * FROM orders INNER JOIN payments ON payments.pay_id=orders.pay_type_id WHERE status=0 AND class='" + clas + "';", function (err, result) {
+                res.write(pug.renderFile(__dirname + "/pugs/orders.pug", {
+                    "orders": result
+                }));
+                res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+                res.end();
+            });
+        });
+    }
+});
+server.get('/allorders', function (req, res) {
+    const clas = functions.getCarModelIdLocal(req.cookies.userid);
+    if(clas===null){
+        res.statusCode = 403;
+        res.write(JSON.stringify({"err": "no user founded"}));
+        res.end();
+    } else {
+        con.query("SELECT * FROM orders INNER JOIN payments ON payments.pay_id=orders.pay_type_id WHERE status=0 AND class='" + clas + "';", function (err, result) {
+            res.write(JSON.stringify(result));
+            res.end();
+        });
+    }
+});
+server.param('userid', function (req, res, next, userid) {
+    // ... Perform database query and
+    // ... Store the user object from the database in the req object
+    req.userid = userid;
+    return next();
+});
+server.get('/userprofile/:userid', function (req, res) {
+    const userid = req.userid;
+    con.query("SELECT * FROM clients WHERE id='"+userid+"';", function (err, result) {
+        if(err || result.length<1){
+            res.redirect("/404");
+        } else{
+            text.header['nowpage'] = "/userprofile/"+userid;
+            res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
+            res.write(pug.renderFile(__dirname + "/pugs/userprofile.pug",{
+                "info": result[0]
+            }));
+            res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+            res.end();
+        }
+    });
+});
+server.get('/getRandCode', function (req, res) {
+    let code = functions.generateCode();
+    res.write(code);
+    res.end();
+});
+server.get('/getPassHash', function (req, res) {
+    let hash = functions.hashPassword(req.query.pass);
+    res.write(hash);
+    res.end();
+});
 server.post('/login', function (req, res) {
     let login = req.body.login;
     let type = req.body.type;
@@ -227,17 +295,7 @@ server.post('/login', function (req, res) {
         }
     });
 });
-server.get('/getRandCode', function (req, res) {
-    let code = functions.generateCode();
-    res.write(code);
-    res.end();
-});
-server.get('/getPassHash', function (req, res) {
-    let hash = functions.hashPassword(req.query.pass);
-    res.write(hash);
-    res.end();
-});
-server.post('/changePass', function (req, res) {
+server.put('/password', function (req, res) {
     let old = req.body.old;
     let now = req.body.now;
     let type = req.body.type;
@@ -404,7 +462,7 @@ server.post('/createorder', function (req, res) {
     const code = functions.generateCode();
     const dirurl = "https://www.google.com/maps/dir/?api=1&origin=" + encodeURI(from) + "&destination=" +
         encodeURI(to) + "&travelmode=driving&dir_action=navigate";
-    con.query("INSERT INTO orders (id, user_id, class, pay_type_id, notes, address_from, address_to, url) VALUES " +
+    con.query("INSERT INTO orders (id, user_id, class, pay_type_id, comment, address_from, address_to, url) VALUES " +
         "('" + code + "', '" + userid + "', '" + clas + "', " + pay_type + ", " + notes + ", '" + from + "', '" + to + "', '" + dirurl + "');", function (err) {
         if (err) {
             res.redirect("/createorder");
@@ -418,11 +476,11 @@ server.post('/createorder', function (req, res) {
 
 
 //default error page
-server.use(function (req, res) {
-    res.status(404);
-    text.header['nowpage'] = "/404";
-    res.write(pug.renderFile(__dirname + "/pugs/header-unauthorized.pug", text.header));
-    res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
-    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
-    res.end();
-});
+// server.use(function (req, res) {
+//     res.status(404);
+//     text.header['nowpage'] = "/404";
+//     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
+//     res.write(pug.renderFile(__dirname + "/pugs/404.pug"));
+//     res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+//     res.end();
+// });

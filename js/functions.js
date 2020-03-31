@@ -84,5 +84,13 @@ module.exports = {
     getClientSQlUpdate: function (userid, data) {
         return "UPDATE drivers SET login='" + data.login + "', name='" + data.name + "', surname='" + data.surname +
             "', age='" + data.age + "', phone='" + data.phone + "', description='" + data.desc + "' WHERE id='" + userid + "';";
+    },
+    setCarModelId: function (userid, result) {
+        const clas = result[0].class;
+        localStorage.setItem(userid, clas);
+        return clas;
+    },
+    getCarModelIdLocal: function (userid) {
+        return localStorage.getItem(userid);
     }
 };
