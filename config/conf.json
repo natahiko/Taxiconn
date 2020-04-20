@@ -2,7 +2,7 @@
   "database": {
     "host": "localhost",
     "user": "root",
-    "password": "",
+    "password": "2303",
     "database": "taxiconn"
   },
   "port": 1111,

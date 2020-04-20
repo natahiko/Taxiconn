@@ -28,5 +28,9 @@
   "bugs": {
     "url": "https://github.com/natahiko/Taxiconn/issues"
   },
-  "homepage": "https://github.com/natahiko/Taxiconn#readme"
+  "homepage": "https://github.com/natahiko/Taxiconn#readme",
+  "devDependencies": {},
+  "keywords": [
+    "taxiconn"
+  ]
 }
