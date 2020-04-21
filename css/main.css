@@ -1,9 +1,3 @@
-html {
-    min-width: 577px;
-    overflow-x: auto;
-    max-width: 100%;
-}
-
 body {
     overflow-x: hidden;
     width: 100%;
@@ -60,20 +54,10 @@ body {
     padding: 0.5em;
     float: left;
 }
-
-.navbar-dark {
-    height: 95px;
-    align-content: center;
+.wrapper{
+    width: 70% !important;
+    margin: auto !important;
 }
-
-.wrapper {
-    display: block;
-    position: absolute;
-    top: 35px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
 .wrapper ul {
     list-style: none;
 }
@@ -150,14 +134,19 @@ body {
     text-shadow: 0 0 15px #dd4b39;
     transition: all 0.5s ease;
 }
-
+footer .copyright{
+    text-align: center;
+    width: 100% !important;
+    margin-bottom: 5px;
+    color: white !important;
+}
 .cc {
-    position: absolute;
     bottom: 2px;
     color: #acacac;
-    width: 100%;
     text-align: center;
     font-size: medium;
+    align-items: center;
+    align-self: center;
 }
 
 @font-face {
@@ -195,7 +184,15 @@ footer {
     bottom: 0;
     width: 100%;
 }
-
+footer nav{
+    height: 95px;
+}
+.pt-header{
+    padding: 75px 0 0;
+    margin: 0;
+    width: 100%;
+    position: initial;
+}
 .contacts {
     margin: 30px;
     font-size: larger;
@@ -210,10 +207,7 @@ footer {
 
 .googlemap {
     height: 300px;
-    width: 40%;
     border-radius: 15px;
-    float: right;
-    margin-right: 5%;
     box-shadow: 2px 2px 3px #8e8e8e;
 }
 
@@ -269,10 +263,6 @@ footer {
     fill: #55595c;
 }
 
-.input-group-prepend {
-    /*width: 85px !important;*/
-}
-
 .input-group-prepend span {
     width: 100% !important;
 }
@@ -317,11 +307,6 @@ footer {
 .personal_info {
     float: right;
     width: 60%;
-}
-
-.personal_info .input-group-prepend, .driver_auto .input-group-prepend {
-    width: 65px;
-    margin: 7px 0;
 }
 
 .personal_info .input-group-text {
@@ -391,14 +376,6 @@ footer {
     color: black;
     text-decoration: none;
     font-weight: bolder;
-}
-#becomedriverpage #select_email {
-    max-width: 200px;
-}
-
-#becomedriverpage {
-    margin: 0 7%;
-    width: 85%;
 }
 .empty{
     display: none;

@@ -68,7 +68,6 @@ function renew_car_model(value) {
                 carModelSelector.append("<option value='" + res[i].id + "'>" + res[i].model + "</option>");
             }
             $("#select_carmodel option[value=" + value + "]").attr('selected', true);
-            carModelSelector.style.color = '#afb1b4';
         },
         data: JSON.stringify(prods)
     });

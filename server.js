@@ -25,6 +25,7 @@ server.get(['/aboutus', '/'], function (req, res) {
     text.header['nowpage'] = "/aboutus";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(fs.readFileSync(__dirname + '/html/aboutus.html', 'utf8'));
+    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
 server.get('/workcond', function (req, res) {
@@ -53,6 +54,7 @@ server.get('/usefultips', function (req, res) {
     text.header['nowpage'] = "/usefultips";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(fs.readFileSync(__dirname + '/html/usefultips.html', 'utf8'));
+    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
 server.get('/profile', function (req, res) {
@@ -163,6 +165,7 @@ server.get('/thankspage', function (req, res) {
     text.header['nowpage'] = "/";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(fs.readFileSync(__dirname + '/html/thanks.html', 'utf8'));
+    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
 server.get('/ordertaxi', function (req, res) {
@@ -464,6 +467,7 @@ server.post('/createorder', function (req, res) {
 server.use(function (req, res) {
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(fs.readFileSync(__dirname + '/html/404.html', 'utf8'));
+    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
 

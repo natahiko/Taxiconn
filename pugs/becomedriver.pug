@@ -1,28 +1,30 @@
 div.container(id='becomedriverpage')
     div.row
-        h2
-            kbd Стати водієм
-            i  taxiconn.com.ua
-    form.row.needs-validation(novalidate action='/confirmregistration' method='get' onSubmit='return loadSumbit()')
-        h3(style="margin-top: 30px") Особиста інформація
-        div.input-group.mb-3
-            div.input-group-prepend
-                span.input-group-text Ім'я
-            input.form-control(required type="text" placeholder="Ім'я" maxlength=45 id='driver_name')
-            span.invalid-feedback Ім'я не повинно містити чисел чи символів
-        div.input-group.mb-3
+        div.col-12.col-sm-12
+            h2
+                kbd Стати водієм
+                i  taxiconn.com.ua
+    hr
+    form.form-row.needs-validation(novalidate action='/confirmregistration' method='get' onSubmit='return loadSumbit()')
+        h3.col-12.col-sm-12 Особиста інформація
+        div.input-group.col-sm-10.col-12.mb-2
+                div.input-group-prepend
+                    span.input-group-text Ім'я
+                input.form-control(required type="text" placeholder="Ім'я" maxlength=45 id='driver_name')
+                span.invalid-feedback Ім'я не повинно містити чисел чи символів
+        div.input-group.col-sm-10.col-12.mb-2
             div.input-group-prepend
                 span.input-group-text Прізвище
             input.form-control(required type="text" placeholder="Прізвище" maxlength=45 id='driver_surname')
             span.invalid-feedback Прізвище не повинно містити чисел чи символів
-        div.input-group.mb-3
+        div.input-group.col-sm-10.col-12.mb-2
             div.input-group-prepend
                 span.input-group-text Логін
             input.form-control(required type="text" placeholder="Логін" maxlength=20 id='driver_login')
             span.invalid-feedback Ваш логін зайнятий! Оберіть новий
             div.input-group-append
                 input.btn.btn-outline-info(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLogin()")
-        div.input-group.mb-3
+        div.input-group.col-sm-10.col-12.mb-2
             div.input-group-prepend
                 span.input-group-text Email
             input.form-control(required name='email' type="text" placeholder="Електронна пошта" maxlength=45 id='driver_email')
@@ -32,81 +34,81 @@ div.container(id='becomedriverpage')
                 option.form-control.btn-outline-info  @ukma.edu.ua
                 option.form-control.btn-outline-info  @ukr.net
                 option.form-control.btn-outline-info  @mail.com
-        div.input-group.mb-3
-            div.input-group
-                div.input-group-prepend
-                    span.input-group-text Вік
-                input.form-control(required type="number" max=65 min=21 id='driver_age')
-        div.input-group.mb-3
-            div.input-group
-                div.input-group-prepend
-                    span.input-group-text Номер телефону
-                input.form-control.bfh-phone(required type="tel" placeholder="" id='driver_tel')
-                span.invalid-feedback Номер телефону повинен відповідати одному з шаблонів:
-                    p  (123) 456-7890
-                    p  (123)456-7890
-                    p  123-456-7890
-                    p  123.456.7890
-                    p  1234567890
-                    p  +31636363634
-                    p  075-63546725
-        h3 Додайте опис про себе:
-        div.input-group
+        div.col-sm-10.col-12.mb-2
+            div.row.input-group
+                div.input-group.col-12.col-sm-6
+                    div.input-group-prepend
+                        span.input-group-text Вік
+                    input.form-control(required type="number" max=65 min=21 id='driver_age')
+                div.col.col-sm.pr-0(style="margin-right: -15px")
+                    div.input-group
+                        div.input-group-prepend
+                            span.input-group-text Телефон
+                        input.form-control(required type="tel" placeholder="" id='driver_tel')
+                        span.invalid-feedback Номер телефону повинен відповідати одному з шаблонів:
+                            p  (123) 456-7890
+                            p  (123)456-7890
+                            p  123-456-7890
+                            p  123.456.7890
+                            p  1234567890
+                            p  +31636363634
+                            p  075-63546725
+        div.col-sm-10.col-12.mb-2
             textarea.form-control(id='driver_desc' rows=3 placeholder="Опишіть себе (за бажанням)...")
-        hr
-        h3 Водійське посвідчення
-        div.input-group.mb-3
+
+        h3.col-12.col-sm-12 Водійське посвідчення та авто
+        div.col-sm-10.col-12.mb-2
             div.input-group
                 div.input-group-prepend
                     span.input-group-text Серія та номер
                 input.form-control(required type="text" placeholder="ВАН" maxlength=3 id='driver_seria')
                 input.form-control(required type="text" placeholder="000000" id="driver_seria_num")
-        div.input-group.mb-3
-            div.input-group
-                div.input-group-prepend
-                    span.input-group-text Категорія
-                select.input-group-append.form-control(id='select_category')
-                    option.default_option(value="default") Оберіть категорію
-                    option.form-control.btn-outline-info B
-                    option.form-control.btn-outline-info B1
-                    option.form-control.btn-outline-info C
-                    option.form-control.btn-outline-info C1
-                    option.form-control.btn-outline-info D
-                    option.form-control.btn-outline-info D1
-                    option.form-control.btn-outline-info BE
-                    option.form-control.btn-outline-info CE
-                    option.form-control.btn-outline-info C1E
-                    option.form-control.btn-outline-info DE
-                    option.form-control.btn-outline-info D1E
+        div.col-sm-10.col-12.mb-2
+            div.row.input-group
+                div.input-group.col-12.col-sm-6
+                    div.input-group-prepend
+                        span.input-group-text Категорія
+                    select.input-group-append.form-control(id='select_category')
+                        option.default_option(value="default") Оберіть...
+                        option.form-control.btn-outline-info B
+                        option.form-control.btn-outline-info B1
+                        option.form-control.btn-outline-info C
+                        option.form-control.btn-outline-info C1
+                        option.form-control.btn-outline-info D
+                        option.form-control.btn-outline-info D1
+                        option.form-control.btn-outline-info BE
+                        option.form-control.btn-outline-info CE
+                        option.form-control.btn-outline-info C1E
+                        option.form-control.btn-outline-info DE
+                        option.form-control.btn-outline-info D1E
+                div.input-group.col-12.col-sm.p-0(style="margin-right: -15px")
+                    div.input-group-prepend
+                        span.input-group-text Рік випуску
+                    input.form-control(id='car_year' required type="number" placeholder="2018" min=2000 max=2020)
 
-        hr
-        h3 Автомобіль
-        br
-        div.input-group.mb-3
+
+        div.col-sm-10.col-12.mb-2
+                div.input-group
+                    div.input-group-prepend
+                        span.input-group-text Номер авто
+                    input.form-control(type="text" placeholder="ХХ" maxlength=2 id='driver_autonum1')
+                    input.form-control(type="text" placeholder="0000" maxlength=4 id='driver_autonum2')
+                    input.form-control(type="text" placeholder="ХХ" maxlength=2 id='driver_autonum3')
+        div.col-sm-10.col-12.mb-2
+            div.input-group
+                    div.input-group-prepend
+                        span.input-group-text Виробник
+                    select.input-group-append.form-control(onchange='renew_car_model()' id='select_carproducer')
+                        option.default_option(value="default" selected) Оберіть виробника
+                        each prod in producers
+                            option.form-control(value=prod.prodid) #{prod.producer}
+        div.col-sm-10.col-12.mb-2
             div.input-group
                 div.input-group-prepend
-                    span.input-group-text Номер авто
-                input.form-control(type="text" placeholder="ХХ" maxlength=2 id='driver_autonum1')
-                input.form-control(type="text" placeholder="0000" maxlength=4 id='driver_autonum2')
-                input.form-control(type="text" placeholder="ХХ" maxlength=2 id='driver_autonum3')
-        div.form-inline
-            div.input-group.mb-3
-                div.input-group-prepend
-                    span.input-group-text Рік випуску
-                input.form-control(id='car_year' required type="number" placeholder="2018" min=2000 max=2020)
-            div.input-group.mb-3
-                div.input-group-prepend
-                    span.input-group-text Виробник
-                select.input-group-append.form-control(onchange='renew_car_model()' id='select_carproducer')
-                    option.default_option(value="default" selected) Оберіть виробника
-                    each prod in producers
-                        option.form-control(value=prod.prodid) #{prod.producer}
-        div.input-group.mb-3
-            div.input-group-prepend
-                span.input-group-text Марка
-            select.input-group-append.form-control(id="select_carmodel")
-                option.default_option(value="default" selected) Оберіть марка
-        div.input-group.mb-3
+                    span.input-group-text Марка
+                select.input-group-append.form-control(id="select_carmodel")
+                    option.default_option(value="default" selected) Оберіть марка
+        div.col-sm-10.col-12.mb-2
             div.input-group(style='font-size: xx-large;')
                 div.form-check-inline
                     label.form-check-label.input-group
@@ -120,18 +122,19 @@ div.container(id='becomedriverpage')
                             div.input-group-text
                                 input.form-check-input(type="radio" onclick='renew_car_model()' name="car_class" value='comfort')
                         span.form-control Комфорт
-        hr
-        h3 Оберіть пароль для входу
-        div.input-group.mb-3
-            div.input-group-prepend
-                span.input-group-text(data-toggle="tooltip" title="Пароль повинен бути мінімум 6 символів, має містити цифри") Пароль
-            input.form-control(required type="password" placeholder="Введіть пароль" maxlength=45 id='driver_pass')
-            span.invalid-feedback Пароль повинен містити літери нижнього та вищого регістру, цифри та може містити символи
-            input.form-control(required type="password" placeholder="Повторіть пароль" maxlength=45 id='driver_pass_conf')
-            span.invalid-feedback Паролі не збігаються
-        div.input-group.mb-3.align-content-center(style='width: 100%')
-            button.btn.btn-lg.btn-info(style='margin: auto' type='submit') Стати водієм
+        h5.col-12.col-sm-12 Оберіть пароль для входу
+        div.col-sm-10.col-12.mb-2
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text(data-toggle="tooltip" title="Пароль повинен бути мінімум 6 символів, має містити цифри") Пароль
+                input.form-control(required type="password" placeholder="Введіть пароль" maxlength=45 id='driver_pass')
+                span.invalid-feedback Пароль повинен містити літери нижнього та вищого регістру, цифри та може містити символи
+                input.form-control(required type="password" placeholder="Повторіть пароль" maxlength=45 id='driver_pass_conf')
+                span.invalid-feedback Паролі не збігаються
+        div.col-sm-10.col-12.mb-2
+            div.input-group.mb-3.align-content-center(style='width: 100%')
+                button.btn.btn-md.btn-info(style='margin: auto' type='submit') Стати водієм
 
-script(type='text/javascript') setValues()
-script(type='text/javascript') renew_car_model()
+script(type='text/javascript') setValues();
+script(type='text/javascript') renew_car_model();
 
