@@ -28,8 +28,8 @@ server.get(['/aboutus', '/'], function (req, res) {
     // res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
-server.get('/workcond', function (req, res) {
-    text.header['nowpage'] = "/workcond";
+server.get('/driver/workcond', function (req, res) {
+    text.header['nowpage'] = "/driver/workcond";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     con.query("SELECT * FROM car_models INNER JOIN сar_producer ON сar_producer.prodid = car_models.producer_id ORDER BY producer;", function (err, result) {
         res.write(pug.renderFile(__dirname + "/pugs/workcond.pug", {
@@ -39,8 +39,8 @@ server.get('/workcond', function (req, res) {
         res.end();
     });
 });
-server.get('/userrules', function (req, res) {
-    text.header['nowpage'] = "/userrules";
+server.get('/user/userrules', function (req, res) {
+    text.header['nowpage'] = "/user/userrules";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     con.query("SELECT * FROM blogs;", function (err, result) {
         res.write(pug.renderFile(__dirname + "/pugs/userrules.pug", {
@@ -55,8 +55,8 @@ server.get('/getfooter', function (req, res) {
     res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
-server.get('/usefultips', function (req, res) {
-    text.header['nowpage'] = "/usefultips";
+server.get('/driver/usefultips', function (req, res) {
+    text.header['nowpage'] = "/driver/usefultips";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(fs.readFileSync(__dirname + '/html/usefultips.html', 'utf8'));
     res.end();
@@ -98,8 +98,8 @@ server.get('/profile', function (req, res) {
         res.redirect("/");
     }
 });
-server.get('/becomedriver', function (req, res) {
-    text.header['nowpage'] = "/becomedriver";
+server.get('/driver/becomedriver', function (req, res) {
+    text.header['nowpage'] = "/driver/becomedriver";
     let user = req.cookies.authorised;
     if (user === 'drivers') {
         res.redirect("/profile");
@@ -188,7 +188,7 @@ server.get('/ordertaxi', function (req, res) {
             res.end();
         });
     } else {
-        res.redirect("/registeruser");
+        res.redirect("/user/registeruser");
     }
 });
 server.get('/orders', function (req, res) {
