@@ -23,13 +23,13 @@ div.container(id='becomedriverpage')
             input.form-control(required type="text" placeholder="Логін" maxlength=20 id='driver_login')
             span.invalid-feedback Ваш логін зайнятий! Оберіть новий
             div.input-group-append
-                input.btn.btn-outline-info(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLogin()")
+                input.btn.btn-outline-warning(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLogin()")
         div.input-group.col-sm-10.col-12.mb-2
             div.input-group-prepend
                 span.input-group-text Email
             input.form-control(required name='email' type="text" placeholder="Електронна пошта" maxlength=45 id='driver_email')
             span.invalid-feedback Перевірте вашу пошту
-            select.btn-outline-info.input-group-append.form-control(name='emend' id='select_email')
+            select.btn-outline-warning.input-group-append.form-control(name='emend' id='select_email')
                 option.form-control.btn-outline-info  @gmail.com
                 option.form-control.btn-outline-info  @ukma.edu.ua
                 option.form-control.btn-outline-info  @ukr.net
@@ -81,7 +81,7 @@ div.container(id='becomedriverpage')
                         option.form-control.btn-outline-info C1E
                         option.form-control.btn-outline-info DE
                         option.form-control.btn-outline-info D1E
-                div.input-group.col-12.col-sm.p-0(style="margin-right: -15px")
+                div.input-group.col-12.col-sm.pr-0(style="margin-right: -15px")
                     div.input-group-prepend
                         span.input-group-text Рік випуску
                     input.form-control(id='car_year' required type="number" placeholder="2018" min=2000 max=2020)
@@ -133,7 +133,7 @@ div.container(id='becomedriverpage')
                 span.invalid-feedback Паролі не збігаються
         div.col-sm-10.col-12.mb-2
             div.input-group.mb-3.align-content-center(style='width: 100%')
-                button.btn.btn-md.btn-info(style='margin: auto' type='submit') Стати водієм
+                button.btn.btn-md.btn-warning(style='margin: auto; width: 50%' type='submit') Стати водієм
 
 script(type='text/javascript') setValues();
 script(type='text/javascript') renew_car_model();

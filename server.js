@@ -25,13 +25,13 @@ server.get(['/aboutus', '/'], function (req, res) {
     text.header['nowpage'] = "/aboutus";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(fs.readFileSync(__dirname + '/html/aboutus.html', 'utf8'));
-    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+    // res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
 server.get('/workcond', function (req, res) {
     text.header['nowpage'] = "/workcond";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
-    con.query("SELECT * FROM car_models INNER JOIN сar_producer ON сar_producer.prodid = car_models.producer_id;", function (err, result) {
+    con.query("SELECT * FROM car_models INNER JOIN сar_producer ON сar_producer.prodid = car_models.producer_id ORDER BY producer;", function (err, result) {
         res.write(pug.renderFile(__dirname + "/pugs/workcond.pug", {
             allmodels: result
         }));
@@ -50,11 +50,15 @@ server.get('/userrules', function (req, res) {
         res.end();
     });
 });
+server.get('/getfooter', function (req, res) {
+    res.statusCode = 200;
+    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+    res.end();
+});
 server.get('/usefultips', function (req, res) {
     text.header['nowpage'] = "/usefultips";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(fs.readFileSync(__dirname + '/html/usefultips.html', 'utf8'));
-    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
 server.get('/profile', function (req, res) {
@@ -165,7 +169,6 @@ server.get('/thankspage', function (req, res) {
     text.header['nowpage'] = "/";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(fs.readFileSync(__dirname + '/html/thanks.html', 'utf8'));
-    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
 server.get('/ordertaxi', function (req, res) {
@@ -197,15 +200,15 @@ server.get('/orders', function (req, res) {
         const userid = req.cookies.userid;
         con.query("SELECT class FROM car_models WHERE id IN (SELECT carmodelid FROM drivers WHERE id='{}');".format(userid),
             function (err0, result0) {
-            const clas = functions.setCarModelId(userid, result0);
-            con.query("SELECT * FROM orders INNER JOIN payments ON payments.pay_id=orders.pay_type_id WHERE status=0 AND class='" + clas + "';", function (err, result) {
-                res.write(pug.renderFile(__dirname + "/pugs/orders.pug", {
-                    "orders": result
-                }));
-                res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
-                res.end();
+                const clas = functions.setCarModelId(userid, result0);
+                con.query("SELECT * FROM orders INNER JOIN payments ON payments.pay_id=orders.pay_type_id WHERE status=0 AND class='" + clas + "';", function (err, result) {
+                    res.write(pug.renderFile(__dirname + "/pugs/orders.pug", {
+                        "orders": result
+                    }));
+                    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+                    res.end();
+                });
             });
-        });
     }
 });
 server.get('/allorders', function (req, res) {
@@ -340,7 +343,7 @@ server.post('/carmodel', function (req, res) {
         return;
     }
     let car_class;
-    if (req.body.carclass === "comfort")  car_class = " AND class='comfort'";
+    if (req.body.carclass === "comfort") car_class = " AND class='comfort'";
     else car_class = " AND class='econom'";
     con.query("SELECT id,model FROM car_models WHERE producer_id='" + producer + "'" + car_class + ";", function (err, result) {
         res.statusCode = 202;
@@ -385,7 +388,7 @@ server.post('/isAllFree', function (req, res) {
         } else {
             let user = result[0];
             res.statusCode = 409;
-            let datares = {"email": false, "phone": false, "login": false };
+            let datares = {"email": false, "phone": false, "login": false};
             if (email === user.email) datares['email'] = true;
             if (phone === user.phone) datares['phone'] = true;
             if (login === user.login) datares['login'] = true;
@@ -467,7 +470,6 @@ server.post('/createorder', function (req, res) {
 server.use(function (req, res) {
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(fs.readFileSync(__dirname + '/html/404.html', 'utf8'));
-    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
     res.end();
 });
 

@@ -558,3 +558,19 @@ function renew_orders_method() {
         data: JSON.stringify({})
     });
 }
+
+function setFooter() {
+    $.ajax({
+        url: '/getfooter',
+        type: 'get',
+        dataType: 'text',
+        contentType: 'text',
+        success: function (data) {
+            console.log(data);
+            $("#for_footer").html(data);
+        },
+        error: function (data) {
+            console.log(data.err);
+        }
+    });
+}

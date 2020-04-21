@@ -4,6 +4,9 @@ function myMap() {
     let mapProp = {
         center: new google.maps.LatLng(50.46000699004913, 30.52081012508188),
         zoom: 15,
+        mapTypeControl: false,
+        draggable: false,
+        scaleControl: false
     };
     let map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 
@@ -95,42 +98,3 @@ AutocompleteDirectionsHandler.prototype.route = function () {
             }
         });
 };
-
-//not use
-//autocomplete one filed with map
-// function initAutocomplete() {
-//     var map = new google.maps.Map(document.getElementById('map'), {
-//         mapTypeControl: false,
-//         center: {lat: 50.46000699004913, lng: 30.52081012508188},
-//         zoom: 13
-//     });
-//     var input_from = document.getElementById('address_from');
-//     var auto_from = new google.maps.places.Autocomplete(input_from);
-//     auto_from.bindTo('bounds', map);
-//     auto_from.setFields(['address_components', 'geometry', 'icon', 'name']);
-//
-//     var input_to = document.getElementById('address_from');
-//     var auto_to = new google.maps.places.Autocomplete(input_to);
-//     auto_to.bindTo('bounds', map);
-//     auto_to.setFields(['address_components', 'geometry', 'icon', 'name']);
-//
-//     var marker_from = new google.maps.Marker({
-//         map: map,
-//         anchorPoint: new google.maps.Point(0, -29)
-//     });
-//     auto_from.addListener('place_changed', function () {
-//         marker_from.setVisible(false);
-//         var place = auto_from.getPlace();
-//         if (place.geometry.viewport) {
-//             map.fitBounds(place.geometry.viewport);
-//         } else {
-//             map.setCenter(place.geometry.location);
-//             map.setZoom(17);
-//         }
-//         marker_from.setPosition(place.geometry.location);
-//         marker_from.setVisible(true);
-//
-//     });
-//     auto_from.setOptions(false);
-//     auto_to.setOptions(false);
-// }

@@ -13,7 +13,7 @@ section.condition
         li Автомобіль повинен мати не менше 4 дверей
         li ПОвинне бути дійсне свідоцтво про реєстрацію транспортного засобу
         li Вартість автомобіля економ-класу повинна бути більшою за 140 000 (сто сорок тисяч) грн
-section.mt-5
+section
     div.container
         div.section-header
             h2 Основні вимоги до водіїв
@@ -48,28 +48,21 @@ section.mt-5
             li.nav-item
                 a.nav-link(data-toggle="tab" href="#comforttable") Комфорт +
         div.tab-content
-            div.tab-pane.container.active.wrap(id='economTable')
-                table.table
-                    thead
-                        tr
-                            th Виробник
-                            th Марка
-                    tbody
-                        each mod in allmodels
-                            if mod.class === "econom"
-                                tr
-                                    th.prod #{mod.producer}
-                                    th #{mod.model}
-
-            div.tab-pane.container.wrap(id='comforttable')
-                table.table
-                    thead
-                        tr
-                            th Виробник
-                            th Марка
-                    tbody
-                        each mod in allmodels
-                            if mod.class === "comfort"
-                                tr
-                                    th.prod #{mod.producer}
-                                    th #{mod.model}
+            div.tab-pane.container.active(id='economTable')
+                div.row
+                    each mod in allmodels
+                         if mod.class === "econom"
+                             div.col-6.col-sm-4.col-md-3.p-10
+                                 div.card
+                                     div.card-body.row
+                                         div.col-12 #{mod.model}
+                                         div.col-12.text-sm-right #{mod.producer}
+            div.tab-pane.container(id='comforttable')
+                div.row
+                    each mod in allmodels
+                        if mod.class === "comfort"
+                            div.col-6.col-sm-4.col-md-3.p-10
+                                div.card
+                                    div.card-body.row
+                                        div.col-12 #{mod.model}
+                                        div.col-12.text-sm-right #{mod.producer}
