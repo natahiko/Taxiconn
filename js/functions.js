@@ -41,10 +41,11 @@ module.exports = {
         if (json === "") return "";
         json = JSON.parse(json);
         const userid = this.generateCode();
-        let sql = "INSERT INTO drivers (id, login, name, surname, age, licence, carmodelid, caryear," +
-            "password, phone, description, email, carnumber) VALUES ('" + userid + "', '" + json.login + "','" + json.name + "','" + json.surname + "'," +
-            "'" + json.age + "','" + json.licence + "','" + carmodelid +
-            "', '" + json.car_year + "','" + json.password + "','" + json.phone + "','" + json.description + "','" + json.email + "', '" + json.autonum + "')";
+        let sql = `INSERT INTO drivers (id, login, name, surname, age, licence, carmodelid, caryear,
+                     password, phone, description, email, carnumber) VALUES 
+                    ('{}', '{}','{}','{}','{}','{}','{}', '{}','{}','{}','{}','{}', '{}'
+            )`.format(userid, json.login, json.name, json.surname, json.age, json.licence, carmodelid,
+            json.car_year, json.password, json.phone, json.description, json.email, json.autonum);
         localStorage.removeItem(email);
         localStorage.removeItem(code);
         return sql;
@@ -77,13 +78,14 @@ module.exports = {
         });
     },
     getDriverSQlUpdate: function (userid, data) {
-        return "UPDATE drivers SET login='" + data.login + "', name='" + data.name + "', surname='" + data.surname +
-            "', age=" + data.age + ", carmodelid=" + data.model + ", caryear=" + data.year + ", phone='" + data.phone +
-            "', description='" + data.desc + "' WHERE id='" + userid + "';";
+        return `UPDATE drivers SET login='{}', name='{}', surname='{}', age=${data.age}, 
+                   carmodelid=${data.model}, caryear=${data.year}, phone='{}', description='{}' WHERE id='{}'
+        ;`.format(data.login, data.name, data.surname, data.phone, data.desc, userid);
     },
     getClientSQlUpdate: function (userid, data) {
-        return "UPDATE drivers SET login='" + data.login + "', name='" + data.name + "', surname='" + data.surname +
-            "', age='" + data.age + "', phone='" + data.phone + "', description='" + data.desc + "' WHERE id='" + userid + "';";
+        return `UPDATE drivers SET login='{}', name='{}', surname='{}', age='{}', 
+                   phone='{}', description='{}' WHERE id='{}'
+        ;`.format(data.login, data.name, data.surname, data.age, data.phone, data.desc, userid);
     },
     setCarModelId: function (userid, result) {
         const clas = result[0].class;
@@ -92,5 +94,43 @@ module.exports = {
     },
     getCarModelIdLocal: function (userid) {
         return localStorage.getItem(userid);
+    },
+    getSQLLogin: function (login, type, password) {
+        if (type === 'clients')
+            return "SELECT * FROM clients WHERE password='" + password + "' " +
+                "AND (email='" + login + "' OR login='" + login + "' OR phone='" + login + "');";
+        else
+            return "SELECT * FROM drivers WHERE password='" + password + "' " +
+                "AND (email='" + login + "' OR login='" + login + "' OR phone='" + login + "');";
+    },
+    getSQLPassword: function (type, userid, old) {
+        if (type === 'clients')
+            return "SELECT * FROM clients WHERE password='" + old + "' AND id='" + userid + "';";
+        else
+            return "SELECT * FROM drivers WHERE password='" + old + "' AND id='" + userid + "';";
+    },
+    getSQLIsLoginFree: function (type, login) {
+        if (type === 'clients')
+            return "SELECT * FROM clients WHERE login='" + login + "';";
+        else
+            return "SELECT * FROM drivers WHERE login='" + login + "';";
+    },
+    getSQLCreateOrder: function (userid, from, to, clas, pay_type, notes) {
+        if (notes === "") notes = 'NULL';
+        else notes = "'" + notes + "'";
+        const dirurl = "https://www.google.com/maps/dir/?api=1&origin=" + encodeURI(from) + "&destination=" +
+            encodeURI(to) + "&travelmode=driving&dir_action=navigate";
+        const code = this.generateCode();
+
+        return `INSERT INTO orders 
+                (id, user_id, class, pay_type_id, comment, address_from, address_to, url) 
+                VALUES ('{}', '{}', '{}', '{}' , ${notes}, '{}', '{}', '{}');`.format(code, userid, clas, pay_type, from, to, dirurl);
     }
+};
+
+String.prototype.format = function () {
+    var i = 0, args = arguments;
+    return this.replace(/{}/g, function () {
+        return typeof args[i] !== 'undefined' ? args[i++] : '';
+    });
 };

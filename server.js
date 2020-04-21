@@ -283,8 +283,7 @@ server.post('/login', function (req, res) {
     let login = req.body.login;
     let type = req.body.type;
     let password = functions.hashPassword(req.body.password);
-    con.query(`SELECT * FROM ${type} WHERE password='${password}' AND (email='${login}' OR login='${login}' 
-                                                            OR phone='${login}');`, function (err, result) {
+    con.query(functions.getSQLLogin(login, type, password), function (err, result) {
         if (result.length < 1) {
             res.statusCode = 401;
         } else {
@@ -313,7 +312,7 @@ server.put('/password', function (req, res) {
     now = functions.hashPassword(now);
     old = functions.hashPassword(old);
     let userid = req.cookies.userid;
-    con.query(`SELECT * FROM ${type} WHERE id='${userid}' AND password='${old}';`, function (err, result) {
+    con.query(functions.getSQLPassword(type, userid, old), function (err, result) {
         if (result.length < 1) {
             res.statusCode = 409;
             res.write(JSON.stringify({
@@ -361,7 +360,7 @@ server.post('/isLoginFree', function (req, res) {
         res.end();
         return;
     }
-    con.query("SELECT * FROM {} WHERE login='{}';".format(req.body.type, login), function (err, result) {
+    con.query(functions.getSQLIsLoginFree(req.body.type, login), function (err, result) {
         res.setHeader('Content-Type', 'application/json');
         let datares = {"free": false};
         if (result.length < 1) {
@@ -449,14 +448,9 @@ server.post('/createorder', function (req, res) {
         res.end();
         return;
     }
-    let notes = req.body.notes;
-    if (notes === "") notes = 'NULL';
-    else notes = "'" + notes + "'";
-    const code = functions.generateCode();
-    const dirurl = "https://www.google.com/maps/dir/?api=1&origin=" + encodeURI(from) + "&destination=" +
-        encodeURI(to) + "&travelmode=driving&dir_action=navigate";
-    con.query("INSERT INTO orders (id, user_id, class, pay_type_id, comment, address_from, address_to, url) VALUES " +
-        "('" + code + "', '" + userid + "', '" + clas + "', " + pay_type + ", " + notes + ", '" + from + "', '" + to + "', '" + dirurl + "');", function (err) {
+    const sql = functions.getSQLCreateOrder(userid, from, to, clas, pay_type, req.body.notes);
+    console.log(sql);
+    con.query(sql, function (err) {
         if (err) {
             res.redirect("/createorder");
         } else {
