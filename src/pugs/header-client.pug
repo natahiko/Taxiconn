@@ -3,16 +3,16 @@ head
     meta(charset='utf-8')
     link(href = '../css/main.css', rel = 'stylesheet')
     link(href = '../css/media.css', rel = 'stylesheet')
-    link(href = '../node_modules/bootstrap/dist/css/bootstrap.min.css', rel = 'stylesheet')
-    script(src="../node_modules/jquery/dist/jquery.min.js" type="text/javascript" )
-    script(defer src='../node_modules/bootstrap/dist/js/bootstrap.min.js' type="text/javascript" )
-    script(defer src='../js/validator.js' type="text/javascript")
-    script(src='../js/main.js' type="text/javascript")
+    link(href = '../../node_modules/bootstrap/dist/css/bootstrap.min.css', rel = 'stylesheet')
+    script(src="../../node_modules/jquery/dist/jquery.min.js" type="text/javascript" )
+    script(defer src='../../node_modules/bootstrap/dist/js/bootstrap.min.js' type="text/javascript" )
+    script(defer src='../../src/js/validator.js' type="text/javascript")
+    script(src='../../src/js/main.js' type="text/javascript")
 body
     nav.navbar.navbar-expand-md.navbar-dark.fixed-top.bg-dark
         div.container(style="max-width: 100%")
             a.navbar-brand(href='#')
-                img.d-inline-block.align-top(src="../images/logo.png" width="30" height="30" alt="")
+                img.d-inline-block.align-top(src="../../files/images/logo.png" width="30" height="30" alt="")
                 span #{title}
             button.navbar-toggler(data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false")
                 span.navbar-toggler-icon

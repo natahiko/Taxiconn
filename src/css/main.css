@@ -150,9 +150,9 @@ footer .copyright {
 
 @font-face {
     font-family: 'FontAwesome';
-    src: local("FontAwesome"), url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'),
-    url('/src/fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'),
-    url('../fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype');
+    src: local("FontAwesome"), url('../../files/fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'),
+    url('/files/fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'),
+    url('../../files/fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype');
     font-weight: normal;
     font-style: normal
 }
@@ -220,7 +220,7 @@ footer nav {
 
 .pict-with-caption {
     width: 100%;
-    background: url("../images/taxipark.jpg") no-repeat;
+    background: url("../../files/images/taxipark.jpg") no-repeat;
     background-size: cover;
     height: 90vh;
 }

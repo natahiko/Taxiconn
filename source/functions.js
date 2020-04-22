@@ -6,11 +6,11 @@ var md5 = require('md5');
 module.exports = {
     getHeader: function (autorised) {
         if (autorised === 'drivers') {
-            return "/pugs/header-driver.pug";
+            return "/src/pugs/header-driver.pug";
         } else if (autorised === 'clients') {
-            return "/pugs/header-client.pug";
+            return "/src/pugs/header-client.pug";
         } else {
-            return "/pugs/header-unauthorized.pug";
+            return "/src/pugs/header-unauthorized.pug";
         }
     },
     hashPassword: function (passStr) {
@@ -125,6 +125,16 @@ module.exports = {
         return `INSERT INTO orders 
                 (id, user_id, class, pay_type_id, comment, address_from, address_to, url) 
                 VALUES ('{}', '{}', '{}', '{}' , ${notes}, '{}', '{}', '{}');`.format(code, userid, clas, pay_type, from, to, dirurl);
+    },
+    getStorage: function (multer) {
+        return multer.diskStorage({
+            destination: function (req, file, callback) {
+                callback(null, './uploads/user_photos');
+            },
+            filename: function (req, file, cb) {
+                cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+            }
+        });
     }
 };
 

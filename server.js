@@ -1,4 +1,5 @@
 let mysql = require('mysql');
+const multer = require('multer');
 const pug = require('pug');
 let express = require('express');
 let config = require('./config/conf.json');
@@ -20,6 +21,23 @@ server.use(bodyParser.urlencoded({extended: true}));
 
 server.use(bodyParser.json());
 let con = mysql.createConnection(config.database);
+
+
+// TODO MULTER
+let upload = multer({storage: functions.getStorage(multer)});
+server.post('/upload_user_photo', upload.single('photo'), function (req, res) {
+    if (!req.file) {
+        console.log("No file received");
+        res.end();
+    } else {
+        fs.readFile(req.file.path, (err, data) => {
+            let res3 = "data:image/" +req.file.type +";base64,"+ data.toString('base64');
+            console.log(res3);
+        });
+        res.end();
+    }
+});
+
 
 server.get(['/aboutus', '/'], function (req, res) {
     text.header['nowpage'] = "/aboutus";
@@ -81,7 +99,7 @@ server.get('/profile', function (req, res) {
             }
         });
     } else if (user === 'clients') {
-        con.query("SELECT * FROM clients WHERE id='" + userid + "'", function (err, result) {
+        con.query("SELECT * FROM clients WHERE id='{}'".format(userid), function (err, result) {
             if (err) {
                 res.redirect("/404");
             } else {
@@ -235,7 +253,7 @@ server.get('/userprofile/:userid', function (req, res) {
         } else {
             text.header['nowpage'] = "/userprofile/" + userid;
             res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
-            res.write(pug.renderFile(__dirname + "/src/pugs/userprofile.pug", {
+            res.write(pug.renderFile(__dirname + "/src/pugs/profile_client_for driver.pug", {
                 "info": result[0]
             }));
             res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
@@ -257,7 +275,7 @@ server.get('/driverprofile/:driverid', function (req, res) {
                 " WHERE id=" + result[0].carmodelid + ";", function (err2, result2) {
                 text.header['nowpage'] = "/driverprofile/" + userid;
                 res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
-                res.write(pug.renderFile(__dirname + "/src/pugs/driverprofile.pug", {
+                res.write(pug.renderFile(__dirname + "/src/pugs/profile-driver_for_client.pug", {
                     info: result[0],
                     producer: result2[0]
                 }));

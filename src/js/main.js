@@ -566,7 +566,6 @@ function setFooter() {
         dataType: 'text',
         contentType: 'text',
         success: function (data) {
-            console.log(data);
             $("#for_footer").html(data);
         },
         error: function (data) {
