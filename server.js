@@ -2,11 +2,11 @@ let mysql = require('mysql');
 const pug = require('pug');
 let express = require('express');
 let config = require('./config/conf.json');
-let functions = require('./js/functions');
+let functions = require('./source/functions');
 let text = require('./config/main.json');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const fs = require('fs');
+let fs = require('fs');
 
 let server = express();
 server.use(cookieParser());
@@ -24,18 +24,17 @@ let con = mysql.createConnection(config.database);
 server.get(['/aboutus', '/'], function (req, res) {
     text.header['nowpage'] = "/aboutus";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
-    res.write(fs.readFileSync(__dirname + '/html/aboutus.html', 'utf8'));
-    // res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+    res.write(fs.readFileSync(__dirname + '/src/html/aboutus.html', 'utf8'));
     res.end();
 });
 server.get('/driver/workcond', function (req, res) {
     text.header['nowpage'] = "/driver/workcond";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     con.query("SELECT * FROM car_models INNER JOIN сar_producer ON сar_producer.prodid = car_models.producer_id ORDER BY producer;", function (err, result) {
-        res.write(pug.renderFile(__dirname + "/pugs/workcond.pug", {
+        res.write(pug.renderFile(__dirname + "/src/pugs/workcond.pug", {
             allmodels: result
         }));
-        res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+        res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
         res.end();
     });
 });
@@ -43,22 +42,22 @@ server.get('/user/userrules', function (req, res) {
     text.header['nowpage'] = "/user/userrules";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     con.query("SELECT * FROM blogs;", function (err, result) {
-        res.write(pug.renderFile(__dirname + "/pugs/userrules.pug", {
+        res.write(pug.renderFile(__dirname + "/src/pugs/userrules.pug", {
             blogs: result
         }));
-        res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+        res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
         res.end();
     });
 });
 server.get('/getfooter', function (req, res) {
     res.statusCode = 200;
-    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+    res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
     res.end();
 });
 server.get('/driver/usefultips', function (req, res) {
     text.header['nowpage'] = "/driver/usefultips";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
-    res.write(fs.readFileSync(__dirname + '/html/usefultips.html', 'utf8'));
+    res.write(fs.readFileSync(__dirname + '/src/html/usefultips.html', 'utf8'));
     res.end();
 });
 server.get('/profile', function (req, res) {
@@ -70,13 +69,13 @@ server.get('/profile', function (req, res) {
             if (err) {
                 res.redirect("/404");
             } else {
-                res.write(pug.renderFile(__dirname + "/pugs/header-driver.pug", text.header));
+                res.write(pug.renderFile(__dirname + "/src/pugs/header-driver.pug", text.header));
                 con.query("SELECT prodid,producer FROM сar_producer;", function (err, result2) {
-                    res.write(pug.renderFile(__dirname + "/pugs/profile-driver.pug", {
+                    res.write(pug.renderFile(__dirname + "/src/pugs/profile-driver.pug", {
                         producers: result2,
                         info: result[0]
                     }));
-                    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+                    res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
                     res.end();
                 });
             }
@@ -86,11 +85,11 @@ server.get('/profile', function (req, res) {
             if (err) {
                 res.redirect("/404");
             } else {
-                res.write(pug.renderFile(__dirname + "/pugs/header-client.pug", text.header));
-                res.write(pug.renderFile(__dirname + "/pugs/profile-client.pug", {
+                res.write(pug.renderFile(__dirname + "/src/pugs/header-client.pug", text.header));
+                res.write(pug.renderFile(__dirname + "/src/pugs/profile-client.pug", {
                     info: result[0]
                 }));
-                res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+                res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
                 res.end();
             }
         });
@@ -106,10 +105,10 @@ server.get('/driver/becomedriver', function (req, res) {
     } else {
         res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
         con.query("SELECT prodid,producer FROM сar_producer;", function (err, result) {
-            res.write(pug.renderFile(__dirname + "/pugs/becomedriver.pug", {
+            res.write(pug.renderFile(__dirname + "/src/pugs/becomedriver.pug", {
                 producers: result
             }));
-            res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+            res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
             res.end();
         });
     }
@@ -120,12 +119,12 @@ server.get('/confirmregistration', function (req, res) {
     if (usertype === 'clients' || usertype === 'drivers') {
         res.redirect("/404");
     } else {
-        res.write(pug.renderFile(__dirname + "/pugs/header-unauthorized.pug", text.header));
+        res.write(pug.renderFile(__dirname + "/src/pugs/header-unauthorized.pug", text.header));
         let email = req.query.email + req.query.emend;
-        res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
+        res.write(pug.renderFile(__dirname + "/src/pugs/confirmregistration.pug", {
             "email": email
         }));
-        res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+        res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
     }
     res.end();
 });
@@ -136,8 +135,8 @@ server.get('/confirmregistrcode', function (req, res) {
     let email = req.query.email;
     let carmodel = functions.getCarModelId(code);
     if (code === "" || email === "") {
-        res.write(pug.renderFile(__dirname + "/pugs/unsuccessRegistered.pug"));
-        res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
+        res.write(pug.renderFile(__dirname + "/src/pugs/unsuccessRegistered.pug"));
+        res.write(pug.renderFile(__dirname + "/src/pugs/confirmregistration.pug", {
             "email": email
         }));
         res.end();
@@ -145,12 +144,12 @@ server.get('/confirmregistrcode', function (req, res) {
         let sql = functions.getRegisretDriverSQL(email, code, carmodel);
         con.query(sql, function (err) {
             if (err) {
-                res.write(pug.renderFile(__dirname + "/pugs/unsuccessRegistered.pug"));
-                res.write(pug.renderFile(__dirname + "/pugs/confirmregistration.pug", {
+                res.write(pug.renderFile(__dirname + "/src/pugs/unsuccessRegistered.pug"));
+                res.write(pug.renderFile(__dirname + "/src/pugs/confirmregistration.pug", {
                     "email": email
                 }));
             } else {
-                res.write(pug.renderFile(__dirname + "/pugs/successRegistered.pug"));
+                res.write(pug.renderFile(__dirname + "/src/pugs/successRegistered.pug"));
             }
             res.end();
         });
@@ -159,16 +158,16 @@ server.get('/confirmregistrcode', function (req, res) {
 server.get('/contacts', function (req, res) {
     text.header['nowpage'] = "/contacts";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
-    res.write(pug.renderFile(__dirname + "/pugs/contacts.pug", {
+    res.write(pug.renderFile(__dirname + "/src/pugs/contacts.pug", {
         "googlemapapi": config.googlemapapi
     }));
-    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+    res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
     res.end();
 });
 server.get('/thankspage', function (req, res) {
     text.header['nowpage'] = "/";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
-    res.write(fs.readFileSync(__dirname + '/html/thanks.html', 'utf8'));
+    res.write(fs.readFileSync(__dirname + '/src/html/thanks.html', 'utf8'));
     res.end();
 });
 server.get('/ordertaxi', function (req, res) {
@@ -179,12 +178,12 @@ server.get('/ordertaxi', function (req, res) {
         res.redirect("/mydrives");
     } else if (usertype === 'clients') {
         con.query('SELECT * FROM payments', function (err, result) {
-            res.write(pug.renderFile(__dirname + "/pugs/header-client.pug", text.header));
-            res.write(pug.renderFile(__dirname + "/pugs/ordertaxi.pug", {
+            res.write(pug.renderFile(__dirname + "/src/pugs/header-client.pug", text.header));
+            res.write(pug.renderFile(__dirname + "/src/pugs/ordertaxi.pug", {
                 "pay_types": result,
                 "googlemapapi": config.googlemapapi
             }));
-            res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+            res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
             res.end();
         });
     } else {
@@ -196,16 +195,16 @@ server.get('/orders', function (req, res) {
         res.redirect("/404");
     } else {
         text.header['nowpage'] = "/orders";
-        res.write(pug.renderFile(__dirname + "/pugs/header-driver.pug", text.header));
+        res.write(pug.renderFile(__dirname + "/src/pugs/header-driver.pug", text.header));
         const userid = req.cookies.userid;
         con.query("SELECT class FROM car_models WHERE id IN (SELECT carmodelid FROM drivers WHERE id='{}');".format(userid),
             function (err0, result0) {
                 const clas = functions.setCarModelId(userid, result0);
                 con.query("SELECT * FROM orders INNER JOIN payments ON payments.pay_id=orders.pay_type_id WHERE status=0 AND class='" + clas + "';", function (err, result) {
-                    res.write(pug.renderFile(__dirname + "/pugs/orders.pug", {
+                    res.write(pug.renderFile(__dirname + "/src/pugs/orders.pug", {
                         "orders": result
                     }));
-                    res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+                    res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
                     res.end();
                 });
             });
@@ -236,10 +235,10 @@ server.get('/userprofile/:userid', function (req, res) {
         } else {
             text.header['nowpage'] = "/userprofile/" + userid;
             res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
-            res.write(pug.renderFile(__dirname + "/pugs/userprofile.pug", {
+            res.write(pug.renderFile(__dirname + "/src/pugs/userprofile.pug", {
                 "info": result[0]
             }));
-            res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+            res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
             res.end();
         }
     });
@@ -258,11 +257,11 @@ server.get('/driverprofile/:driverid', function (req, res) {
                 " WHERE id=" + result[0].carmodelid + ";", function (err2, result2) {
                 text.header['nowpage'] = "/driverprofile/" + userid;
                 res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
-                res.write(pug.renderFile(__dirname + "/pugs/driverprofile.pug", {
+                res.write(pug.renderFile(__dirname + "/src/pugs/driverprofile.pug", {
                     info: result[0],
                     producer: result2[0]
                 }));
-                res.write(pug.renderFile(__dirname + "/pugs/footer.pug"));
+                res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
                 res.end();
             });
         }
@@ -463,7 +462,7 @@ server.post('/createorder', function (req, res) {
 // default error page
 server.use(function (req, res) {
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
-    res.write(fs.readFileSync(__dirname + '/html/404.html', 'utf8'));
+    res.write(fs.readFileSync(__dirname + '/src/html/404.html', 'utf8'));
     res.end();
 });
 

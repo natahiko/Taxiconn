@@ -62,7 +62,7 @@ module.exports = {
             to: emailTo,
             subject: config.subject,
             html: "<span style='text-align: center; align-items: center; color: black'><h1>" + email.header + "</h1><p>" + email.text + "</p>" +
-                "<div><a href='" + email.link + "/?email=" + emailTo + "'>" + email.linktext + "</a></div>" +
+                "" + email.link + "<div><a href='/?email='>" + emailTo + "" + email.linktext + "</a></div>" +
                 "<input style='width: 50%; margin: 7px 25%; text-align: center; padding: 5px; font-size: x-large; " +
                 "background: white; border-radius: 10px;' disabled type='text' value='" + code + "' id='code'>" +
                 "</span>"
