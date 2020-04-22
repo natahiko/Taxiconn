@@ -129,7 +129,7 @@ module.exports = {
     getStorage: function (multer) {
         return multer.diskStorage({
             destination: function (req, file, callback) {
-                callback(null, './uploads/user_photos');
+                callback(null, './files/uploads');
             },
             filename: function (req, file, cb) {
                 cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));

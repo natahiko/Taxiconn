@@ -1,66 +1,70 @@
-section.profile(id='profilesection')
-    div.main_profile_part
-        img(src=photo_src alt='')
-        div.personal_info
-            div.input-group.mb-3
-                input.login(type="text" id='profile_login' value=info.login disabled)
-                span.invalid-feedback Ваш логін зайнятий! Оберіть новий
-                    div.input-group-append(id='checkLogin' style='display: none')
-                        input.btn.btn-outline-info(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLoginClient()")
+section.mt-5.container(id='profilesection')
+    div.main_profile_part.row
+        div.col-10.col-sm-5.col-md-4.col-lg-3.offset-1.offset-sm-0
+            img.profile_img(src=info.photo_src alt='')
+        div.personal_info.col-12.col-sm-6.col-md-7.col-ld-8.offset-lg-1.row
+            div.col-12.col-sm-6.m-auto.mb-3
+                div.input-group
+                    input.login(type="text" id='profile_login' value=info.login disabled)
+                    span.invalid-feedback Ваш логін зайнятий! Оберіть новий
+                        div.input-group-append(id='checkLogin' style='display: none')
+                            input.btn.btn-outline-info(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLoginClient()")
 
             if info.description
-                div
+                div.col-12
                     textarea.status(disabled id='profile_desc')  #{info.description}
-            div.input-group
+
+            div.input-group.col-12.col-sm-12.mb-2
                 div.input-group-prepend
                     span.input-group-text ПІ
-                input.form-control(type="text" id='profile_surname' value=info.surname disabled)
-                input.form-control(type="text" id='profile_name' value=info.name disabled)
-            div.input-group
+                input.form-control.m-0(type="text" id='profile_surname' value=info.surname disabled)
+                input.form-control.m-0(type="text" id='profile_name' value=info.name disabled)
+            div.input-group.col-12.col-sm-12.mb-2
                 div.input-group-prepend
                     span.input-group-text Email
-                input.form-control(type="text" id='profile_email' value=info.email disabled)
-            div.form-inline.row
-                div.input-group.col
+                input.form-control.m-0(type="text" id='profile_email' value=info.email disabled)
+            div.form-inline.row.col-12.col-sm-12.mb-2.pr-0
+                div.input-group.col-12.col-sm-12.col-md-4.pr-0
                     div.input-group-prepend
                         span.input-group-text Вік
-                    input.form-control(type="number" id='profile_age' value=info.age disabled)
-                div.input-group.col
+                    input.form-control.m-0(type="number" id='profile_age' value=info.age disabled)
+                div.input-group.col-12.col-sm-12.pr-0.col-md-8
                     div.input-group-prepend
                         span.input-group-text Тел.
-                    input.form-control(type="text" id='profile_phone' value=info.phone disabled)
-            div.input-group
-                input.btn.btn-info(type="button" id='change_password' value="Змінити пароль" data-toggle="modal" data-target="#changepass")
+                    input.form-control.m-0(type="text" id='profile_phone' value=info.phone disabled)
+        div.input-group.col-sm-5.offset-sm-5.col-8.offset-2.mb-2
+            input.btn.btn-warning.form-control(type="button" id='change_password' value="Змінити пароль" data-toggle="modal" data-target="#changepass")
 
-    div.modal.fade(id="changepass" tabindex="-1" role="dialog" aria-hidden="true")
-        div.modal-dialog(role="document")
-            div.modal-content
-                div.modal-header
-                    h5.modal-title Змінити пароль
-                    button.close(data-dismiss="modal" aria-label="Close")
-                        span(aria-hidden="true") &times;
-                div.modal-body
-                    form
-                        div.input-group.mb-3
-                            div.input-group-prepend
-                                span.input-group-text Старий пароль:
-                            input.form-control(type="password" id="old_change_pass" )
-                            span.invalid-feedback Неправильний старий пароль
-                        div.input-group.mb-3
-                            div.input-group-prepend
-                                span.input-group-text Новий пароль:
-                            input.form-control(type="password" id="change_pass" )
-                            span.invalid-feedback Пароль повинен містити літери нижнього та вищого регістру, цифри та може містити символи
-                        div.input-group.mb-3
-                            div.input-group-prepend
-                                span.input-group-text Підтвердіть пароль:
-                            input.form-control(type="password" id="change_pass2" )
-                            span.invalid-feedback Паролі повинні збігатись
-                div.modal-footer
-                    button.btn.btn-secondary(data-dismiss="modal" id='cancelchangepass') Назад
-                    button.btn.btn-info(onclick="changePass('clients')") Зберегти
-div.input-group
-    input.btn.btn-info(type="button" id='editprofilebutton' value="Редагувати профіль" onclick='editClientProfile()')
-div.input-group
-    input.btn.btn-info(style='display:none' type="button" id='saveprofilebutton' value="Зберегти зміни" onclick='saveClientChanges()')
-    input.btn.btn-info(style='display:none' type="button" id='canselprofilebutton' value="Зберегти зміни" onclick='cancelClientChanges()')
+        div.input-group.col-8.mb-2.offset-2
+            input.btn.btn-warning.mb-2.form-control(type="button" id='editprofilebutton' value="Редагувати профіль" onclick='editClientProfile()')
+        div.input-group.col-8.offset-2.mb-2
+            input.btn.btn-outline-secondary.mb-2.form-control(style='display:none' type="button" id='canselprofilebutton' value="Скасувати" onclick='canselClientChanges()')
+            input.btn.btn-warning.mb-2.form-control(style='display:none' type="button" id='saveprofilebutton' value="Зберегти зміни" onclick='saveClientChanges()')
+
+div.modal.fade(id="changepass" tabindex="-1" role="dialog" aria-hidden="true")
+    div.modal-dialog(role="document")
+        div.modal-content
+            div.modal-header
+                h5.modal-title Змінити пароль
+                button.close(data-dismiss="modal" aria-label="Close")
+                    span(aria-hidden="true") &times;
+            div.modal-body
+                form
+                    div.input-group.mb-3
+                        div.input-group-prepend
+                            span.input-group-text Старий пароль:
+                        input.form-control(type="password" id="old_change_pass" )
+                        span.invalid-feedback Неправильний старий пароль
+                    div.input-group.mb-3
+                        div.input-group-prepend
+                            span.input-group-text Новий пароль:
+                        input.form-control(type="password" id="change_pass" )
+                        span.invalid-feedback Пароль повинен містити літери нижнього та вищого регістру, цифри та може містити символи
+                    div.input-group.mb-3
+                        div.input-group-prepend
+                            span.input-group-text Підтвердіть пароль:
+                        input.form-control(type="password" id="change_pass2" )
+                        span.invalid-feedback Паролі повинні збігатись
+            div.modal-footer
+                button.btn.btn-secondary(data-dismiss="modal" id='cancelchangepass') Назад
+                button.btn.btn-warning(onclick="changePass('clients')") Зберегти

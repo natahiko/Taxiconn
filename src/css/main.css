@@ -276,7 +276,7 @@ footer nav {
 }
 
 .prod {
-    background-color: rgba(214, 255, 234, 0.59);
+    background-color: rgba(255, 193, 7, 0.49);
     text-align: right;
     padding-right: 15px;
 }
@@ -293,41 +293,22 @@ footer nav {
     padding: 10px 25px 25px;
 }
 
-.profile {
-    margin: 25px 25px 0;
-    padding: 25px;
-    min-height: 70vh;
-}
-
 .main_profile_part {
     width: 100%;
 }
-
-.main_profile_part img {
-    border-radius: 10%;
-    border: 1em solid #ced4da;
-    width: 28%;
-    margin: 0 3%;
+.profile_img{
+    border-radius: 50%;
+    width: 100%;
 }
 
-.personal_info {
-    float: right;
-    width: 60%;
-}
-
-.personal_info .input-group-text {
-    background-color: #eeeeee;
-    border: 1px solid #ced4da;
-}
-
-.personal_info input[disabled], .driver_auto input[disabled], .driver_auto select[disabled] {
+.personal_info input[disabled], .driver_auto input[disabled], .driver_auto select[disabled]{
     background-color: white;
     margin: 7px 0;
     border: 1px solid #ced4da;
 }
 
-.personal_info input, .driver_auto input, .driver_auto select {
-    background-color: #e3fdff;
+.personal_info input, .driver_auto input, .driver_auto select, .driver_auto textarea {
+    background-color: rgba(255, 193, 7, 0.36);
     margin: 7px 0;
 }
 
@@ -337,7 +318,8 @@ footer nav {
     font-weight: bolder;
     font-size: xx-large;
     color: black;
-    font-family: Arial, serif;
+    font-family: "Comfortaa", serif;
+    text-transform: uppercase;
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
 }
@@ -346,16 +328,8 @@ footer nav {
     width: 100%;
     background: transparent;
     border: 0;
+    font-family: "Comfortaa", serif;
     font-size: medium;
-    margin-bottom: 10px;
-}
-
-.input-group .btn-info {
-    color: #fff !important;
-    background-color: #17a2b8 !important;
-    border-color: #17a2b8 !important;
-    width: 50%;
-    margin: 0 25%;
 }
 
 .year {

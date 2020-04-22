@@ -247,7 +247,7 @@ server.param('userid', function (req, res, next, userid) {
 });
 server.get('/userprofile/:userid', function (req, res) {
     const userid = req.userid;
-    con.query("SELECT * FROM clients WHERE id='" + userid + "';", function (err, result) {
+    con.query("SELECT * FROM clients WHERE id='{}';".format(userid), function (err, result) {
         if (err || result.length < 1) {
             res.redirect("/404");
         } else {
@@ -267,7 +267,7 @@ server.param('driverid', function (req, res, next, driverid) {
 });
 server.get('/driverprofile/:driverid', function (req, res) {
     const userid = req.userid;
-    con.query("SELECT * FROM drivers WHERE id='" + userid + "';", function (err, result) {
+    con.query("SELECT * FROM drivers WHERE id='{}';".format(userid), function (err, result) {
         if (err || result.length < 1) {
             res.redirect("/404");
         } else {
