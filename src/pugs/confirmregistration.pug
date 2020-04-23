@@ -1,7 +1,8 @@
-section.error404
+section.error404.content
     p.display-3 <b>Підтвердіть реєстрацію</b>
     p На вказану вами пошту було надіслано код підтвердження, скопіюйте його та вставте в поле нижче:
     form(action='/confirmregistrcode' method='get')
         input.form-control(type='text' name='code')
         input.form-control( style='display: none' type='email' name='email' value=email)
         button.btn-success.btn.btn-lg(type='submit') Підтвердити
+include footer

@@ -177,11 +177,22 @@ footer .copyright {
 .fa-facebook:before {
     content: "\f09a";
 }
-
+html{
+    height: 100%;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+.content{
+    flex: 1 0 auto;
+}
 footer {
     margin-top: 30px;
     bottom: 0;
     width: 100%;
+    flex: 0 0 auto;
 }
 
 footer nav {
@@ -215,7 +226,6 @@ footer nav {
 .error404 {
     margin: 20px;
     padding: 10px;
-    min-height: 65vh;
 }
 
 .pict-with-caption {
@@ -401,5 +411,18 @@ footer nav {
 
 .shadow-small{
     box-shadow: 2px 2px 7px rgba(0,0,0,0.65) ;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #343a40;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ffc107;
 }
 

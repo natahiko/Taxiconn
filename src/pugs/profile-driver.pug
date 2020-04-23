@@ -1,74 +1,76 @@
-section.mt-5.container(id='profilesection')
-    div.main_profile_part.row
-        div.col-10.col-sm-5.col-md-4.col-lg-3.offset-1.offset-sm-0
-            img.profile_img(src=info.photo_src alt='')
-        div.personal_info.col-12.col-sm-6.col-md-7.col-ld-8.offset-lg-1.row
-            div.col-12.col-sm-6.m-auto.mb-3
-                div.input-group
-                    input.form-control.login(type="text" id='profile_login' value=info.login disabled)
-                    span.invalid-feedback Ваш логін зайнятий! Оберіть новий
-                    div.input-group-append(id='checkLogin' style='display: none')
-                        input.btn.btn-outline-info(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLogin()")
+div.content
+    section.mt-4.container(id='profilesection')
+        div.main_profile_part.row
+            div.col-10.col-sm-5.col-md-4.col-lg-3.offset-1
+                img.profile_img(src=info.photo_src alt='')
+            div.personal_info.col-12.col-sm-6.col-md-7.col-ld-8.row
+                div.col-12.col-sm-6.m-auto.mb-3
+                    div.input-group
+                        input.form-control.login.m-0(type="text" id='profile_login' value=info.login disabled)
+                        span.invalid-feedback Ваш логін зайнятий! Оберіть новий
+                        div.input-group-append(id='checkLogin' style='display: none')
+                            input.btn.btn-outline-secondary.m-0(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLogin()")
 
-            if info.description
-                div.col-12
-                    textarea.status(disabled id='profile_desc')  #{info.description}
-            div.input-group.col-12.col-sm-12.mb-2
-                div.input-group-prepend
-                    span.input-group-text ПІ
-                input.form-control.m-0(type="text" id='profile_surname' value=info.surname disabled)
-                input.form-control.m-0(type="text" id='profile_name' value=info.name disabled)
-            div.input-group.col-12.col-sm-12.mb-2
-                div.input-group-prepend
-                    span.input-group-text Email
-                input.form-control.m-0(type="text" id='profile_email' value=info.email disabled)
-            iv.form-inline.row.col-12.col-sm-12.mb-2.pr-0
-                div.input-group.col-12.col-sm-12.col-md-4.pr-0
+                if info.description
+                    div.col-12
+                        textarea.status(disabled id='profile_desc')  #{info.description}
+                div.input-group.col-12.col-sm-12.mb-2
                     div.input-group-prepend
-                        span.input-group-text Вік
-                    input.form-control.m-0(type="number" min=21 max=65 id='profile_age' value=info.age disabled)
-                div.input-group.col-12.col-sm-12.pr-0.col-md-8
+                        span.input-group-text ПІ
+                    input.form-control.m-0(type="text" id='profile_surname' value=info.surname disabled)
+                    input.form-control.m-0(type="text" id='profile_name' value=info.name disabled)
+                div.input-group.col-12.col-sm-12.mb-2
                     div.input-group-prepend
-                        span.input-group-text Тел.
-                    input.form-control.m-0(type="text" id='profile_phone' value=info.phone disabled)
-        div.input-group.col-sm-5.offset-sm-5.col-8.offset-2.mb-2
-                input.btn.btn-warning.form-control(type="button" id='change_password' value="Змінити пароль" data-toggle="modal" data-target="#changepass")
-div.driver_auto
-    div.form-inline.row
-        div.input-group.col-12.mb-3.col-md-5.col-sm-12
-            div.input-group-prepend
-                span.input-group-text Номер
-            input.form-control.m-0(type="text" id='carnumber' value=info.carnumber disabled)
-        div.input-group.col-12.mb-3.col-md-3.col-sm-4
-            div.input-group-prepend
-                span.input-group-text Права
-            input.form-control.m-0(type="text" value=info.licence disabled)
-        div.input-group.col-12.mb-3.col-md-4.col-sm-8
-            div.input-group-prepend
-                span.input-group-text Клас
-            select.form-control.m-0(disabled onchange='renew_car_model()' id='carclassprofile')
-                if info.class === 'econom'
-                    option(selected) econom
-                    option comfort
-                else
-                    option econom
-                    option(selected) comfort
-        div.input-group.col-12.mb-3.row.pr-0
-                div.input-group-prepend.col-3.col-sm-2.pr-0
-                    span.input-group-text Авто
-                select.form-control.m-0.col-9.col-sm-4(disabled onchange='renew_car_model()' id='select_carproducer')
-                    each prod in producers
-                        if prod.prodid === info.producer_id
-                            option.form-control(selected value=prod.prodid) #{prod.producer}
-                        else
-                            option.form-control(value=prod.prodid) #{prod.producer}
-                select.form-control.m-0.col-8.col-sm-4(disabled id="select_carmodel")
-                input.form-control.m-0.col-4.col-sm-2(type="number" id='profile_carid' min=2000 max=2020 value=info.caryear disabled)
-div.input-group
-    input.btn.btn-warning(type="button" id='editprofilebutton' value="Редагувати профіль" onclick='editDriverProfile()')
-div.input-group
-    input.btn.btn-warning(style='display:none' type="button" id='saveprofilebutton' value="Зберегти зміни" onclick='saveDriverChanges()')
-    input.btn.btn-outline-secondary(style='display:none' type="button" id='canselprofilebutton' value="Скасувати" onclick='canselDriverChanges()')
+                        span.input-group-text Email
+                    input.form-control.m-0(type="text" id='profile_email' value=info.email disabled)
+                iv.form-inline.row.col-12.col-sm-12.mb-2.pr-0
+                    div.input-group.col-12.col-sm-12.col-md-4.pr-0
+                        div.input-group-prepend
+                            span.input-group-text Вік
+                        input.form-control.m-0(type="number" min=21 max=65 id='profile_age' value=info.age disabled)
+                    div.input-group.col-12.col-sm-12.pr-0.col-md-8
+                        div.input-group-prepend
+                            span.input-group-text Тел.
+                        input.form-control.m-0(type="text" id='profile_phone' value=info.phone disabled)
+            div.input-group.col-sm-5.offset-sm-5.col-8.offset-2.mb-2
+                    input.btn.btn-warning.form-control(type="button" id='change_password' value="Змінити пароль" data-toggle="modal" data-target="#changepass")
+    div.driver_auto
+        div.form-inline.row
+            div.input-group.col-12.mb-3.col-md-5.col-sm-12
+                div.input-group-prepend
+                    span.input-group-text Номер
+                input.form-control.m-0(type="text" id='carnumber' value=info.carnumber disabled)
+            div.input-group.col-12.mb-3.col-md-3.col-sm-4
+                div.input-group-prepend
+                    span.input-group-text Права
+                input.form-control.m-0(type="text" value=info.licence disabled)
+            div.input-group.col-12.mb-3.col-md-4.col-sm-8
+                div.input-group-prepend
+                    span.input-group-text Клас
+                select.form-control.m-0(disabled onchange='renew_car_model()' id='carclassprofile')
+                    if info.class === 'econom'
+                        option(selected) econom
+                        option comfort
+                    else
+                        option econom
+                        option(selected) comfort
+            div.input-group.col-12.mb-3.row.pr-0
+                    div.input-group-prepend.col-3.col-sm-2.pr-0
+                        span.input-group-text Авто
+                    select.form-control.m-0.col-9.col-sm-4(disabled onchange='renew_car_model()' id='select_carproducer')
+                        each prod in producers
+                            if prod.prodid === info.producer_id
+                                option.form-control(selected value=prod.prodid) #{prod.producer}
+                            else
+                                option.form-control(value=prod.prodid) #{prod.producer}
+                    select.form-control.m-0.col-8.col-sm-4(disabled id="select_carmodel")
+                    input.form-control.m-0.col-4.col-sm-2(type="number" id='profile_carid' min=2000 max=2020 value=info.caryear disabled)
+    div.row
+            div.input-group.col-8.mb-2.offset-2
+                input.btn.btn-warning.mb-2.form-control(type="button" id='editprofilebutton' value="Редагувати профіль" onclick='editDriverProfile()')
+            div.input-group.col-8.mb-2.offset-2
+                input.btn.btn-outline-secondary.mb-2.form-control(style='display:none' type="button" id='canselprofilebutton' value="Скасувати" onclick='canselDriverChanges()')
+                input.btn.btn-warning.mb-2.form-control(style='display:none' type="button" id='saveprofilebutton' value="Зберегти зміни" onclick='saveDriverChanges()')
 
 
 div.modal.fade(id="changepass" tabindex="-1" role="dialog" aria-hidden="true")
@@ -100,3 +102,4 @@ div.modal.fade(id="changepass" tabindex="-1" role="dialog" aria-hidden="true")
                 button.btn.btn-warning(onclick="changePass('drivers')") Зберегти
 
 script(type='text/javascript') renew_car_model(`#{info.carmodelid}`)
+include footer

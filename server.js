@@ -52,7 +52,6 @@ server.get('/driver/workcond', function (req, res) {
         res.write(pug.renderFile(__dirname + "/src/pugs/workcond.pug", {
             allmodels: result
         }));
-        res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
         res.end();
     });
 });
@@ -63,7 +62,6 @@ server.get('/user/userrules', function (req, res) {
         res.write(pug.renderFile(__dirname + "/src/pugs/userrules.pug", {
             blogs: result
         }));
-        res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
         res.end();
     });
 });
@@ -93,7 +91,6 @@ server.get('/profile', function (req, res) {
                         producers: result2,
                         info: result[0]
                     }));
-                    res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
                     res.end();
                 });
             }
@@ -107,7 +104,6 @@ server.get('/profile', function (req, res) {
                 res.write(pug.renderFile(__dirname + "/src/pugs/profile-client.pug", {
                     info: result[0]
                 }));
-                res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
                 res.end();
             }
         });
@@ -126,7 +122,6 @@ server.get('/driver/becomedriver', function (req, res) {
             res.write(pug.renderFile(__dirname + "/src/pugs/becomedriver.pug", {
                 producers: result
             }));
-            res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
             res.end();
         });
     }
@@ -142,7 +137,6 @@ server.get('/confirmregistration', function (req, res) {
         res.write(pug.renderFile(__dirname + "/src/pugs/confirmregistration.pug", {
             "email": email
         }));
-        res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
     }
     res.end();
 });
@@ -179,7 +173,6 @@ server.get('/contacts', function (req, res) {
     res.write(pug.renderFile(__dirname + "/src/pugs/contacts.pug", {
         "googlemapapi": config.googlemapapi
     }));
-    res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
     res.end();
 });
 server.get('/thankspage', function (req, res) {
@@ -201,7 +194,6 @@ server.get('/ordertaxi', function (req, res) {
                 "pay_types": result,
                 "googlemapapi": config.googlemapapi
             }));
-            res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
             res.end();
         });
     } else {
@@ -222,7 +214,6 @@ server.get('/orders', function (req, res) {
                     res.write(pug.renderFile(__dirname + "/src/pugs/orders.pug", {
                         "orders": result
                     }));
-                    res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
                     res.end();
                 });
             });
@@ -256,7 +247,6 @@ server.get('/userprofile/:userid', function (req, res) {
             res.write(pug.renderFile(__dirname + "/src/pugs/profile_client_for driver.pug", {
                 "info": result[0]
             }));
-            res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
             res.end();
         }
     });
@@ -279,7 +269,6 @@ server.get('/driverprofile/:driverid', function (req, res) {
                     info: result[0],
                     producer: result2[0]
                 }));
-                res.write(pug.renderFile(__dirname + "/src/pugs/footer.pug"));
                 res.end();
             });
         }

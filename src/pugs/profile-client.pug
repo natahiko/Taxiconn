@@ -1,14 +1,14 @@
-section.mt-5.container(id='profilesection')
+section.mt-4.container.content(id='profilesection')
     div.main_profile_part.row
-        div.col-10.col-sm-5.col-md-4.col-lg-3.offset-1.offset-sm-0
+        div.col-10.col-sm-5.col-md-4.col-lg-3.offset-1
             img.profile_img(src=info.photo_src alt='')
-        div.personal_info.col-12.col-sm-6.col-md-7.col-ld-8.offset-lg-1.row
+        div.personal_info.col-12.col-sm-6.col-md-7.col-ld-8.row
             div.col-12.col-sm-6.m-auto.mb-3
                 div.input-group
-                    input.login(type="text" id='profile_login' value=info.login disabled)
+                    input.login.m-0(type="text" id='profile_login' value=info.login disabled)
                     span.invalid-feedback Ваш логін зайнятий! Оберіть новий
                         div.input-group-append(id='checkLogin' style='display: none')
-                            input.btn.btn-outline-info(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLoginClient()")
+                            input.btn.btn-outline-secondary.m-0(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLoginClient()")
 
             if info.description
                 div.col-12
@@ -34,7 +34,6 @@ section.mt-5.container(id='profilesection')
                     input.form-control.m-0(type="text" id='profile_phone' value=info.phone disabled)
         div.input-group.col-sm-5.offset-sm-5.col-8.offset-2.mb-2
             input.btn.btn-warning.form-control(type="button" id='change_password' value="Змінити пароль" data-toggle="modal" data-target="#changepass")
-
         div.input-group.col-8.mb-2.offset-2
             input.btn.btn-warning.mb-2.form-control(type="button" id='editprofilebutton' value="Редагувати профіль" onclick='editClientProfile()')
         div.input-group.col-8.offset-2.mb-2
@@ -68,3 +67,4 @@ div.modal.fade(id="changepass" tabindex="-1" role="dialog" aria-hidden="true")
             div.modal-footer
                 button.btn.btn-secondary(data-dismiss="modal" id='cancelchangepass') Назад
                 button.btn.btn-warning(onclick="changePass('clients')") Зберегти
+include footer

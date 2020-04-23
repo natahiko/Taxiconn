@@ -1,27 +1,30 @@
-section.profile
-    div.main_profile_part
-        img(src=info.photo_src alt='')
-        div.personal_info
-            div.input-group.mb-3
-                input.login(type="text" id='profile_login' value=info.login disabled)
+section.mt-4.container.content(id='profilesection')
+    div.main_profile_part.row
+        div.col-10.col-sm-5.col-md-4.col-lg-3.offset-1
+            img.profile_img(src=info.photo_src alt='')
+        div.personal_info.col-12.col-sm-6.col-md-7.col-ld-8.row
+            div.col-12.col-sm-6.m-auto.mb-3
+                div.input-group
+                    input.login.m-0(type="text" id='profile_login' value=info.login disabled)
             if info.description
-                div
+                div.col-12
                     textarea.status(disabled id='profile_desc')  #{info.description}
-            div.input-group
+            div.input-group.col-12.col-sm-12.mb-2
                 div.input-group-prepend
                     span.input-group-text ПІ
-                input.form-control(type="text" id='profile_surname' value=info.surname disabled)
-                input.form-control(type="text" id='profile_name' value=info.name disabled)
-            div.input-group
+                input.form-control.m-0(type="text" id='profile_surname' value=info.surname disabled)
+                input.form-control.m-0(type="text" id='profile_name' value=info.name disabled)
+            div.input-group.col-12.col-sm-12.mb-2
                 div.input-group-prepend
                     span.input-group-text Email
-                input.form-control(type="text" id='profile_email' value=info.email disabled)
-            div.form-inline.row
-                div.input-group.col
+                input.form-control.m-0(type="text" id='profile_email' value=info.email disabled)
+            div.form-inline.row.col-12.col-sm-12.mb-2.pr-0
+                div.input-group.col-12.col-sm-12.col-md-4.pr-0
                     div.input-group-prepend
                         span.input-group-text Вік
-                    input.form-control(type="number" id='profile_age' value=info.age disabled)
-                div.input-group.col
+                    input.form-control.m-0(type="number" id='profile_age' value=info.age disabled)
+                div.input-group.col-12.col-sm-12.pr-0.col-md-8
                     div.input-group-prepend
                         span.input-group-text Тел.
-                    input.form-control(type="text" id='profile_phone' value=info.phone disabled)
+                    input.form-control.m-0(type="text" id='profile_phone' value=info.phone disabled)
+include footer

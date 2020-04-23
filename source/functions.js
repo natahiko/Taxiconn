@@ -37,15 +37,17 @@ module.exports = {
         if (localStorage.getItem(email) === null || localStorage.getItem(email) !== code) {
             return "";
         }
+        let photo_src = "https://eu.ui-avatars.com/api/?name="+json.name+"%20"+json.surname
+            +"&background=343a40&color=ffc107&bold=true&size=512";
         let json = jsonStorage.getItem(code);
         if (json === "") return "";
         json = JSON.parse(json);
         const userid = this.generateCode();
         let sql = `INSERT INTO drivers (id, login, name, surname, age, licence, carmodelid, caryear,
-                     password, phone, description, email, carnumber) VALUES 
+                     password, phone, description, email, carnumber, photo_src) VALUES 
                     ('{}', '{}','{}','{}','{}','{}','{}', '{}','{}','{}','{}','{}', '{}'
             )`.format(userid, json.login, json.name, json.surname, json.age, json.licence, carmodelid,
-            json.car_year, json.password, json.phone, json.description, json.email, json.autonum);
+            json.car_year, json.password, json.phone, json.description, json.email, json.autonum, photo_src);
         localStorage.removeItem(email);
         localStorage.removeItem(code);
         return sql;
