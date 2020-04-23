@@ -37,15 +37,15 @@ module.exports = {
         if (localStorage.getItem(email) === null || localStorage.getItem(email) !== code) {
             return "";
         }
-        let photo_src = "https://eu.ui-avatars.com/api/?name="+json.name+"%20"+json.surname
-            +"&background=343a40&color=ffc107&bold=true&size=512";
         let json = jsonStorage.getItem(code);
+        let photo_src = "https://eu.ui-avatars.com/api/?name=" + json.name + "%20" + json.surname
+            + "&background=343a40&color=ffc107&bold=true&size=512";
         if (json === "") return "";
         json = JSON.parse(json);
         const userid = this.generateCode();
         let sql = `INSERT INTO drivers (id, login, name, surname, age, licence, carmodelid, caryear,
                      password, phone, description, email, carnumber, photo_src) VALUES 
-                    ('{}', '{}','{}','{}','{}','{}','{}', '{}','{}','{}','{}','{}', '{}'
+                    ('{}', '{}','{}','{}','{}','{}','{}', '{}','{}','{}','{}','{}', '{}', '{}'
             )`.format(userid, json.login, json.name, json.surname, json.age, json.licence, carmodelid,
             json.car_year, json.password, json.phone, json.description, json.email, json.autonum, photo_src);
         localStorage.removeItem(email);
@@ -128,15 +128,13 @@ module.exports = {
                 (id, user_id, class, pay_type_id, comment, address_from, address_to, url) 
                 VALUES ('{}', '{}', '{}', '{}' , ${notes}, '{}', '{}', '{}');`.format(code, userid, clas, pay_type, from, to, dirurl);
     },
-    getStorage: function (multer) {
-        return multer.diskStorage({
-            destination: function (req, file, callback) {
-                callback(null, './files/uploads');
-            },
-            filename: function (req, file, cb) {
-                cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-            }
-        });
+    getSQLUploadPhoto: function (cookie, data, type) {
+        const text = "data:image/" + type + ";base64," + data.toString('base64');
+        const userid = cookie.userid;
+        if (cookie.authorised === 'clients')
+            return "UPDATE clients SET photo_src='{}' WHERE id='{}';".format(text, userid);
+        else
+            return "UPDATE drivers SET photo_src='{}' WHERE id='{}';".format(text, userid);
     }
 };
 

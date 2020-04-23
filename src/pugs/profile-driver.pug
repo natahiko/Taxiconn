@@ -2,7 +2,15 @@ div.content
     section.mt-4.container(id='profilesection')
         div.main_profile_part.row
             div.col-10.col-sm-5.col-md-4.col-lg-3.offset-md-1.offset-sm-0.offset-1
-                img.profile_img(src=info.photo_src alt='')
+                div.photo_container
+                    img.profile_img(src=info.photo_src alt='')
+                input.btn.btn-outline-warning.form-control(type='button' id="edit_profile_photo" onclick='editPhoto()' value="Update photo")
+
+                form(style="display: none" enctype="multipart/form-data" id='upload_photo')
+                    input.inputfile(id="profile_photo" name="photo" type="file")
+                    label.upload_photo_profile(for="profile_photo")
+                        span.upload_photo_label
+                    input.btn.btn-warning.form-control.b(type="button" onclick="sendNewProfilePhoto()" value="Upload")
             div.personal_info.col-12.col-sm-7.col-ld-8.row
                 div.col-12.col-sm-6.m-auto.mb-3
                     div.input-group
@@ -33,7 +41,7 @@ div.content
                             span.input-group-text Тел.
                         input.form-control.m-0(type="text" id='profile_phone' value=info.phone disabled)
             div.input-group.col-sm-5.offset-sm-5.col-8.offset-2.mb-2
-                    input.btn.btn-warning.form-control(type="button" id='change_password' value="Змінити пароль" data-toggle="modal" data-target="#changepass")
+                input.btn.btn-warning.form-control(type="button" id='change_password' value="Змінити пароль" data-toggle="modal" data-target="#changepass")
     div.driver_auto.pb-1.m-0
         div.form-inline.row
             div.input-group.col-12.mb-3.col-md-5.col-sm-12
@@ -55,22 +63,22 @@ div.content
                         option econom
                         option(selected) comfort
             div.input-group.col-12.mb-3.row.pr-0
-                    div.input-group-prepend.col-3.col-sm-2.pr-0
-                        span.input-group-text Авто
-                    select.form-control.m-0.col-9.col-sm-4(disabled onchange='renew_car_model()' id='select_carproducer')
-                        each prod in producers
-                            if prod.prodid === info.producer_id
-                                option.form-control(selected value=prod.prodid) #{prod.producer}
-                            else
-                                option.form-control(value=prod.prodid) #{prod.producer}
-                    select.form-control.m-0.col-8.col-sm-4(disabled id="select_carmodel")
-                    input.form-control.m-0.col-4.col-sm-2(type="number" id='profile_carid' min=2000 max=2020 value=info.caryear disabled)
+                div.input-group-prepend.col-3.col-sm-2.pr-0
+                    span.input-group-text Авто
+                select.form-control.m-0.col-9.col-sm-4(disabled onchange='renew_car_model()' id='select_carproducer')
+                    each prod in producers
+                        if prod.prodid === info.producer_id
+                            option.form-control(selected value=prod.prodid) #{prod.producer}
+                        else
+                            option.form-control(value=prod.prodid) #{prod.producer}
+                select.form-control.m-0.col-8.col-sm-4(disabled id="select_carmodel")
+                input.form-control.m-0.col-4.col-sm-2(type="number" id='profile_carid' min=2000 max=2020 value=info.caryear disabled)
     div.row
-            div.input-group.col-8.mb-2.offset-2
-                input.btn.btn-warning.mb-2.form-control(type="button" id='editprofilebutton' value="Редагувати профіль" onclick='editDriverProfile()')
-            div.input-group.col-8.mb-2.offset-2
-                input.btn.btn-outline-secondary.mb-2.form-control(style='display:none' type="button" id='canselprofilebutton' value="Скасувати" onclick='canselDriverChanges()')
-                input.btn.btn-warning.mb-2.form-control(style='display:none' type="button" id='saveprofilebutton' value="Зберегти зміни" onclick='saveDriverChanges()')
+        div.input-group.col-8.mb-2.offset-2
+            input.btn.btn-warning.mb-2.form-control(type="button" id='editprofilebutton' value="Редагувати профіль" onclick='editDriverProfile()')
+        div.input-group.col-8.mb-2.offset-2
+            input.btn.btn-outline-secondary.mb-2.form-control(style='display:none' type="button" id='canselprofilebutton' value="Скасувати" onclick='canselDriverChanges()')
+            input.btn.btn-warning.mb-2.form-control(style='display:none' type="button" id='saveprofilebutton' value="Зберегти зміни" onclick='saveDriverChanges()')
 
 
 div.modal.fade(id="changepass" tabindex="-1" role="dialog" aria-hidden="true")

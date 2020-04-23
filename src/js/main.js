@@ -531,12 +531,12 @@ function renew_orders_method() {
         success: function (data) {
             let elem = $("<div></div>");
             data.forEach((order) => {
-                let res = "<div class='card'>";
+                let res = "<div class='card brad-0 shadow-small'>";
                 if (order.pay_type_id === 1) {
-                    res += "<div class='card-header bg-grey'><span class='order_price'>" + order.price + " ₴</span>" +
+                    res += "<div class='card-header bg-grey brad-0'><span class='order_price'>" + order.price + " ₴</span>" +
                         "<span style='float: right'><kbd class='kbdord'>Готівка</kbd></span></div>";
                 } else {
-                    res += "<div class='card-header bg-light-grey'><span class='order_price'>" + order.price + " ₴</span>" +
+                    res += "<div class='card-header bg-light-grey brad-0'><span class='order_price'>" + order.price + " ₴</span>" +
                         "<span style='float: right'><kbd class='kbdord'>" + order.name + "</kbd></span></div>";
                 }
                 res += "<div class='card-body'><b>Місце посадки:</b> " + order.address_from + "<br>" +
@@ -572,4 +572,27 @@ function setFooter() {
             console.log(data.err);
         }
     });
+}
+
+function sendNewProfilePhoto() {
+    var formData = new FormData($("#upload_photo")[0]);
+    $.ajax
+    ({
+        url: '/upload_user_photo',
+        type: "POST",
+        data: formData,
+        success: function () {
+            window.location = "./profile";
+        },
+        error: function () {
+            alert('Sorry something happened on server');
+        },
+        contentType: false,
+        processData: false
+    });
+}
+
+function editPhoto() {
+    $("#edit_profile_photo").hide();
+    $("#upload_photo").show();
 }

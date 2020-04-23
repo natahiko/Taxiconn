@@ -8,6 +8,7 @@ let text = require('./config/main.json');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 let fs = require('fs');
+let path = require('path');
 
 let server = express();
 server.use(cookieParser());
@@ -23,19 +24,29 @@ server.use(bodyParser.json());
 let con = mysql.createConnection(config.database);
 
 
-// TODO MULTER
-let upload = multer({storage: functions.getStorage(multer)});
-server.post('/upload_user_photo', upload.single('photo'), function (req, res) {
+let storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, "../../files/uploads");
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+let upload_user_photo = multer({storage: storage});
+server.post('/upload_user_photo', upload_user_photo.single('photo'), function (req, res) {
     if (!req.file) {
         console.log("No file received");
-        res.end();
     } else {
+        console.log(req.file);
         fs.readFile(req.file.path, (err, data) => {
-            let res3 = "data:image/" +req.file.type +";base64,"+ data.toString('base64');
-            console.log(res3);
+            con.query(functions.getSQLUploadPhoto(req.cookies, data, req.file.type), function () {
+                fs.unlinkSync(req.file.path);
+                res.end();
+            });
         });
-        res.end();
     }
+    res.end();
 });
 
 
