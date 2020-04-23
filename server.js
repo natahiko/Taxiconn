@@ -388,12 +388,14 @@ server.post('/isLoginFree', function (req, res) {
     });
 });
 server.post('/isAllFree', function (req, res) {
+    console.log("here-isall");
     let login = req.body.login;
     let phone = req.body.number;
     let email = req.body.email;
     if (login === "" || phone === "" || email === "") {
         res.statusCode = 406;
         res.end();
+        return;
     }
     con.query("SELECT * FROM drivers WHERE login='{}' OR phone='{}' OR email='{}';".format(login, phone, email), function (err, result) {
         res.setHeader('Content-Type', 'application/json');
@@ -414,6 +416,7 @@ server.post('/isAllFree', function (req, res) {
     });
 });
 server.post('/sendmail', function (req, res) {
+    console.log("email ");
     let emailTo = req.body.email;
     let code = functions.generateCode();
     functions.setCode(emailTo, code);

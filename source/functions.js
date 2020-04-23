@@ -63,10 +63,13 @@ module.exports = {
             from: config.auth.user,
             to: emailTo,
             subject: config.subject,
-            html: "<span style='text-align: center; align-items: center; color: black'><h1>" + email.header + "</h1><p>" + email.text + "</p>" +
-                "" + email.link + "<div><a href='/?email='>" + emailTo + "" + email.linktext + "</a></div>" +
+            html: "<div style='background-color: #343A40; width: 100%'>" +
+                "    <b style='margin: 15px; color: white; font-size: x-large'>Taxiconn</b>" +
+                "    <h2 style='text-align: center'></h2></div>"+
+                "<span style='text-align: center; align-items: center; color: black'><h1>" + email.header + "</h1><p>" + email.text + "</p>" +
+                "<div><a style='color: #E69C24' href='"+email.link+"/?email="+emailTo+"'>" + email.linktext + "</a></div>" +
                 "<input style='width: 50%; margin: 7px 25%; text-align: center; padding: 5px; font-size: x-large; " +
-                "background: white; border-radius: 10px;' disabled type='text' value='" + code + "' id='code'>" +
+                "background: white; border: none' disabled type='text' value='" + code + "' id='code'>" +
                 "</span>"
         };
         transporter.sendMail(mailOptions, function (error, info) {

@@ -5,7 +5,7 @@ div.container.content(id='becomedriverpage')
                 kbd Стати водієм
                 i  taxiconn.com.ua
     hr
-    form.form-row.needs-validation(novalidate action='/confirmregistration' method='get' onSubmit='return loadSumbit()')
+    form.form-row.needs-validation(novalidate action='/confirmregistration' method='get' onSubmit='return loadSubmit()')
         h3.col-12.col-sm-12 Особиста інформація
         div.input-group.col-sm-10.col-12.mb-2
                 div.input-group-prepend
@@ -21,19 +21,20 @@ div.container.content(id='becomedriverpage')
             div.input-group-prepend
                 span.input-group-text Логін
             input.form-control(required type="text" placeholder="Логін" maxlength=20 id='driver_login')
-            span.invalid-feedback Ваш логін зайнятий! Оберіть новий
             div.input-group-append
                 input.btn.btn-outline-warning(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLogin()")
+            span.invalid-feedback Ваш логін зайнятий! Оберіть новий
         div.input-group.col-sm-10.col-12.mb-2
             div.input-group-prepend
                 span.input-group-text Email
             input.form-control(required name='email' type="text" placeholder="Електронна пошта" maxlength=45 id='driver_email')
-            span.invalid-feedback Перевірте вашу пошту
+
             select.btn-outline-warning.input-group-append.form-control(name='emend' id='select_email')
                 option.form-control.btn-outline-info  @gmail.com
                 option.form-control.btn-outline-info  @ukma.edu.ua
                 option.form-control.btn-outline-info  @ukr.net
                 option.form-control.btn-outline-info  @mail.com
+            span.invalid-feedback Перевірте вашу пошту
         div.col-sm-10.col-12.mb-2
             div.row.input-group
                 div.input-group.col-12.col-sm-6

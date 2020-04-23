@@ -2,4 +2,6 @@
 node_modules
 config/conf.json
 source/scratch
+src/js/scratch
 .text
+files/uploads

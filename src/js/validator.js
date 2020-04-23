@@ -18,6 +18,11 @@ function validateName(nameId) {
         });
         return false;
     }
+    $(nameId).removeClass('is-invalid');
+    $(nameId).addClass('is-valid');
+    $(nameId).keyup(function () {
+        $(nameId).removeClass('is-valid');
+    });
     return true;
 }
 
@@ -46,6 +51,11 @@ function validateTel(telId) {
         });
         return false;
     }
+    $(telId).removeClass('is-invalid');
+    $(telId).addClass('is-valid');
+    $(telId).keyup(function () {
+            $(telId).removeClass('is-valid');
+    });
     return true;
 }
 
@@ -65,6 +75,12 @@ function validSeria(seriaid) {
         });
         return false;
     }
+
+    $(seriaid).removeClass('is-invalid');
+    $(seriaid).addClass('is-valid');
+    $(seriaid).keyup(function () {
+            $(seriaid).removeClass('is-valid');
+    });
     return true;
 }
 
@@ -92,6 +108,11 @@ function validSeriaNum(numId) {
         });
         return false;
     }
+    $(numId).removeClass('is-invalid');
+    $(numId).addClass('is-valid');
+    $(numId).keyup(function () {
+            $(numId).removeClass('is-valid');
+    });
     return true;
 }
 
@@ -142,6 +163,11 @@ function validAge(ageid) {
         });
         return false;
     }
+    $(ageid).removeClass('is-invalid');
+    $(ageid).addClass('is-valid');
+    $(ageid).click(function () {
+        $(ageid).removeClass('is-valid');
+    });
     return true;
 }
 
@@ -163,6 +189,8 @@ function validSelectors(selectorsids) {
 function validAutoNum(id) {
     const sel2 = $("#" + id + "2");
     let val2 = sel2.val();
+    const bol1 = validAutoLetter($("#" + id + "1"));
+    const bol2 = validAutoLetter($("#" + id + "3"));
     if (val2 === "" || val2.length !== 4 || !(/^[0-9]+$/.test(val2))) {
         sel2.addClass("is-invalid");
         sel2.click(function () {
@@ -170,7 +198,7 @@ function validAutoNum(id) {
         });
         return false;
     }
-    return validAutoLetter($("#" + id + "1")) && validAutoLetter($("#" + id + "3"));
+    return bol1 && bol2;
 }
 
 function validAutoLetter(sel) {
@@ -182,4 +210,21 @@ function validAutoLetter(sel) {
         });
         return false;
     }
+    sel.addClass("is-valid");
+    sel.click(function () {
+        sel.removeClass('is-valid');
+    });
+    return true;
+}
+
+function validEmptyAndSetKeyup(selector) {
+    selector.keyup(function () {
+        emailSelector.removeClass("is-valid");
+        emailSelector.removeClass("is-invalid");
+    });
+    if (selector.val() === "") {
+        selector.addClass("is-invalid");
+        return false;
+    }
+    return true;
 }

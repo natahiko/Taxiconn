@@ -81,42 +81,23 @@ function becomedriver() {
     }
 }
 
-function loadsubmit() {
-    let selectorsids = ["#select_carmodel", "#select_carproducer", "#select_category"];
-    if (!validateName("#driver_name") || !validateName("#driver_surname") || !validAge("#driver_age")
-        || !validateTel("#driver_tel") || !validSeria("#driver_seria") ||
-        !validSeriaNum("#driver_seria_num") || !validPassword("#driver_pass", "#driver_pass_conf")
-        || !validSelectors(selectorsids) || !validAutoNum("driver_autonum")) {
-        event.preventDefault();
-    }
-    let emailSelector = $("#driver_email");
-    emailSelector.keyup(function () {
-        emailSelector.removeClass("is-valid");
-        emailSelector.removeClass("is-invalid");
-    });
+function loadSubmit() {
+    const emailSelector = $("#driver_email");
     let loginSelector = $("#driver_login");
+    const selectorsids = ["#select_category", "#select_carproducer", "#select_carmodel"];
+    const isValid = [!validateName("#driver_name"), !validateName("#driver_surname"),
+        !validAge("#driver_age"), !validateTel("#driver_tel"), !validSeria("#driver_seria"),
+        !validSeriaNum("#driver_seria_num"), !validPassword("#driver_pass", "#driver_pass_conf"),
+        !validSelectors(selectorsids), !validAutoNum("driver_autonum"), !validEmptyAndSetKeyup(emailSelector),
+        !validEmptyAndSetKeyup(loginSelector)];
+    if (isValid.includes(true)) {
+        event.preventDefault();
+        return false;
+    }
     let login = loginSelector.val();
-    let email = emailSelector.val();
-    if (login === "") {
-        event.preventDefault();
-        return false;
-    }
-    if (email === "") {
-        emailSelector.addClass("is-invalid");
-        event.preventDefault();
-        return false;
-    }
-    email += $("#select_email").val();
-    loginSelector.keyup(function () {
-        loginSelector.removeClass("is-valid");
-        loginSelector.removeClass("is-invalid");
-    });
+    const email = emailSelector.val() + $("#select_email").val();
     let licence = $("#driver_seria").val() + $("#driver_seria_num").val();
     let phoneSel = $("#driver_tel");
-    phoneSel.keyup(function () {
-        phoneSel.removeClass("is-valid");
-        phoneSel.removeClass("is-invalid");
-    });
     let phone = phoneSel.val();
     const autonum = $("#driver_autonum1").val() + $("#driver_autonum2").val() + $("#driver_autonum3").val();
     $.ajax({
@@ -134,7 +115,6 @@ function loadsubmit() {
                 contentType: 'application/json',
                 accept: 'application/json',
                 success: function (data) {
-                    alert(data);
                     if (data.res) {
                         return true;
                     } else {
