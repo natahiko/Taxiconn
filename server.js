@@ -265,9 +265,9 @@ server.get('/driverprofile/:driverid', function (req, res) {
                 " WHERE id=" + result[0].carmodelid + ";", function (err2, result2) {
                 text.header['nowpage'] = "/driverprofile/" + userid;
                 res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
-                res.write(pug.renderFile(__dirname + "/src/pugs/profile-driver_for_client.pug", {
+                res.write(pug.renderFile(__dirname + "/src/pugs/profile_driver_for_client.pug", {
                     info: result[0],
-                    producer: result2[0]
+                    producers: result2[0]
                 }));
                 res.end();
             });
