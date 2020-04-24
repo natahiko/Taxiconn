@@ -37,16 +37,26 @@ let upload_user_photo = multer({storage: storage});
 server.post('/upload_user_photo', upload_user_photo.single('photo'), function (req, res) {
     if (!req.file) {
         console.log("No file received");
+        res.json({"empty": true});
     } else {
-        console.log(req.file);
         fs.readFile(req.file.path, (err, data) => {
-            con.query(functions.getSQLUploadPhoto(req.cookies, data, req.file.type), function () {
+            const text = "data:" + req.file.mimetype + ";base64," + data.toString('base64');
+            res.json({"src": text});
+            res.end();
+            con.query(functions.getSQLUploadPhoto(req.cookies, text), function () {
                 fs.unlinkSync(req.file.path);
-                res.end();
             });
         });
     }
-    res.end();
+});
+server.post('/setNewPhoto', function (req, res) {
+    console.log(req.query);
+    const sql = functions.getSQLUploadPhoto(req.cookies, req.body.photo_src);
+    if(sql!==""){
+        con.query(sql, function () {
+            res.end();
+        });
+    }
 });
 
 

@@ -2,18 +2,18 @@ section.mt-4.container.content(id='profilesection')
     div.main_profile_part.row
         div.col-10.col-sm-5.col-md-4.col-lg-3.offset-1
             div.photo_container
-                img.profile_img(src=info.photo_src alt='')
-            input.btn.btn-outline-warning.form-control(type='button' id="edit_profile_photo" onclick='editPhoto()' value="Update photo")
+                img.profile_img(src=info.photo_src id="photo" alt='')
 
             form(style="display: none" enctype="multipart/form-data" id='upload_photo')
-                input.inputfile(id="profile_photo" name="photo" type="file")
+                input.inputfile(id="profile_photo" name="photo" type="file" onchange='sendNewProfilePhoto()')
                 label.upload_photo_profile(for="profile_photo")
                     span.upload_photo_label
-                input.btn.btn-warning.form-control.b(type="button" onclick="sendNewProfilePhoto()" value="Upload")
+
         div.personal_info.col-12.col-sm-6.col-md-7.col-ld-8.row
             div.col-12.col-sm-6.m-auto.mb-3
                 div.input-group
                     input.login.m-0(type="text" id='profile_login' value=info.login disabled)
+                    span.badge.badge-secondary Client
                     span.invalid-feedback Ваш логін зайнятий! Оберіть новий
                         div.input-group-append(id='checkLogin' style='display: none')
                             input.btn.btn-outline-secondary.m-0(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLoginClient()")

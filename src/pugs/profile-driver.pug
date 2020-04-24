@@ -3,14 +3,13 @@ div.content
         div.main_profile_part.row
             div.col-10.col-sm-5.col-md-4.col-lg-3.offset-md-1.offset-sm-0.offset-1
                 div.photo_container
-                    img.profile_img(src=info.photo_src alt='')
-                input.btn.btn-outline-warning.form-control(type='button' id="edit_profile_photo" onclick='editPhoto()' value="Update photo")
+                    img.profile_img(src=info.photo_src id="photo" alt='')
 
                 form(style="display: none" enctype="multipart/form-data" id='upload_photo')
-                    input.inputfile(id="profile_photo" name="photo" type="file")
+                    input.inputfile(id="profile_photo" name="photo" type="file" onchange='sendNewProfilePhoto()')
                     label.upload_photo_profile(for="profile_photo")
                         span.upload_photo_label
-                    input.btn.btn-warning.form-control.b(type="button" onclick="sendNewProfilePhoto()" value="Upload")
+
             div.personal_info.col-12.col-sm-7.col-ld-8.row
                 div.col-12.col-sm-6.m-auto.mb-3
                     div.input-group
@@ -42,7 +41,7 @@ div.content
                         input.form-control.m-0(type="text" id='profile_phone' value=info.phone disabled)
             div.input-group.col-sm-5.offset-sm-5.col-8.offset-2.mb-2
                 input.btn.btn-warning.form-control(type="button" id='change_password' value="Змінити пароль" data-toggle="modal" data-target="#changepass")
-    div.driver_auto.pb-1.m-0
+    div.driver_auto.pb-1.m-0.ml-lg-2
         div.form-inline.row
             div.input-group.col-12.mb-3.col-md-5.col-sm-12
                 div.input-group-prepend

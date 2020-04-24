@@ -311,9 +311,12 @@ function showEditingProfile(val) {
         $("#change_password").prop("disabled", false);
         $("#profile_desc").prop("disabled", true);
         $("#checkLogin").hide();
-        $("#editprofilebutton").show();
+        const editSel = $("#editprofilebutton");
+        editSel.show();
+        editSel.prop("disabled", false);
         $("#saveprofilebutton").hide();
         $("#canselprofilebutton").hide();
+        $("#upload_photo").hide();
     } else {
         $(".driver_auto input[type=number]").prop("disabled", false);
         $(".driver_auto select").prop("disabled", false);
@@ -326,6 +329,7 @@ function showEditingProfile(val) {
         $("#checkLogin").show();
         $("#saveprofilebutton").show();
         $("#canselprofilebutton").show();
+        $("#upload_photo").show();
     }
 }
 
@@ -336,10 +340,25 @@ function editClientProfile() {
         "surname": $("#profile_surname").val(),
         "age": $("#profile_age").val(),
         "phone": $("#profile_phone").val(),
-        "desc": $("#profile_desc").val()
+        "desc": $("#profile_desc").val(),
+        "photo_src": $("#photo").attr("src")
     };
     sessionStorage.setItem("profile", JSON.stringify(profileData));
     showEditingProfile(false);
+}
+
+function canselClientChanges() {
+    let arr = JSON.parse(sessionStorage.getItem("profile"));
+    $("#profile_login").val(arr.login);
+    $("#profile_name").val(arr.name);
+    $("#profile_surname").val(arr.surname);
+    $("#profile_age").val(arr.age);
+    $("#profile_phone").val(arr.phone);
+    $("#profile_desc").val(arr.desc);
+    $("#photo").attr("src", arr.photo_src);
+    showEditingProfile(true);
+    setProfilePhoto(arr.photo_src);
+    sessionStorage.removeItem("profile");
 }
 
 function editDriverProfile() {
@@ -354,6 +373,7 @@ function editDriverProfile() {
         "producer": $("#select_carproducer").children("option:selected").val(),
         "model": $("#select_carmodel").children("option:selected").val(),
         "year": $("#profile_carid").val(),
+        "photo_src": $("#photo").attr("src")
     };
     console.log(profileData);
     sessionStorage.setItem("profile", JSON.stringify(profileData));
@@ -372,6 +392,8 @@ function canselDriverChanges() {
     showEditingProfile(true);
     $("#carclassprofile").val(arr.class);
     $("#select_carproducer").val(arr.producer);
+    $("#photo").attr("src", arr.photo_src)
+    setProfilePhoto(arr.photo_src);
     renew_car_model(arr.model);
     sessionStorage.removeItem("profile");
 }
@@ -561,8 +583,11 @@ function sendNewProfilePhoto() {
         url: '/upload_user_photo',
         type: "POST",
         data: formData,
-        success: function () {
-            window.location = "./profile";
+        success: function (data) {
+            console.log(data);
+            if(!data.empty) {
+                document.getElementById("photo").setAttribute("src", data.src);
+            }
         },
         error: function () {
             alert('Sorry something happened on server');
@@ -571,8 +596,12 @@ function sendNewProfilePhoto() {
         processData: false
     });
 }
-
-function editPhoto() {
-    $("#edit_profile_photo").hide();
-    $("#upload_photo").show();
+async function setProfilePhoto(src) {
+    $.ajax({
+        url: '/setNewPhoto?src='+src,
+        type: 'post',
+        success: function (data) {
+            console.log(data);
+        }
+    });
 }

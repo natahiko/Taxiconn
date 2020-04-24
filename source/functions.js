@@ -131,8 +131,10 @@ module.exports = {
                 (id, user_id, class, pay_type_id, comment, address_from, address_to, url) 
                 VALUES ('{}', '{}', '{}', '{}' , ${notes}, '{}', '{}', '{}');`.format(code, userid, clas, pay_type, from, to, dirurl);
     },
-    getSQLUploadPhoto: function (cookie, data, type) {
-        const text = "data:image/" + type + ";base64," + data.toString('base64');
+    getSQLUploadPhoto: function (cookie, text) {
+        if(cookie.userid==="" || cookie.userid===undefined || cookie.authorised==="" || cookie.authorised===undefined){
+            return "";
+        }
         const userid = cookie.userid;
         if (cookie.authorised === 'clients')
             return "UPDATE clients SET photo_src='{}' WHERE id='{}';".format(text, userid);
