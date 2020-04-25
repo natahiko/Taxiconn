@@ -57,13 +57,13 @@ server.post('/upload_user_photo', upload_user_photo.single('photo'), function (r
 
 
 server.get(['/aboutus', '/'], function (req, res) {
-    text.header['nowpage'] = "/aboutus";
+    text.header['nowpage'] = "nav_aboutus";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(fs.readFileSync(__dirname + '/src/html/aboutus.html', 'utf8'));
     res.end();
 });
 server.get('/driver/workcond', function (req, res) {
-    text.header['nowpage'] = "/driver/workcond";
+    text.header['nowpage'] = "nav_driver";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     con.query("SELECT * FROM car_models INNER JOIN сar_producer ON сar_producer.prodid = car_models.producer_id ORDER BY producer;", function (err, result) {
         res.write(pug.renderFile(__dirname + "/src/pugs/workcond.pug", {
@@ -73,7 +73,7 @@ server.get('/driver/workcond', function (req, res) {
     });
 });
 server.get('/user/userrules', function (req, res) {
-    text.header['nowpage'] = "/user/userrules";
+    text.header['nowpage'] = "nav_client";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     con.query("SELECT * FROM blogs;", function (err, result) {
         res.write(pug.renderFile(__dirname + "/src/pugs/userrules.pug", {
@@ -88,7 +88,7 @@ server.get('/getfooter', function (req, res) {
     res.end();
 });
 server.get('/driver/usefultips', function (req, res) {
-    text.header['nowpage'] = "/driver/usefultips";
+    text.header['nowpage'] = "nav_driver";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(fs.readFileSync(__dirname + '/src/html/usefultips.html', 'utf8'));
     res.end();
@@ -96,7 +96,7 @@ server.get('/driver/usefultips', function (req, res) {
 server.get('/profile', function (req, res) {
     const user = req.cookies.authorised;
     const userid = req.cookies.userid;
-    text.header['nowpage'] = "/profile";
+    text.header['nowpage'] = "nav_profile";
     if (user === 'drivers') {
         con.query("SELECT * FROM drivers INNER JOIN car_models ON car_models.id=drivers.carmodelid WHERE drivers.id='" + userid + "';", function (err, result) {
             if (err) {
@@ -129,7 +129,7 @@ server.get('/profile', function (req, res) {
     }
 });
 server.get('/driver/becomedriver', function (req, res) {
-    text.header['nowpage'] = "/driver/becomedriver";
+    text.header['nowpage'] = "nav_driver";
     let user = req.cookies.authorised;
     if (user === 'drivers') {
         res.redirect("/profile");
@@ -144,7 +144,7 @@ server.get('/driver/becomedriver', function (req, res) {
     }
 });
 server.get('/confirmregistration', function (req, res) {
-    text.header['nowpage'] = "/";
+    text.header['nowpage'] = "";
     const usertype = req.cookies.authorised;
     if (usertype === 'clients' || usertype === 'drivers') {
         res.redirect("/404");
@@ -158,7 +158,7 @@ server.get('/confirmregistration', function (req, res) {
     res.end();
 });
 server.get('/confirmregistrcode', function (req, res) {
-    text.header['nowpage'] = "/";
+    text.header['nowpage'] = "";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     let code = req.query.code;
     let email = req.query.email;
@@ -185,7 +185,7 @@ server.get('/confirmregistrcode', function (req, res) {
     }
 });
 server.get('/contacts', function (req, res) {
-    text.header['nowpage'] = "/contacts";
+    text.header['nowpage'] = "nav_contacts";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(pug.renderFile(__dirname + "/src/pugs/contacts.pug", {
         "googlemapapi": config.googlemapapi
@@ -193,13 +193,13 @@ server.get('/contacts', function (req, res) {
     res.end();
 });
 server.get('/thankspage', function (req, res) {
-    text.header['nowpage'] = "/";
+    text.header['nowpage'] = "";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(fs.readFileSync(__dirname + '/src/html/thanks.html', 'utf8'));
     res.end();
 });
 server.get('/ordertaxi', function (req, res) {
-    text.header['nowpage'] = "/ordertaxi";
+    text.header['nowpage'] = "nav_ordertaxi";
     text.header['googlemapapi'] = config.googlemapapi;
     const usertype = req.cookies.authorised;
     if (usertype === 'drivers') {
@@ -221,7 +221,7 @@ server.get('/orders', function (req, res) {
     if (req.cookies.authorised !== 'drivers') {
         res.redirect("/404");
     } else {
-        text.header['nowpage'] = "/orders";
+        text.header['nowpage'] = "nav_orders";
         res.write(pug.renderFile(__dirname + "/src/pugs/header-driver.pug", text.header));
         const userid = req.cookies.userid;
         con.query("SELECT class FROM car_models WHERE id IN (SELECT carmodelid FROM drivers WHERE id='{}');".format(userid),
@@ -254,6 +254,7 @@ server.param('userid', function (req, res, next, userid) {
     return next();
 });
 server.get('/userprofile/:userid', function (req, res) {
+    text.header['nowpage'] = "";
     const userid = req.userid;
     con.query("SELECT * FROM clients WHERE id='{}';".format(userid), function (err, result) {
         if (err || result.length < 1) {
@@ -273,6 +274,7 @@ server.param('driverid', function (req, res, next, driverid) {
     return next();
 });
 server.get('/driverprofile/:driverid', function (req, res) {
+    text.header['nowpage'] = "";
     const userid = req.userid;
     con.query("SELECT * FROM drivers WHERE id='{}';".format(userid), function (err, result) {
         if (err || result.length < 1) {

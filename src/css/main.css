@@ -5,6 +5,7 @@
     --grey:#636970;
     --yellow-darker: #E69C24;
     --yellow-dark: rgb(194, 132, 34);
+    --light-yellow: rgba(255, 223, 127, 0.5);
 }
 body {
     overflow-x: hidden;
@@ -13,6 +14,10 @@ body {
 }
 .black {
     color: black;
+}
+.hover-light:hover{
+    background-color: var(--light-yellow);
+    font-weight: 460px;
 }
 
 .section-header h2 {
@@ -240,6 +245,7 @@ footer nav {
     background: url("../../files/images/taxipark.jpg") no-repeat;
     background-size: cover;
     height: 90vh;
+    margin-top: -15px;
 }
 
 .semi-transparent {
@@ -482,4 +488,21 @@ footer nav {
     content: url("../../files/images/plus.svg");
     opacity: 40%;
     border-radius: 50%;
+}
+.nav-link{
+    color: #ffc107;
+}
+.nav-link:hover{
+    color: #CC9500;
+}
+#mycarousel{
+    margin-top: -15px;
+}
+.nav-link{
+    color: var(--light-grey);
+}
+.active_nav{
+    /*color: #ffdf7f !important;*/
+    font-weight: bolder;
+    text-shadow: 1px 1px 2px rgb(134, 134, 134);
 }

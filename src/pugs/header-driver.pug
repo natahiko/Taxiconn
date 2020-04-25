@@ -19,18 +19,19 @@ body
             div.collapse.navbar-collapse(id="navbarContent")
                 ul.navbar-nav.mr-auto
                     li.nav-item
-                        a.nav-link(href="/profile") Профіль
-                    li.nav-item.dropdown
-                        a.nav-link.dropdown-toggle(href="#" data-toggle="dropdown" aria-expanded="false") Блог
+                        a.nav-link(id='nav_profile' href="/profile") Профіль
+                    li.nav-item.dropdown(id='nav_driver')
+                        a.nav-link.dropdown-toggle(id='nav_aboutus' href="#" data-toggle="dropdown" aria-expanded="false") Блог
                         div.dropdown-menu
                             a.dropdown-item(href="/aboutus") Про нас
                             a.dropdown-item(href="/driver/workcond") Умови роботи
                             a.dropdown-item(href="/driver/usefultips") Корисні поради
                     li.nav-item
-                        a.nav-link(href="/orders") Заявки
+                        a.nav-link(id="nav_orders" href="/orders") Заявки
                     li.nav-item
-                        a.nav-link(href="/mydrives") Мої поїздки
+                        a.nav-link(id='nav_mydrives' href="/mydrives") Мої поїздки
                     li.nav-item
-                        a.nav-link(href="/contacts") Контакти
+                        a.nav-link(id="nav_contacts" href="/contacts") Контакти
                 span.navbar-text
                     a.btn.btn-outline-warning(onclick="exit()") Вихід
+script(type='text/javascript') document.getElementById('#{nowpage}').className += " active_nav ";

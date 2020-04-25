@@ -1,6 +1,6 @@
-.nav-link{
-    color: #ffc107;
+
+@media(max-width: 576px) {
+.carousel-caption{
+    position: static !important;
 }
-.nav-link:hover{
-    color: #CC9500;
 }

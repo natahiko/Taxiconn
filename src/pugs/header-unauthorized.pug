@@ -19,25 +19,26 @@ nav.navbar.navbar-expand-md.navbar-dark.fixed-top.bg-dark
             div.collapse.navbar-collapse(id="navbarContent")
                 ul.navbar-nav.mr-auto
                     li.nav-item
-                        a.nav-link(href="/aboutus") Про нас
+                        a.nav-link(id="nav_aboutus" href="/aboutus") Про нас
                     li.nav-item.dropdown
-                        a.nav-link.dropdown-toggle(href="#" data-toggle="dropdown" aria-expanded="false") Водію
+                        a.nav-link.dropdown-toggle(id="nav_driver" href="#" data-toggle="dropdown" aria-expanded="false") Водію
                         div.dropdown-menu
                             a.dropdown-item(href="/driver/becomedriver") Стати водієм
                             div.dropdown-divider
                             a.dropdown-item(href="/driver/workcond") Умови роботи
                             a.dropdown-item(href="/driver/usefultips") Корисні поради
                     li.nav-item.dropdown
-                        a.nav-link.dropdown-toggle(href="#" data-toggle="dropdown" aria-expanded="false") Клієнту
+                        a.nav-link.dropdown-toggle(id="nav_client" href="#" data-toggle="dropdown" aria-expanded="false") Клієнту
                         div.dropdown-menu
                             a.dropdown-item(href="/user/registeruser") Стати користувачем
                             div.dropdown-divider
                             a.dropdown-item(href="/user/userrules") Правила користування
                             a.dropdown-item(href="/user/sales") Акції
                     li.nav-item
-                        a.nav-link(href="/contacts") Контакти
+                        a.nav-link(id="nav_contacts" href="/contacts") Контакти
                 span.navbar-text
                     a.btn.btn-outline-warning(type="button" data-toggle="modal" data-target="#login" href="#") Увійти
+script(type='text/javascript') document.getElementById('#{nowpage}').className += " active_nav ";
 div.modal.fade(id="login"  role="dialog" aria-hidden="true")
         div.modal-dialog(role="document")
             div.modal-content

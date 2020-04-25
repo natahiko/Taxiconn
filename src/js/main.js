@@ -460,7 +460,7 @@ function saveClientChanges() {
         },
         error: function () {
             cancelClientChanges();
-            alert("На сервері виникла якась помилка. Ваші дані не було змінено");
+            console.log("На сервері виникла якась помилка. Ваші дані не було змінено");
             sessionStorage.removeItem("profile");
         },
         data: JSON.stringify(profileData)
