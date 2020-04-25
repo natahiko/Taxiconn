@@ -516,10 +516,6 @@ function getOrder(id) {
     });
 }
 
-function renew_orders() {
-    setInterval(renew_orders_method, 3000);
-}
-
 function renew_orders_method() {
     $.ajax({
         url: '/allorders',
@@ -527,28 +523,7 @@ function renew_orders_method() {
         dataType: 'json',
         contentType: 'application/json',
         success: function (data) {
-            let elem = $("<div></div>");
-            data.forEach((order) => {
-                let res = "<div class='card brad-0 shadow-small'>";
-                if (order.pay_type_id === 1) {
-                    res += "<div class='card-header bg-grey brad-0'><span class='order_price'>" + order.price + " ₴</span>" +
-                        "<span style='float: right'><kbd class='kbdord'>Готівка</kbd></span></div>";
-                } else {
-                    res += "<div class='card-header bg-light-grey brad-0'><span class='order_price'>" + order.price + " ₴</span>" +
-                        "<span style='float: right'><kbd class='kbdord'>" + order.name + "</kbd></span></div>";
-                }
-                res += "<div class='card-body'><b>Місце посадки:</b> " + order.address_from + "<br>" +
-                    "<b>Місце висадки:</b> " + order.address_to;
-                if (order.comment !== null) {
-                    res += "<br><span class='comment_order'><b>Коментар:</b> " + order.comment + "</span>";
-                }
-                res += "<div class='mt-2 ord_buttons'><a class='btn btn-warning  bg-warning-dark' href='/userprofile/" + order.user_id +
-                    "'>Переглянути профіль клієнта</a><a class='btn btn-dark' href='" + order.url + "' target='blank'>Відкрити маршрут</a></div></div>";
-                res += "<div class='card-footer'><button class='btn btn-warning float-right' onclick=getOrder('" + order.id + "')>Взяти поїздку</button></div></div>";
-                $(res).appendTo(elem);
-            });
-            $("#orders").html("");
-            elem.appendTo("#orders");
+            $("#orders").html(data);
         },
         error: function (data) {
             console.log(data.err);

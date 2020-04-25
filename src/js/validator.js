@@ -54,7 +54,7 @@ function validateTel(telId) {
     $(telId).removeClass('is-invalid');
     $(telId).addClass('is-valid');
     $(telId).keyup(function () {
-            $(telId).removeClass('is-valid');
+        $(telId).removeClass('is-valid');
     });
     return true;
 }
@@ -79,7 +79,7 @@ function validSeria(seriaid) {
     $(seriaid).removeClass('is-invalid');
     $(seriaid).addClass('is-valid');
     $(seriaid).keyup(function () {
-            $(seriaid).removeClass('is-valid');
+        $(seriaid).removeClass('is-valid');
     });
     return true;
 }
@@ -111,7 +111,7 @@ function validSeriaNum(numId) {
     $(numId).removeClass('is-invalid');
     $(numId).addClass('is-valid');
     $(numId).keyup(function () {
-            $(numId).removeClass('is-valid');
+        $(numId).removeClass('is-valid');
     });
     return true;
 }

@@ -2,7 +2,7 @@ section.condition.content
     h2
         kbd Замовлені поїздки
     div.orders(id='orders')
-
+        include allorders
 include footer
-script(type="text/javascript") renew_orders_method();
-script(type="text/javascript") renew_orders();
+
+script(type="text/javascript") setInterval(renew_orders_method, 3000);

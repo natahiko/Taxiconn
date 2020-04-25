@@ -8,10 +8,10 @@ div.container.content(id='becomedriverpage')
     form.form-row.needs-validation(novalidate action='/confirmregistration' method='get' onSubmit='return loadSubmit()')
         h3.col-12.col-sm-12 Особиста інформація
         div.input-group.col-sm-10.col-12.mb-2
-                div.input-group-prepend
-                    span.input-group-text Ім'я
-                input.form-control(required type="text" placeholder="Ім'я" maxlength=45 id='driver_name')
-                span.invalid-feedback Ім'я не повинно містити чисел чи символів
+            div.input-group-prepend
+                span.input-group-text Ім'я
+            input.form-control(required type="text" placeholder="Ім'я" maxlength=45 id='driver_name')
+            span.invalid-feedback Ім'я не повинно містити чисел чи символів
         div.input-group.col-sm-10.col-12.mb-2
             div.input-group-prepend
                 span.input-group-text Прізвище
@@ -89,20 +89,20 @@ div.container.content(id='becomedriverpage')
 
 
         div.col-sm-10.col-12.mb-2
-                div.input-group
-                    div.input-group-prepend
-                        span.input-group-text Номер авто
-                    input.form-control(type="text" placeholder="ХХ" maxlength=2 id='driver_autonum1')
-                    input.form-control(type="text" placeholder="0000" maxlength=4 id='driver_autonum2')
-                    input.form-control(type="text" placeholder="ХХ" maxlength=2 id='driver_autonum3')
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text Номер авто
+                input.form-control(type="text" placeholder="ХХ" maxlength=2 id='driver_autonum1')
+                input.form-control(type="text" placeholder="0000" maxlength=4 id='driver_autonum2')
+                input.form-control(type="text" placeholder="ХХ" maxlength=2 id='driver_autonum3')
         div.col-sm-10.col-12.mb-2
             div.input-group
-                    div.input-group-prepend
-                        span.input-group-text Виробник
-                    select.input-group-append.form-control(onchange='renew_car_model()' id='select_carproducer')
-                        option.default_option(value="default" selected) Оберіть виробника
-                        each prod in producers
-                            option.form-control(value=prod.prodid) #{prod.producer}
+                div.input-group-prepend
+                    span.input-group-text Виробник
+                select.input-group-append.form-control(onchange='renew_car_model()' id='select_carproducer')
+                    option.default_option(value="default" selected) Оберіть виробника
+                    each prod in producers
+                        option.form-control(value=prod.prodid) #{prod.producer}
         div.col-sm-10.col-12.mb-2
             div.input-group
                 div.input-group-prepend

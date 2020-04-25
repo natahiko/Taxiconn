@@ -52,12 +52,12 @@ div.content
                 div.tab-pane.container.active(id='economTable')
                     div.row
                         each mod in allmodels
-                             if mod.class === "econom"
-                                 div.col-6.col-sm-4.col-md-3.p-10
-                                     div.card.hover-light
-                                         div.card-body.row
-                                             div.col-12 #{mod.model}
-                                             div.col-12.text-sm-right #{mod.producer}
+                            if mod.class === "econom"
+                                div.col-6.col-sm-4.col-md-3.p-10
+                                    div.card.hover-light
+                                        div.card-body.row
+                                            div.col-12 #{mod.model}
+                                            div.col-12.text-sm-right #{mod.producer}
                 div.tab-pane.container(id='comforttable')
                     div.row
                         each mod in allmodels

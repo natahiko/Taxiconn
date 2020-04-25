@@ -46,8 +46,8 @@ server.post('/upload_user_photo', upload_user_photo.single('photo'), function (r
             functions.savePhotoSrc(req.cookies, text, req.file.path);
 
             const photo_url = functions.getPhotoUrlForDel(req.cookies.userid);
-            try{
-                fs.unlinkSync(__dirname+photo_url.substr(5));
+            try {
+                fs.unlinkSync(__dirname + photo_url.substr(5));
             } catch (e) {
                 console.log(e);
             }
@@ -227,7 +227,7 @@ server.get('/orders', function (req, res) {
         con.query("SELECT class FROM car_models WHERE id IN (SELECT carmodelid FROM drivers WHERE id='{}');".format(userid),
             function (err0, result0) {
                 const clas = functions.setCarModelId(userid, result0);
-                con.query("SELECT * FROM orders INNER JOIN payments ON payments.pay_id=orders.pay_type_id WHERE status=0 AND class='" + clas + "';", function (err, result) {
+                con.query("SELECT * FROM orders INNER JOIN payments ON payments.pay_id=orders.pay_type_id WHERE status=0 AND class='{}';".format(clas), function (err, result) {
                     res.write(pug.renderFile(__dirname + "/src/pugs/orders.pug", {
                         "orders": result
                     }));
@@ -240,11 +240,11 @@ server.get('/allorders', function (req, res) {
     const clas = functions.getCarModelIdLocal(req.cookies.userid);
     if (clas === null) {
         res.statusCode = 403;
-        res.write(JSON.stringify({"err": "no user founded"}));
+        res.json({"err": "no user founded"});
         res.end();
     } else {
-        con.query("SELECT * FROM orders INNER JOIN payments ON payments.pay_id=orders.pay_type_id WHERE status=0 AND class='" + clas + "';", function (err, result) {
-            res.write(JSON.stringify(result));
+        con.query("SELECT * FROM orders INNER JOIN payments ON payments.pay_id=orders.pay_type_id WHERE status=0 AND class='{}';".format(clas), function (err, result) {
+            res.write(pug.renderFile(__dirname + "/src/pugs/allorders.pug", {"orders": result}));
             res.end();
         });
     }
@@ -360,7 +360,7 @@ server.put('/password', function (req, res) {
     });
 });
 server.post('/acceptOrder', function (req, res) {
-    if(req.cookies.authorised!=='drivers'){
+    if (req.cookies.authorised !== 'drivers') {
         res.end();
         return;
     }
