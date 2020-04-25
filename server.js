@@ -359,6 +359,19 @@ server.put('/password', function (req, res) {
         }
     });
 });
+server.post('/acceptOrder', function (req, res) {
+    if(req.cookies.authorised!=='drivers'){
+        res.end();
+        return;
+    }
+    console.log(req.body.orderid);
+    con.query("UPDATE orders SET driver_id='{}', status=1 WHERE id='{}';".format(req.cookies.userid, req.body.orderid), function (err, result) {
+        console.log(err);
+        console.log(result);
+        res.statusCode = 200;
+        res.end();
+    });
+});
 server.post('/carmodel', function (req, res) {
     let producer = req.body.producer;
     if (req.body.secret_key !== config.select_carmodel_token) {
@@ -487,6 +500,7 @@ server.post('/createorder', function (req, res) {
 });
 // default error page
 server.use(function (req, res) {
+    text.header['nowpage'] = "";
     res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
     res.write(fs.readFileSync(__dirname + '/src/html/404.html', 'utf8'));
     res.end();

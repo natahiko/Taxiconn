@@ -504,17 +504,15 @@ function getOrder(id) {
     $.ajax({
         url: '/acceptOrder',
         type: 'post',
-        dataType: 'json',
-        contentType: 'application/json',
         success: function () {
             window.location = '/myorders';
         },
-        error: function (data) {
-            alert(data.err);
+        error: function () {
+            alert();
         },
-        data: JSON.stringify({
+        data: {
             "orderid": id
-        })
+        }
     });
 }
 
@@ -546,7 +544,7 @@ function renew_orders_method() {
                 }
                 res += "<div class='mt-2 ord_buttons'><a class='btn btn-warning  bg-warning-dark' href='/userprofile/" + order.user_id +
                     "'>Переглянути профіль клієнта</a><a class='btn btn-dark' href='" + order.url + "' target='blank'>Відкрити маршрут</a></div></div>";
-                res += "<div class='card-footer'><button class='btn btn-warning float-right' onclick='getOrder('" + order.id + "')'>Взяти поїздку</button></div></div>";
+                res += "<div class='card-footer'><button class='btn btn-warning float-right' onclick=getOrder('" + order.id + "')>Взяти поїздку</button></div></div>";
                 $(res).appendTo(elem);
             });
             $("#orders").html("");
