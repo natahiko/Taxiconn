@@ -43,18 +43,14 @@ server.post('/upload_user_photo', upload_user_photo.single('photo'), function (r
             const text = "data:" + req.file.mimetype + ";base64," + data.toString('base64');
             res.json({"src": text});
             res.end();
-            con.query(functions.getSQLUploadPhoto(req.cookies, text), function () {
-                fs.unlinkSync(req.file.path);
-            });
-        });
-    }
-});
-server.post('/setNewPhoto', function (req, res) {
-    console.log(req.query);
-    const sql = functions.getSQLUploadPhoto(req.cookies, req.body.photo_src);
-    if(sql!==""){
-        con.query(sql, function () {
-            res.end();
+            functions.savePhotoSrc(req.cookies, text, req.file.path);
+
+            const photo_url = functions.getPhotoUrlForDel(req.cookies.userid);
+            try{
+                fs.unlinkSync(__dirname+photo_url.substr(5));
+            } catch (e) {
+                console.log(e);
+            }
         });
     }
 });
@@ -398,7 +394,6 @@ server.post('/isLoginFree', function (req, res) {
     });
 });
 server.post('/isAllFree', function (req, res) {
-    console.log("here-isall");
     let login = req.body.login;
     let phone = req.body.number;
     let email = req.body.email;
@@ -426,7 +421,6 @@ server.post('/isAllFree', function (req, res) {
     });
 });
 server.post('/sendmail', function (req, res) {
-    console.log("email ");
     let emailTo = req.body.email;
     let code = functions.generateCode();
     functions.setCode(emailTo, code);
@@ -451,13 +445,13 @@ server.put('/profile', function (req, res) {
         res.end();
         return;
     }
-    con.query(sql, function (err) {
-        if (err) {
-            res.statusCode = 400;
-        } else {
-            res.statusCode = 200;
+    con.query(sql, function () {
+        const sql2 = functions.getSQLUploadPhoto(req.cookies);
+        if (sql2 !== "") {
+            con.query(sql2, function () {
+                res.end();
+            });
         }
-        res.end();
     });
 });
 server.post('/createorder', function (req, res) {
@@ -479,7 +473,6 @@ server.post('/createorder', function (req, res) {
         return;
     }
     const sql = functions.getSQLCreateOrder(userid, from, to, clas, pay_type, req.body.notes);
-    console.log(sql);
     con.query(sql, function (err) {
         if (err) {
             res.redirect("/createorder");

@@ -357,7 +357,6 @@ function canselClientChanges() {
     $("#profile_desc").val(arr.desc);
     $("#photo").attr("src", arr.photo_src);
     showEditingProfile(true);
-    setProfilePhoto(arr.photo_src);
     sessionStorage.removeItem("profile");
 }
 
@@ -392,8 +391,7 @@ function canselDriverChanges() {
     showEditingProfile(true);
     $("#carclassprofile").val(arr.class);
     $("#select_carproducer").val(arr.producer);
-    $("#photo").attr("src", arr.photo_src)
-    setProfilePhoto(arr.photo_src);
+    $("#photo").attr("src", arr.photo_src);
     renew_car_model(arr.model);
     sessionStorage.removeItem("profile");
 }
@@ -585,7 +583,7 @@ function sendNewProfilePhoto() {
         data: formData,
         success: function (data) {
             console.log(data);
-            if(!data.empty) {
+            if (!data.empty) {
                 document.getElementById("photo").setAttribute("src", data.src);
             }
         },
@@ -594,14 +592,5 @@ function sendNewProfilePhoto() {
         },
         contentType: false,
         processData: false
-    });
-}
-async function setProfilePhoto(src) {
-    $.ajax({
-        url: '/setNewPhoto?src='+src,
-        type: 'post',
-        success: function (data) {
-            console.log(data);
-        }
     });
 }

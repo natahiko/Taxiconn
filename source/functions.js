@@ -65,9 +65,9 @@ module.exports = {
             subject: config.subject,
             html: "<div style='background-color: #343A40; width: 100%'>" +
                 "    <b style='margin: 15px; color: white; font-size: x-large'>Taxiconn</b>" +
-                "    <h2 style='text-align: center'></h2></div>"+
+                "    <h2 style='text-align: center'></h2></div>" +
                 "<span style='text-align: center; align-items: center; color: black'><h1>" + email.header + "</h1><p>" + email.text + "</p>" +
-                "<div><a style='color: #E69C24' href='"+email.link+"/?email="+emailTo+"'>" + email.linktext + "</a></div>" +
+                "<div><a style='color: #E69C24' href='" + email.link + "/?email=" + emailTo + "'>" + email.linktext + "</a></div>" +
                 "<input style='width: 50%; margin: 7px 25%; text-align: center; padding: 5px; font-size: x-large; " +
                 "background: white; border: none' disabled type='text' value='" + code + "' id='code'>" +
                 "</span>"
@@ -131,15 +131,24 @@ module.exports = {
                 (id, user_id, class, pay_type_id, comment, address_from, address_to, url) 
                 VALUES ('{}', '{}', '{}', '{}' , ${notes}, '{}', '{}', '{}');`.format(code, userid, clas, pay_type, from, to, dirurl);
     },
-    getSQLUploadPhoto: function (cookie, text) {
-        if(cookie.userid==="" || cookie.userid===undefined || cookie.authorised==="" || cookie.authorised===undefined){
+    getSQLUploadPhoto: function (cookies) {
+        const text = localStorage.getItem("photo_src_" + cookies.userid);
+        localStorage.removeItem("photo_src_" + cookies.userid);
+        if (cookies.userid === "" || cookies.userid === undefined || cookies.authorised === "" || cookies.authorised === undefined) {
             return "";
         }
-        const userid = cookie.userid;
-        if (cookie.authorised === 'clients')
+        const userid = cookies.userid;
+        if (cookies.authorised === 'clients')
             return "UPDATE clients SET photo_src='{}' WHERE id='{}';".format(text, userid);
         else
             return "UPDATE drivers SET photo_src='{}' WHERE id='{}';".format(text, userid);
+    },
+    savePhotoSrc: function (cookies, text, file_path) {
+        localStorage.setItem("photo_src_" + cookies.userid, text);
+        localStorage.setItem("photo_path_" + cookies.userid, file_path);
+    },
+    getPhotoUrlForDel: function (userid) {
+        return localStorage.getItem("photo_path_" + userid);
     }
 };
 
