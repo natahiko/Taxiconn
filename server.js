@@ -236,6 +236,38 @@ server.get('/orders', function (req, res) {
             });
     }
 });
+server.get('/mydrives', function (req, res) {
+    const user_type = req.cookies.authorised;
+    console.log(user_type);
+    const userid = req.cookies.userid;
+    text.header['nowpage'] = "nav_mydrives";
+    if (user_type === 'drivers') {
+        res.write(pug.renderFile(__dirname + "/src/pugs/header-driver.pug", text.header));
+        con.query("SELECT * FROM orders INNER JOIN payments ON orders.pay_type_id = payments.pay_id WHERE driver_id='{}';".format(userid), function (err, result) {
+            console.log(result);
+            res.write(pug.renderFile(__dirname + "/src/pugs/my_orders.pug", {
+                "all_orders": result,
+                "type": "driver"
+            }));
+            res.end();
+        });
+    } else if (user_type === 'clients') {
+        res.write(pug.renderFile(__dirname + "/src/pugs/header-client.pug", text.header));
+        con.query("SELECT * FROM orders INNER JOIN payments ON orders.pay_type_id = payments.pay_id WHERE user_id='{}';".format(userid), function (err, result) {
+            res.write(pug.renderFile(__dirname + "/src/pugs/my_orders.pug", {
+                "all_orders": result,
+                "type": "client"
+            }));
+            res.end();
+        });
+    } else {
+        res.redirect("/404");
+    }
+    // res.write(pug.renderFile(__dirname + "/src/pugs/orders.pug", {
+    //     "orders": result
+    // }));
+    // res.end();
+});
 server.get('/allorders', function (req, res) {
     const clas = functions.getCarModelIdLocal(req.cookies.userid);
     if (clas === null) {
@@ -364,12 +396,17 @@ server.post('/acceptOrder', function (req, res) {
         res.end();
         return;
     }
-    console.log(req.body.orderid);
-    con.query("UPDATE orders SET driver_id='{}', status=1 WHERE id='{}';".format(req.cookies.userid, req.body.orderid), function (err, result) {
-        console.log(err);
-        console.log(result);
-        res.statusCode = 200;
-        res.end();
+    const userid = req.cookies.userid;
+    con.query("SELECT * FROM orders WHERE driver_id='{}' AND (status=1 OR status=2)".format(userid), function (err0, result0) {
+        if (result0.length >= 1) {
+            res.statusCode = 405;
+            res.end()
+        } else {
+            con.query("UPDATE orders SET driver_id='{}', status=1 WHERE id='{}';".format(userid, req.body.orderid), function () {
+                res.statusCode = 200;
+                res.end();
+            });
+        }
     });
 });
 server.post('/carmodel', function (req, res) {
@@ -382,7 +419,7 @@ server.post('/carmodel', function (req, res) {
     let car_class;
     if (req.body.carclass === "comfort") car_class = " AND class='comfort'";
     else car_class = " AND class='econom'";
-    con.query("SELECT id,model FROM car_models WHERE producer_id='" + producer + "'" + car_class + ";", function (err, result) {
+    con.query("SELECT id,model FROM car_models WHERE producer_id='{}' AND class='{}';".format(producer, car_class), function (err, result) {
         res.statusCode = 202;
         res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify({

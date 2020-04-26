@@ -1,15 +1,9 @@
 each order in orders
     div.card.brad-0.shadow-small
-        if order.pay_type_id === 1
-            div.card-header.bg-grey.brad-0
-                span.order_price #{order.price} ₴
-                span.float-right
-                    kbd.kbdord Готівка
-        else
-            div.card-header.bg-light-grey.brad-0
-                span.order_price #{order.price} ₴
-                span.float-right
-                    kbd.kbdord #{order.name}
+        div.card-header.bg-light-grey.brad-0
+            span.order_price #{order.price} ₴
+            span.float-right
+                kbd(class='bg_paytype_' + order.pay_type_id) #{order.name}
         div.card-body
             b Місце посадки:
             span #{order.address_from}

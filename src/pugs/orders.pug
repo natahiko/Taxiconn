@@ -3,6 +3,21 @@ section.condition.content
         kbd Замовлені поїздки
     div.orders(id='orders')
         include allorders
+
+div.modal.fade(id='order_modal_alert' tabindex="-1" role="dialog" aria-hidden="true")
+    div.modal-dialog(role='document')
+        div.modal-content
+            div.modal-header
+                h5.modal-title Увага
+                button.close(type="button" data-dismiss="modal" aria-label="Close")
+                    span(aria-hidden="true") &times;
+            div.modal-body
+                p Ви не можете брати нові поїздки, адже у вас є активні, незавершені раніше поїздки.
+                p Перевітре статуси ваших поїздок на сторінці
+                    a.a(href='/mydrives') Мої поїздки
+            div.modal-footer
+                button.btn.btn-warning(type="button" data-dismiss="modal") Зрозуміло!
+
 include footer
 
 script(type="text/javascript") setInterval(renew_orders_method, 3000);

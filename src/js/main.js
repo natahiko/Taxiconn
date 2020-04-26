@@ -508,7 +508,7 @@ function getOrder(id) {
             window.location = '/myorders';
         },
         error: function () {
-            alert();
+            $("#order_modal_alert").modal("toggle");
         },
         data: {
             "orderid": id
