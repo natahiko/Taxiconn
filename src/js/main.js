@@ -35,9 +35,9 @@ function loginUser() {
 }
 
 function exit() {
-    window.location = '/';
     document.cookie = 'userid=null;max-age=-1';
     document.cookie = 'authorised=null;max-age=-1';
+    window.location = '/';
 }
 
 function renew_car_model(value) {

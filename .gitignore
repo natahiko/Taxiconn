@@ -1,7 +1,6 @@
 .idea
 node_modules
 config/conf.json
-source/scratch
-src/js/scratch
+scratch
 .text
 files/uploads

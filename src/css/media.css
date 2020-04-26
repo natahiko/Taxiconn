@@ -1,6 +1,5 @@
-
-@media(max-width: 576px) {
-.carousel-caption{
-    position: static !important;
-}
+@media (max-width: 576px) {
+    .carousel-caption {
+        position: static !important;
+    }
 }

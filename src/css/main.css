@@ -17,7 +17,7 @@ body {
 }
 .hover-light:hover{
     background-color: var(--light-yellow);
-    font-weight: 460px;
+    font-weight: 500;
 }
 
 .section-header h2 {
@@ -171,7 +171,7 @@ footer .copyright {
     url('/files/fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'),
     url('../../files/fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype');
     font-weight: normal;
-    font-style: normal
+    font-style: normal;
 }
 
 .fa {
