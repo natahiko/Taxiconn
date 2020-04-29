@@ -155,7 +155,7 @@ module.exports = {
                 COUNT(CASE WHEN orders.status=4 THEN orders.id END) AS finished_amount, 
                 COUNT(CASE WHEN orders.status=2 THEN orders.id END) AS cancel_driver_amount,
                 COUNT(CASE WHEN orders.status=3 THEN orders.id END) AS cancel_client_amount 
-                FROM clients INNER JOIN orders ON clients.id = orders.user_id WHERE clients.id='{}' 
+                FROM clients LEFT OUTER JOIN orders ON clients.id = orders.user_id WHERE clients.id='{}' 
                 GROUP BY user_id`.format(userid);
     },
     getSQLProfileDriver: function (userid) {
@@ -163,7 +163,7 @@ module.exports = {
                 COUNT(CASE WHEN orders.status=4 THEN orders.id END) AS finished_amount, 
                 COUNT(CASE WHEN orders.status=2 THEN orders.id END) AS cancel_driver_amount,
                 COUNT(CASE WHEN orders.status=3 THEN orders.id END) AS cancel_client_amount 
-                FROM drivers INNER JOIN car_models ON car_models.id=drivers.carmodelid INNER JOIN orders 
+                FROM drivers LEFT OUTER JOIN car_models ON car_models.id=drivers.carmodelid INNER JOIN orders 
                     ON drivers.id = orders.driver_id WHERE drivers.id='{}' GROUP BY driver_id`.format(userid);
     },
     getSQLEndDrive: function (order_id, driver_id) {
@@ -190,27 +190,28 @@ module.exports = {
         const code = this.generateCode();
         const password = this.generateCode();
         const passHash = this.hashPassword(password);
-        const email = data.email+data.emend;
+        const email = data.email + data.emend;
         const photo_src = "https://eu.ui-avatars.com/api/?name=" + data.first_name + "%20" + data.surname
             + "&background=343a40&color=ffc107&bold=true&size=512";
         jsonStorage.setItem(data.login, JSON.stringify({
-           "full_name": data.first_name + " " +data.surname,
-           "password": password,
+            "full_name": data.first_name + " " + data.surname,
+            "password": password,
             "email": email
         }));
-        if(data.description==="")
+        if (data.description === "")
             data.description = 'NULL';
         return `INSERT INTO clients (id, login, name, surname, age, email, password, phone, description, photo_src) VALUES 
                 ('{}', '{}', '{}', '{}', '{}', '{}', '{}', ${data.phone}, ${data.description}, '{}')`
             .format(code, data.login, data.first_name, data.surname, data.age, email, passHash, photo_src);
     },
-    getSQLChageUserPassword: function(cookies, body){
+    getSQLChageUserPassword: function (cookies, body) {
         const oldHash = this.hashPassword(body.old_pass);
         const newHash = this.hashPassword(body.new_pass);
         return `UPDATE clients SET password='{}', registered=1 WHERE password='{}' AND id='{}';`.format(newHash, oldHash, cookies.unauthorised_userid);
     },
     sendUserMail: async function (login, config, email) {
         let data = jsonStorage.getItem(login);
+        jsonStorage.removeItem(login);
         data = JSON.parse(data);
         let transporter = nodemailer.createTransport({
             host: config.host,
@@ -226,7 +227,7 @@ module.exports = {
                 "    <b style='margin: 15px; color: white; font-size: x-large'>Taxiconn</b>" +
                 "    <h2 style='text-align: center'></h2></div>" +
                 "<span style='text-align: center; align-items: center; color: black'><h2>" + email.header + "</h2><p>" + email.text + "</p>" +
-                "<div style='font-weight: bold; font-size: 20px; color: red'>"+email.alert+"</div>" +
+                "<div style='font-weight: bold; font-size: 20px; color: red'>" + email.alert + "</div>" +
                 "<input style='width: 50%; margin: 7px 25%; text-align: center; padding: 5px; font-size: x-large; " +
                 "background: white; border: none' disabled type='text' value='" + data.password + "' id='code'>" +
                 "</span>"

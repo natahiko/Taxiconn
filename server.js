@@ -96,6 +96,7 @@ server.get('/driver/usefultips', function (req, res) {
 server.get('/profile', function (req, res) {
     const user = req.cookies.authorised;
     const userid = req.cookies.userid;
+    console.log(userid);
     text.header['nowpage'] = "nav_profile";
     if (user === 'drivers') {
         con.query(functions.getSQLProfileDriver(userid), function (err, result) {
@@ -113,6 +114,7 @@ server.get('/profile', function (req, res) {
         });
     } else if (user === 'clients') {
         con.query(functions.getSQLProfileClient(userid), function (err, result) {
+            console.log(result);
             if (err) res.redirect("/404");
             else {
                 res.write(pug.renderFile(__dirname + "/src/pugs/header-client.pug", text.header));
@@ -331,8 +333,8 @@ server.get('/registered', function (req, res) {
         console.log(err);
         console.log(result);
         functions.sendUserMail(req.query.login, config.email, text.usermail);
-        if(err) res.json({"data": false});
-        else{
+        if (err) res.json({"data": false});
+        else {
             res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
             res.write(pug.renderFile(__dirname + "/src/pugs/registered_client.pug"));
         }
@@ -353,7 +355,6 @@ server.post('/login', function (req, res) {
     let login = req.body.login;
     let type = req.body.type;
     let password = functions.hashPassword(req.body.password);
-    console.log(password);
     con.query(functions.getSQLLogin(login, type, password), function (err, result) {
         if (result.length < 1) res.statusCode = 401;
         else {
@@ -500,7 +501,7 @@ server.post('/endDrive', function (req, res) {
 });
 server.post('/changepass', function (req, res) {
     con.query(functions.getSQLChageUserPassword(req.cookies, req.body), function (err) {
-        if(err) res.json({"data": false});
+        if (err) res.json({"data": false});
         else res.json({"data": true});
         res.end();
     })

@@ -22,11 +22,11 @@ function loginUser() {
         dataType: 'json',
         contentType: 'application/json',
         success: function (data) {
-            if(!data.registered){
+            if (!data.registered) {
                 document.cookie = "unauthorised_userid=" + data.userid;
                 document.cookie = 'unauthorised=' + type;
                 window.location = '/changepassword';
-            } else{
+            } else {
                 document.cookie = "userid=" + data.userid;
                 document.cookie = 'authorised=' + type;
                 window.location = '/profile';
@@ -610,8 +610,9 @@ function showRegisterModal() {
     $('#register').modal('toggle');
     $('#login').modal('toggle');
 }
+
 function firstChangePass() {
-    if (!validPassword('#new_pass', '#new_pass2')){
+    if (!validPassword('#new_pass', '#new_pass2')) {
         return;
     }
     $.ajax({
@@ -620,7 +621,7 @@ function firstChangePass() {
         dataType: 'json',
         contentType: 'application/json',
         success: function (data) {
-            if(!data.data){
+            if (!data.data) {
                 $("#uncorrect_alert").style("display", "block");
                 $("#new_pass2").val("");
                 $("#old_pass").val("");
@@ -639,18 +640,15 @@ function firstChangePass() {
 
 function registerUser() {
     return true;
-    // const emailSelector = $("#driver_email");
-    // let loginSelector = $("#driver_login");
-    // const selectorsids = ["#select_category", "#select_carproducer", "#select_carmodel"];
-    // const isValid = [!validateName("#driver_name"), !validateName("#driver_surname"),
-    //     !validAge("#driver_age"), !validateTel("#driver_tel"), !validSeria("#driver_seria"),
-    //     !validSeriaNum("#driver_seria_num"), !validPassword("#driver_pass", "#driver_pass_conf"),
-    //     !validSelectors(selectorsids), !validAutoNum("driver_autonum"), !validEmptyAndSetKeyup(emailSelector),
-    //     !validEmptyAndSetKeyup(loginSelector)];
-    // if (isValid.includes(true)) {
-    //     event.preventDefault();
-    //     return false;
-    // }
+    const emailSelector = $("#client_email");
+    let loginSelector = $("#client_login");
+    const isValid = [!validateName("#client_name"), !validateName("#client_surname"),
+        !validAge("#client_age"), !validateTel("#client_tel"),
+        !validEmptyAndSetKeyup(emailSelector), !validEmptyAndSetKeyup(loginSelector)];
+    if (isValid.includes(true)) {
+        event.preventDefault();
+        return false;
+    }
     // let login = loginSelector.val();
     // const email = emailSelector.val() + $("#select_email").val();
     // let licence = $("#driver_seria").val() + $("#driver_seria_num").val();
