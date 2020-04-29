@@ -102,23 +102,23 @@ module.exports = {
     },
     getSQLLogin: function (login, type, password) {
         if (type === 'clients')
-            return "SELECT * FROM clients WHERE password='" + password + "' " +
-                "AND (email='" + login + "' OR login='" + login + "' OR phone='" + login + "');";
+            return `SELECT * FROM clients WHERE password='{}'
+                     AND (email='{}' OR login='{}' OR phone='{}');`.format(password, login, login, login);
         else
-            return "SELECT * FROM drivers WHERE password='" + password + "' " +
-                "AND (email='" + login + "' OR login='" + login + "' OR phone='" + login + "');";
+            return `SELECT * FROM drivers WHERE password='{}' 
+                    AND (email='{}' OR login='{}' OR phone='{}');`.format(password, login, login, login);
     },
     getSQLPassword: function (type, userid, old) {
         if (type === 'clients')
-            return "SELECT * FROM clients WHERE password='" + old + "' AND id='" + userid + "';";
+            return "SELECT * FROM clients WHERE password='{}' AND id='{}';".format(old, userid);
         else
-            return "SELECT * FROM drivers WHERE password='" + old + "' AND id='" + userid + "';";
+            return "SELECT * FROM drivers WHERE password='{}' AND id='{}';".format(old, userid);
     },
     getSQLIsLoginFree: function (type, login) {
         if (type === 'clients')
-            return "SELECT * FROM clients WHERE login='" + login + "';";
+            return "SELECT * FROM clients WHERE login='{}';".format(login);
         else
-            return "SELECT * FROM drivers WHERE login='" + login + "';";
+            return "SELECT * FROM drivers WHERE login='{}';".format(login);
     },
     getSQLCreateOrder: function (userid, from, to, clas, pay_type, notes) {
         if (notes === "") notes = 'NULL';

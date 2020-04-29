@@ -7,6 +7,7 @@
     --yellow-dark: rgb(194, 132, 34);
     --light-yellow: rgba(255, 223, 127, 0.5);
 }
+
 body {
     overflow-x: hidden;
     width: 100%;
@@ -564,23 +565,36 @@ footer nav {
     font-weight: bolder;
     text-shadow: 1px 1px 2px rgb(134, 134, 134);
 }
-.badge{
+
+.badge {
     height: fit-content;
 }
-.profile_drives{
+
+.profile_drives {
     width: 100%;
     color: black;
     text-decoration: none;
     padding: 0 5px;
     cursor: pointer;
 }
-.profile_drives:hover > span, b{
+
+.profile_drives:hover > span, b {
     text-decoration: underline !important;
 }
-.h-fit-cont{
+
+.h-fit-cont {
     height: fit-content !important;
 }
-.down-arrow{
+
+.xlarge {
+    font-size: x-large !important;
+}
+
+.b {
+    font-weight: bold !important;
+}
+
+.down-arrow {
     font-size: 26px;
     line-height: 0.5;
     font-weight: 900;

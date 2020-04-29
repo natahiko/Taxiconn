@@ -124,12 +124,26 @@ server.get('/profile', function (req, res) {
         });
     } else res.redirect("/");
 });
-server.get('/driver/becomedriver', function (req, res) {
-    text.header['nowpage'] = "nav_driver";
+
+server.get('/user/registeruser', function (req, res) {
     let user = req.cookies.authorised;
-    if (user === 'drivers') {
-        res.redirect("/profile");
-    } else {
+    if (user === 'clients') res.redirect("/profile");
+    else {
+        text.header['nowpage'] = "nav_client";
+        res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
+        con.query("SELECT prodid,producer FROM сar_producer;", function (err, result) {
+            res.write(pug.renderFile(__dirname + "/src/pugs/becomeclient.pug", {
+                producers: result
+            }));
+            res.end();
+        });
+    }
+});
+server.get('/driver/becomedriver', function (req, res) {
+    let user = req.cookies.authorised;
+    if (user === 'drivers') res.redirect("/profile");
+    else {
+        text.header['nowpage'] = "nav_driver";
         res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
         con.query("SELECT prodid,producer FROM сar_producer;", function (err, result) {
             res.write(pug.renderFile(__dirname + "/src/pugs/becomedriver.pug", {
@@ -173,9 +187,7 @@ server.get('/confirmregistrcode', function (req, res) {
                 res.write(pug.renderFile(__dirname + "/src/pugs/confirmregistration.pug", {
                     "email": email
                 }));
-            } else {
-                res.write(pug.renderFile(__dirname + "/src/pugs/successRegistered.pug"));
-            }
+            } else res.write(pug.renderFile(__dirname + "/src/pugs/successRegistered.pug"));
             res.end();
         });
     }
@@ -198,9 +210,8 @@ server.get('/ordertaxi', function (req, res) {
     text.header['nowpage'] = "nav_ordertaxi";
     text.header['googlemapapi'] = config.googlemapapi;
     const usertype = req.cookies.authorised;
-    if (usertype === 'drivers') {
-        res.redirect("/mydrives");
-    } else if (usertype === 'clients') {
+    if (usertype === 'drivers') res.redirect("/mydrives");
+    else if (usertype === 'clients') {
         con.query('SELECT * FROM payments', function (err, result) {
             res.write(pug.renderFile(__dirname + "/src/pugs/header-client.pug", text.header));
             res.write(pug.renderFile(__dirname + "/src/pugs/ordertaxi.pug", {
@@ -209,14 +220,11 @@ server.get('/ordertaxi', function (req, res) {
             }));
             res.end();
         });
-    } else {
-        res.redirect("/user/registeruser");
-    }
+    } else res.redirect("/user/registeruser");
 });
 server.get('/orders', function (req, res) {
-    if (req.cookies.authorised !== 'drivers') {
-        res.redirect("/404");
-    } else {
+    if (req.cookies.authorised !== 'drivers') res.redirect("/404");
+    else {
         text.header['nowpage'] = "nav_orders";
         res.write(pug.renderFile(__dirname + "/src/pugs/header-driver.pug", text.header));
         const userid = req.cookies.userid;
@@ -278,9 +286,8 @@ server.get('/userprofile/:userid', function (req, res) {
     text.header['nowpage'] = "";
     const userid = req.userid;
     con.query(functions.getSQLProfileClient(userid), function (err, result) {
-        if (err || result.length < 1) {
-            res.redirect("/404");
-        } else {
+        if (err || result.length < 1) res.redirect("/404");
+        else {
             text.header['nowpage'] = "/userprofile/" + userid;
             res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
             res.write(pug.renderFile(__dirname + "/src/pugs/profile_client_for driver.pug", {
@@ -298,9 +305,8 @@ server.get('/driverprofile/:driverid', function (req, res) {
     text.header['nowpage'] = "";
     const userid = req.userid;
     con.query("SELECT * FROM drivers WHERE id='{}';".format(userid), function (err, result) {
-        if (err || result.length < 1) {
-            res.redirect("/404");
-        } else {
+        if (err || result.length < 1) res.redirect("/404");
+        else {
             con.query(functions.getSQLProfileDriver(userid), function (err2, result2) {
                 text.header['nowpage'] = "/driverprofile/" + userid;
                 res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
@@ -312,8 +318,13 @@ server.get('/driverprofile/:driverid', function (req, res) {
             });
         }
     });
-})
-;
+});
+server.get('/registered', function (req, res) {
+    text.header['nowpage'] = "";
+    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
+    res.write(pug.renderFile(__dirname + "/src/pugs/registered_client.pug"));
+    res.end();
+});
 server.get('/getRandCode', function (req, res) {
     let code = functions.generateCode();
     res.write(code);
@@ -328,10 +339,11 @@ server.post('/login', function (req, res) {
     let login = req.body.login;
     let type = req.body.type;
     let password = functions.hashPassword(req.body.password);
+    console.log(password);
     con.query(functions.getSQLLogin(login, type, password), function (err, result) {
-        if (result.length < 1) {
-            res.statusCode = 401;
-        } else {
+        console.log(result);
+        if (result.length < 1) res.statusCode = 401;
+        else {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
             let responseBody = {
@@ -480,19 +492,15 @@ server.post('/sendmail', function (req, res) {
         functions.setRegisretDriverInfo(code, req.body);
         res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify({"res": true}));
-    } else {
-        res.statusCode = 400;
-    }
+    } else res.statusCode = 400;
     res.end();
 });
 server.put('/profile', function (req, res) {
     let sql;
     const type = req.cookies.authorised;
-    if (type === 'drivers') {
-        sql = functions.getDriverSQlUpdate(req.cookies.userid, req.body);
-    } else if (type === 'clients') {
-        sql = functions.getClientSQlUpdate(req.cookies.userid, req.body);
-    } else {
+    if (type === 'drivers') sql = functions.getDriverSQlUpdate(req.cookies.userid, req.body);
+    else if (type === 'clients') sql = functions.getClientSQlUpdate(req.cookies.userid, req.body);
+    else {
         res.statusCode = 401;
         res.end();
         return;
