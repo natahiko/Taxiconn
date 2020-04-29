@@ -3,7 +3,8 @@ section.mt-4.container.content(id='profilesection')
         div.col-10.col-sm-5.col-md-4.col-lg-3.offset-md-1.offset-sm-0.offset-1
             img.profile_img(src=info.photo_src alt='')
         div.personal_info.col-12.col-sm-7.col-ld-8.row
-            div.col-12.col-sm-6.m-auto.mb-3
+            div.col-1.badge.badge-warning Client
+            div.col-11.col-sm-6
                 div.input-group
                     input.login.m-0(type="text" id='profile_login' value=info.login disabled)
             if info.description
@@ -27,4 +28,28 @@ section.mt-4.container.content(id='profilesection')
                     div.input-group-prepend
                         span.input-group-text Тел.
                     input.form-control.m-0(type="text" id='profile_phone' value=info.phone disabled)
+        div.col-12.col-sm-6.col-md-7.col-ld-8.offset-sm-6.offset-md-5.offset-lg-4.row
+            div.col-12.col-sm-6.accordion.p-0
+                div.card.border-0
+                    div.card-header.border-0.bg-white.pl-0.pr-0
+                        h5.mb-0
+                        a.profile_drives.p-0.input-group(type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne")
+                            div.input-group-prepend
+                                span.input-group-text Загальна кількість поїздок:
+                            b.form-control.m-0 #{info.total_amount}
+                    div.collapse(id="collapseOne" aria-labelledby="headingOne")
+                        div.card-body.p-0
+                            div.input-group.mb-2
+                                div.input-group-prepend
+                                    span.input-group-text Завершених:
+                                b.form-control.m-0 #{info.finished_amount}
+                            div.input-group.mb-2
+                                div.input-group-prepend
+                                    span.input-group-text Скасованих водіями:
+                                b.form-control.m-0 #{info.cancel_driver_amount}
+                            div.input-group.mb-2
+                                div.input-group-prepend
+                                    span.input-group-text Скасованих клієнтом:
+                                b.form-control.m-0 #{info.cancel_client_amount}
+
 include footer

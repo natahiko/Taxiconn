@@ -98,10 +98,9 @@ server.get('/profile', function (req, res) {
     const userid = req.cookies.userid;
     text.header['nowpage'] = "nav_profile";
     if (user === 'drivers') {
-        con.query("SELECT * FROM drivers INNER JOIN car_models ON car_models.id=drivers.carmodelid WHERE drivers.id='" + userid + "';", function (err, result) {
-            if (err) {
-                res.redirect("/404");
-            } else {
+        con.query(functions.getSQLProfileDriver(userid), function (err, result) {
+            if (err) res.redirect("/404");
+            else {
                 res.write(pug.renderFile(__dirname + "/src/pugs/header-driver.pug", text.header));
                 con.query("SELECT prodid,producer FROM сar_producer;", function (err, result2) {
                     res.write(pug.renderFile(__dirname + "/src/pugs/profile-driver.pug", {
@@ -113,10 +112,9 @@ server.get('/profile', function (req, res) {
             }
         });
     } else if (user === 'clients') {
-        con.query("SELECT * FROM clients WHERE id='{}'".format(userid), function (err, result) {
-            if (err) {
-                res.redirect("/404");
-            } else {
+        con.query(functions.getSQLProfileClient(userid), function (err, result) {
+            if (err) res.redirect("/404");
+            else {
                 res.write(pug.renderFile(__dirname + "/src/pugs/header-client.pug", text.header));
                 res.write(pug.renderFile(__dirname + "/src/pugs/profile-client.pug", {
                     info: result[0]
@@ -124,9 +122,7 @@ server.get('/profile', function (req, res) {
                 res.end();
             }
         });
-    } else {
-        res.redirect("/");
-    }
+    } else res.redirect("/");
 });
 server.get('/driver/becomedriver', function (req, res) {
     text.header['nowpage'] = "nav_driver";
@@ -288,7 +284,7 @@ server.param('userid', function (req, res, next, userid) {
 server.get('/userprofile/:userid', function (req, res) {
     text.header['nowpage'] = "";
     const userid = req.userid;
-    con.query("SELECT * FROM clients WHERE id='{}';".format(userid), function (err, result) {
+    con.query(functions.getSQLProfileClient(userid), function (err, result) {
         if (err || result.length < 1) {
             res.redirect("/404");
         } else {
@@ -312,8 +308,7 @@ server.get('/driverprofile/:driverid', function (req, res) {
         if (err || result.length < 1) {
             res.redirect("/404");
         } else {
-            con.query("SELECT * FROM сar_producer INNER JOIN car_models ON сar_producer.prodid=car_models.producer_id" +
-                " WHERE id=" + result[0].carmodelid + ";", function (err2, result2) {
+            con.query(functions.getSQLProfileDriver(userid), function (err2, result2) {
                 text.header['nowpage'] = "/driverprofile/" + userid;
                 res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
                 res.write(pug.renderFile(__dirname + "/src/pugs/profile_driver_for_client.pug", {

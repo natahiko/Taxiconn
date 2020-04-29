@@ -149,6 +149,22 @@ module.exports = {
     },
     getPhotoUrlForDel: function (userid) {
         return localStorage.getItem("photo_path_" + userid);
+    },
+    getSQLProfileClient: function (userid) {
+        return `SELECT *, COUNT(CASE WHEN orders.status<>0 AND orders.status<>1 THEN orders.id END) AS total_amount, 
+                COUNT(CASE WHEN orders.status=4 THEN orders.id END) AS finished_amount, 
+                COUNT(CASE WHEN orders.status=2 THEN orders.id END) AS cancel_driver_amount,
+                COUNT(CASE WHEN orders.status=3 THEN orders.id END) AS cancel_client_amount 
+                FROM clients INNER JOIN orders ON clients.id = orders.user_id WHERE clients.id='{}' 
+                GROUP BY user_id`.format(userid);
+    },
+    getSQLProfileDriver: function (userid) {
+        return `SELECT *, COUNT(CASE WHEN orders.status<>0 AND orders.status<>1 THEN orders.id END) AS total_amount, 
+                COUNT(CASE WHEN orders.status=4 THEN orders.id END) AS finished_amount, 
+                COUNT(CASE WHEN orders.status=2 THEN orders.id END) AS cancel_driver_amount,
+                COUNT(CASE WHEN orders.status=3 THEN orders.id END) AS cancel_client_amount 
+                FROM drivers INNER JOIN car_models ON car_models.id=drivers.carmodelid INNER JOIN orders 
+                    ON drivers.id = orders.driver_id WHERE drivers.id='{}' GROUP BY driver_id`.format(userid);
     }
 };
 

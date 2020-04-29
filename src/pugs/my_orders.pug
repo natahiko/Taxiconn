@@ -37,7 +37,7 @@ div.container.content.mt-2
             h3.col-sm-12.col-12
                 kbd Замовлені поїздки
             each order in all_orders
-                if order.status === 1
+                if order.status === 0
                     div.col-12.card.brad-0.shadow-small.p-0
                         div.card-header.brad-0.bg-grey
                             span.order_price Замовлено
@@ -64,13 +64,15 @@ div.container.content.mt-2
         h3.col-sm-12.col-12.mb-3
             kbd Завершені поїздки
         each order in all_orders
-            if order.status === 2 || order.status === 3
+            if order.status === 2 || order.status === 3 || order.status === 4
                 div.col-12.card.brad-0.shadow-small.p-0
                     div.card-header.bg-light-grey.brad-0
-                        if order.status === 3
+                        if order.status === 4
                             span.order_price Завершено
+                        else if order.status === 3
+                            span.order_price.text-dark-red Скасовано клієнтом
                         else
-                            span.order_price.text-dark-red Скасовано
+                            span.order_price.text-dark-red Скасовано водієм
                         span.float-right
                             kbd(class='bg_paytype_' + order.pay_type_id) #{order.name}
                     div.card-body
@@ -89,9 +91,9 @@ div.container.content.mt-2
                                 span  #{order.comment}
                         br
                         if type === 'client'
-                            a.a(href='/driverprofile/#{order.user_id}') Переглянути профіль водія
+                            a.a(href='/driverprofile/' + order.driver_id) Переглянути профіль водія
                         else if driver_id !== null
-                            a.a(href='/userprofile/#{order.driver_id}') Переглянути профіль клієнта
+                            a.a(href='/userprofile/' + order.user_id) Переглянути профіль клієнта
                         else
                             div.a Замовлення було скасовано раніше, ніж його взяв водій
 
