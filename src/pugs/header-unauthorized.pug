@@ -57,6 +57,17 @@ div.modal.fade(id="login"  role="dialog" aria-hidden="true")
                             option(value='clients') Клієнт
                             option(value='drivers') Водій
             div.modal-footer
-                button.btn.btn-secondary(data-dismiss="modal") Назад
+                button.btn.btn-secondary(onclick="showRegisterModal()") Зареєструватись
                 button.btn.btn-warning(onclick="loginUser()") Увійти
                 span(style="display: none;" id='nowpage') #{nowpage}
+div.modal.fade(id="register"  role="dialog" aria-hidden="true")
+    div.modal-dialog(role="document")
+        div.modal-content
+            div.modal-header
+                h5.modal-title Реєстрація
+                button.close(id='register_modal_dismiss' data-dismiss="modal" aria-label="Close")
+                    span(aria-hidden="true") &times;
+            div.modal-body.row.p-5
+                h2.col-12.text-center.mb-3 Як ви хочете зареєструватись???
+                a.btn.btn-warning.col-5(href='/driver/becomedriver') Водій
+                a.btn.btn-warning.col-5.offset-2(href='/user/registeruser') Користувач

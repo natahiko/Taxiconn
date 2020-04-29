@@ -1,0 +1,22 @@
+section.error404.content
+    div.d-none(id='uncorrect_alert')
+        div.alert.alert-danger.font-small
+            button.close(type="button" data-dismiss="alert") &times;
+            strong Некоректні дані
+            span  Пароль не було змінено, через невідповідність даних. Вкажіть правильний пароль та встановіть новий для входу
+    div.row
+        h1.col-12 Змініть пароль
+        div.input-group.col-10.mb-2
+            div.input-group-prepend
+                span.input-group-text Старий пароль:
+            input.form-control.m-0(type="password" name='old_password' id='old_pass')
+        div.input-group.col-10.mb-2
+            div.input-group-prepend
+                span.input-group-text Новий пароль:
+            input.form-control.m-0(type="password" name='new_password' id='new_pass')
+        div.input-group.col-10.mb-2
+            div.input-group-prepend
+                span.input-group-text Повторіть пароль:
+            input.form-control.m-0(type="password" id='new_pass2')
+        button.btn-warning.btn.btn-md.pr-5.pl-5.b(onclick='firstChangePass()') Зберегти зміни
+include footer

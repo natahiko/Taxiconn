@@ -185,6 +185,56 @@ module.exports = {
             return `SELECT *, TIMEDIFF(end_date, start_date) AS time_diff FROM orders INNER JOIN payments 
                 ON orders.pay_type_id = payments.pay_id WHERE driver_id='{}';`.format(user_id);
         }
+    },
+    getSQLRedisterUser: function (data) {
+        const code = this.generateCode();
+        const password = this.generateCode();
+        const passHash = this.hashPassword(password);
+        const email = data.email+data.emend;
+        const photo_src = "https://eu.ui-avatars.com/api/?name=" + data.first_name + "%20" + data.surname
+            + "&background=343a40&color=ffc107&bold=true&size=512";
+        jsonStorage.setItem(data.login, JSON.stringify({
+           "full_name": data.first_name + " " +data.surname,
+           "password": password,
+            "email": email
+        }));
+        if(data.description==="")
+            data.description = 'NULL';
+        return `INSERT INTO clients (id, login, name, surname, age, email, password, phone, description, photo_src) VALUES 
+                ('{}', '{}', '{}', '{}', '{}', '{}', '{}', ${data.phone}, ${data.description}, '{}')`
+            .format(code, data.login, data.first_name, data.surname, data.age, email, passHash, photo_src);
+    },
+    getSQLChageUserPassword: function(cookies, body){
+        const oldHash = this.hashPassword(body.old_pass);
+        const newHash = this.hashPassword(body.new_pass);
+        return `UPDATE clients SET password='{}', registered=1 WHERE password='{}' AND id='{}';`.format(newHash, oldHash, cookies.unauthorised_userid);
+    },
+    sendUserMail: async function (login, config, email) {
+        let data = jsonStorage.getItem(login);
+        data = JSON.parse(data);
+        let transporter = nodemailer.createTransport({
+            host: config.host,
+            port: config.port,
+            secure: false,
+            auth: config.auth
+        });
+        let mailOptions = {
+            from: config.auth.user,
+            to: data.email,
+            subject: config.subject,
+            html: "<div style='background-color: #343A40; width: 100%'>" +
+                "    <b style='margin: 15px; color: white; font-size: x-large'>Taxiconn</b>" +
+                "    <h2 style='text-align: center'></h2></div>" +
+                "<span style='text-align: center; align-items: center; color: black'><h2>" + email.header + "</h2><p>" + email.text + "</p>" +
+                "<div style='font-weight: bold; font-size: 20px; color: red'>"+email.alert+"</div>" +
+                "<input style='width: 50%; margin: 7px 25%; text-align: center; padding: 5px; font-size: x-large; " +
+                "background: white; border: none' disabled type='text' value='" + data.password + "' id='code'>" +
+                "</span>"
+        };
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) console.log(error);
+            else console.log('Email sent: ' + info.response);
+        });
     }
 };
 

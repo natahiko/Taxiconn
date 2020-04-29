@@ -593,6 +593,9 @@ footer nav {
 .b {
     font-weight: bold !important;
 }
+.font-small{
+    font-size: medium;
+}
 
 .down-arrow {
     font-size: 26px;

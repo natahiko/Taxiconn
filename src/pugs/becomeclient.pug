@@ -8,17 +8,17 @@ div.container.content(id='becomedriverpage')
             div.input-group.col-sm-10.col-12.mb-2
                 div.input-group-prepend
                     span.input-group-text Ім'я
-                input.form-control(required type="text" placeholder="Ім'я" maxlength=45 id='client_name')
+                input.form-control(required type="text" placeholder="Ім'я" maxlength=45 id='client_name' name='first_name')
                 span.invalid-feedback Ім'я не повинно містити чисел чи символів
 
                 div.input-group-prepend
                     span.input-group-text Прізвище
-                input.form-control(required type="text" placeholder="Прізвище" maxlength=45 id='client_surname')
+                input.form-control(required type="text" placeholder="Прізвище" maxlength=45 id='client_surname' name='surname')
                 span.invalid-feedback Прізвище не повинно містити чисел чи символів
             div.input-group.col-sm-10.col-12.mb-2
                 div.input-group-prepend
                     span.input-group-text Логін
-                input.form-control(required type="text" placeholder="Логін" maxlength=20 id='client_login')
+                input.form-control(required type="text" placeholder="Логін" maxlength=20 id='client_login' name='login')
                 div.input-group-append
                     input.btn.btn-outline-warning(type='button' data-toggle="tooltip" title="Перевірте чи вільний ваш логін" value='Перевірити' onclick="checkFreeLogin()")
                 span.invalid-feedback Ваш логін зайнятий! Оберіть новий
@@ -38,12 +38,12 @@ div.container.content(id='becomedriverpage')
                     div.input-group.col-12.col-sm-6
                         div.input-group-prepend
                             span.input-group-text Вік
-                        input.form-control(required type="number" min=16 id='client_age')
+                        input.form-control(required type="number" min=16 id='client_age' name='age')
                     div.col.col-sm.pr-0(style="margin-right: -15px")
                         div.input-group
                             div.input-group-prepend
                                 span.input-group-text Телефон
-                            input.form-control(required type="tel" placeholder="" id='client_tel')
+                            input.form-control(required type="tel" placeholder="" id='client_tel' name='phone')
                             span.invalid-feedback Номер телефону повинен відповідати одному з шаблонів:
                                 p  (123) 456-7890
                                 p  (123)456-7890
@@ -53,7 +53,7 @@ div.container.content(id='becomedriverpage')
                                 p  +31636363634
                                 p  075-63546725
             div.col-sm-10.col-12.mb-2
-                textarea.form-control(id='client_desc' rows=3 placeholder="Опишіть себе (за бажанням)...")
+                textarea.form-control(id='client_desc' name='description' rows=3 placeholder="Опишіть себе (за бажанням)...")
             div.col-sm-10.col-12
                 div.input-group.align-content-center.mb-0(style='width: 100%')
                     button.btn.btn-md.btn-warning(style='margin: auto; width: 50%' type='submit') Зареєструватись

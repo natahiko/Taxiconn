@@ -206,6 +206,12 @@ server.get('/thankspage', function (req, res) {
     res.write(fs.readFileSync(__dirname + '/src/html/thanks.html', 'utf8'));
     res.end();
 });
+server.get('/changepassword', function (req, res) {
+    text.header['nowpage'] = "";
+    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
+    res.write(pug.renderFile(__dirname + "/src/pugs/changePass.pug"));
+    res.end();
+});
 server.get('/ordertaxi', function (req, res) {
     text.header['nowpage'] = "nav_ordertaxi";
     text.header['googlemapapi'] = config.googlemapapi;
@@ -321,9 +327,17 @@ server.get('/driverprofile/:driverid', function (req, res) {
 });
 server.get('/registered', function (req, res) {
     text.header['nowpage'] = "";
-    res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
-    res.write(pug.renderFile(__dirname + "/src/pugs/registered_client.pug"));
-    res.end();
+    con.query(functions.getSQLRedisterUser(req.query), function (err, result) {
+        console.log(err);
+        console.log(result);
+        functions.sendUserMail(req.query.login, config.email, text.usermail);
+        if(err) res.json({"data": false});
+        else{
+            res.write(pug.renderFile(__dirname + functions.getHeader(req.cookies.authorised), text.header));
+            res.write(pug.renderFile(__dirname + "/src/pugs/registered_client.pug"));
+        }
+        res.end();
+    });
 });
 server.get('/getRandCode', function (req, res) {
     let code = functions.generateCode();
@@ -341,13 +355,13 @@ server.post('/login', function (req, res) {
     let password = functions.hashPassword(req.body.password);
     console.log(password);
     con.query(functions.getSQLLogin(login, type, password), function (err, result) {
-        console.log(result);
         if (result.length < 1) res.statusCode = 401;
         else {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
             let responseBody = {
-                'userid': result[0].id
+                'userid': result[0].id,
+                'registered': result[0].registered
             };
             res.write(JSON.stringify(responseBody));
         }
@@ -475,6 +489,19 @@ server.post('/isAllFree', function (req, res) {
 server.post('/endDrive', function (req, res) {
     con.query(functions.getSQLEndDrive(req.body.order_id, req.cookies.userid), function () {
         res.json({"data": true});
+        res.end();
+    })
+});
+server.post('/endDrive', function (req, res) {
+    con.query(functions.getSQLEndDrive(req.body.order_id, req.cookies.userid), function () {
+        res.json({"data": true});
+        res.end();
+    })
+});
+server.post('/changepass', function (req, res) {
+    con.query(functions.getSQLChageUserPassword(req.cookies, req.body), function (err) {
+        if(err) res.json({"data": false});
+        else res.json({"data": true});
         res.end();
     })
 });
