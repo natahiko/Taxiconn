@@ -31,11 +31,11 @@ div.container.content.mt-2
                         a.btn.btn-dark.col-3.ml-3(href='#{order.url}' target='blank') Відкрити маршрут
                     if type === 'driver'
                         div.card-footer
-                            button.btn.btn-warning.float-right(onclick="canselDrive('#{order.id}')") Завершити поїздку
+                            button.btn.btn-warning.float-right(onclick="endDrive('" + order.id + "')") Завершити поїздку
+                            button.btn.btn-secondary.float-right.mr-3(onclick="cancelDrive('" + order.id + "')") Скасувати замовлення
+
     if type === 'client'
         div.row
-            h3.col-sm-12.col-12
-                kbd Замовлені поїздки
             each order in all_orders
                 if order.status === 0
                     div.col-12.card.brad-0.shadow-small.p-0
@@ -59,7 +59,7 @@ div.container.content.mt-2
                                     b Коментар:
                                     span #{order.comment}
                         div.card-footer
-                            button.btn.btn-warning.float-right(onclick="canselOrder('#{order.id}')") Скасувати замовлення
+                            button.btn.btn-warning.float-right(onclick="cancelDrive('" + order.id + "')") Скасувати замовлення
     div.row
         h3.col-sm-12.col-12.mb-3
             kbd Завершені поїздки
@@ -78,6 +78,10 @@ div.container.content.mt-2
                     div.card-body
                         b Ціна:
                         span  #{order.price} ₴
+                        if order.status === 4
+                            br
+                            b Тривалість поїздки:
+                            span   #{order.time_diff}
                         br
                         b Місце посадки:
                         span  #{order.address_from}

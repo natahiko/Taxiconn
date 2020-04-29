@@ -128,8 +128,8 @@ module.exports = {
         const code = this.generateCode();
 
         return `INSERT INTO orders 
-                (id, user_id, class, pay_type_id, comment, address_from, address_to, url) 
-                VALUES ('{}', '{}', '{}', '{}' , ${notes}, '{}', '{}', '{}');`.format(code, userid, clas, pay_type, from, to, dirurl);
+                (id, user_id, class, pay_type_id, comment, address_from, address_to, url, start_date) 
+                VALUES ('{}', '{}', '{}', '{}' , ${notes}, '{}', '{}', '{}', NOW());`.format(code, userid, clas, pay_type, from, to, dirurl);
     },
     getSQLUploadPhoto: function (cookies) {
         const text = localStorage.getItem("photo_src_" + cookies.userid);
@@ -165,6 +165,26 @@ module.exports = {
                 COUNT(CASE WHEN orders.status=3 THEN orders.id END) AS cancel_client_amount 
                 FROM drivers INNER JOIN car_models ON car_models.id=drivers.carmodelid INNER JOIN orders 
                     ON drivers.id = orders.driver_id WHERE drivers.id='{}' GROUP BY driver_id`.format(userid);
+    },
+    getSQLEndDrive: function (order_id, driver_id) {
+        return `UPDATE orders SET status=4, end_date=NOW() WHERE driver_id='{}' AND id='{}';`.format(driver_id, order_id);
+    },
+    getSQLCancelDrive: function (order_id, cookies) {
+        const user_id = cookies.userid;
+        if (cookies.authorised === 'clients') {
+            return `UPDATE orders SET status=3, end_date=NOW() WHERE id='{}' AND user_id='{}';`.format(order_id, user_id);
+        } else {
+            return `UPDATE orders SET status=2, end_date=NOW() WHERE id='{}' AND driver_id='{}';`.format(order_id, user_id);
+        }
+    },
+    getSQLMyDrives: function (user_id, user_type) {
+        if (user_type === 'clients') {
+            return `SELECT *, TIMEDIFF(end_date, start_date) AS time_diff FROM orders INNER JOIN payments 
+                ON orders.pay_type_id = payments.pay_id WHERE user_id='{}';`.format(user_id);
+        } else {
+            return `SELECT *, TIMEDIFF(end_date, start_date) AS time_diff FROM orders INNER JOIN payments 
+                ON orders.pay_type_id = payments.pay_id WHERE driver_id='{}';`.format(user_id);
+        }
     }
 };
 

@@ -234,12 +234,11 @@ server.get('/orders', function (req, res) {
 });
 server.get('/mydrives', function (req, res) {
     const user_type = req.cookies.authorised;
-    console.log(user_type);
     const userid = req.cookies.userid;
     text.header['nowpage'] = "nav_mydrives";
     if (user_type === 'drivers') {
         res.write(pug.renderFile(__dirname + "/src/pugs/header-driver.pug", text.header));
-        con.query("SELECT * FROM orders INNER JOIN payments ON orders.pay_type_id = payments.pay_id WHERE driver_id='{}';".format(userid), function (err, result) {
+        con.query(functions.getSQLMyDrives(userid, user_type), function (err, result) {
             console.log(result);
             res.write(pug.renderFile(__dirname + "/src/pugs/my_orders.pug", {
                 "all_orders": result,
@@ -249,20 +248,14 @@ server.get('/mydrives', function (req, res) {
         });
     } else if (user_type === 'clients') {
         res.write(pug.renderFile(__dirname + "/src/pugs/header-client.pug", text.header));
-        con.query("SELECT * FROM orders INNER JOIN payments ON orders.pay_type_id = payments.pay_id WHERE user_id='{}';".format(userid), function (err, result) {
+        con.query(functions.getSQLMyDrives(userid, user_type), function (err, result) {
             res.write(pug.renderFile(__dirname + "/src/pugs/my_orders.pug", {
                 "all_orders": result,
                 "type": "client"
             }));
             res.end();
         });
-    } else {
-        res.redirect("/404");
-    }
-    // res.write(pug.renderFile(__dirname + "/src/pugs/orders.pug", {
-    //     "orders": result
-    // }));
-    // res.end();
+    } else res.redirect("/404");
 });
 server.get('/allorders', function (req, res) {
     const clas = functions.getCarModelIdLocal(req.cookies.userid);
@@ -467,6 +460,18 @@ server.post('/isAllFree', function (req, res) {
         }
     });
 });
+server.post('/endDrive', function (req, res) {
+    con.query(functions.getSQLEndDrive(req.body.order_id, req.cookies.userid), function () {
+        res.json({"data": true});
+        res.end();
+    })
+});
+server.post('/cancelDrive', function (req, res) {
+    con.query(functions.getSQLCancelDrive(req.body.order_id, req.cookies), function () {
+        res.json({"data": true});
+        res.end();
+    })
+});
 server.post('/sendmail', function (req, res) {
     let emailTo = req.body.email;
     let code = functions.generateCode();
@@ -519,14 +524,21 @@ server.post('/createorder', function (req, res) {
         res.end();
         return;
     }
-    const sql = functions.getSQLCreateOrder(userid, from, to, clas, pay_type, req.body.notes);
-    con.query(sql, function (err) {
-        if (err) {
-            res.redirect("/createorder");
-        } else {
-            res.statusCode = 201;
-            res.write(JSON.stringify({"status": "ok"}));
+    con.query("SELECT * FROM orders WHERE user_id='{}' AND (status=1 OR status=0)".format(userid), function (err, result) {
+        if (result.length >= config.max_car_amount_for_client) {
+            res.json({"too_much": true, "count": config.max_car_amount_for_client});
             res.end();
+        } else {
+            const sql = functions.getSQLCreateOrder(userid, from, to, clas, pay_type, req.body.notes);
+            con.query(sql, function (err) {
+                if (err !== null) {
+                    res.redirect("/createorder");
+                } else {
+                    res.statusCode = 201;
+                    res.json({"too_much": false});
+                    res.end();
+                }
+            });
         }
     });
 });

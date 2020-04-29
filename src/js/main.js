@@ -486,15 +486,22 @@ function ordertaxi() {
         type: 'post',
         dataType: 'json',
         contentType: 'application/json',
-        success: function () {
-            window.location = "/thankspage";
+        success: function (data2) {
+            if (data2.too_much) {
+                $("#foralert").prepend("<div class='alert alert-danger alert-dismissible'>" +
+                    "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
+                    "<strong>Перевищено ліміт!</strong> Ви вже маєте " + data2.count +
+                    " активні (незавершені) поїздки. Для нового замовлення спершу завершіть або скасуйте їх. " +
+                    "</div>");
+            } else
+                window.location = "/thankspage";
         },
-        error: function (data) {
+        error: function (data2) {
             $("#foralert").prepend("<div class='alert alert-danger alert-dismissible'>" +
                 "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
                 "<strong>Помилка!</strong> Чомусь не вдалося обробити вашу заявку. <a href='#' onclick='ordertaxi()'>Спробуйте ще!</a>" +
                 "</div>");
-            console.log(data.err);
+            console.log(data2.err);
         },
         data: JSON.stringify(data)
     });
@@ -549,8 +556,7 @@ function setFooter() {
 
 function sendNewProfilePhoto() {
     var formData = new FormData($("#upload_photo")[0]);
-    $.ajax
-    ({
+    $.ajax({
         url: '/upload_user_photo',
         type: "POST",
         data: formData,
@@ -565,5 +571,31 @@ function sendNewProfilePhoto() {
         },
         contentType: false,
         processData: false
+    });
+}
+
+function endDrive(order_id) {
+    $.ajax({
+        url: '/endDrive',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function () {
+            window.location = '/mydrives';
+        },
+        data: JSON.stringify({"order_id": order_id})
+    });
+}
+
+function cancelDrive(order_id) {
+    $.ajax({
+        url: '/cancelDrive',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function () {
+            window.location = '/mydrives';
+        },
+        data: JSON.stringify({"order_id": order_id})
     });
 }
