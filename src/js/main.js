@@ -238,12 +238,13 @@ async function checkFreeLoginClient() {
     }
     return checkLogin(logSelector, "clients");
 }
-function checkRegisterFreeLogin(){
+
+function checkRegisterFreeLogin() {
     let logSelector = $("#client_login");
-        logSelector.keyup(function () {
-            logSelector.removeClass("is-valid");
-            logSelector.removeClass("is-invalid");
-        });
+    logSelector.keyup(function () {
+        logSelector.removeClass("is-valid");
+        logSelector.removeClass("is-invalid");
+    });
     return checkLogin(logSelector, "clients");
 }
 
