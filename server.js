@@ -469,7 +469,8 @@ server.post('/isAllFree', function (req, res) {
         res.end();
         return;
     }
-    con.query("SELECT * FROM drivers WHERE login='{}' OR phone='{}' OR email='{}';".format(login, phone, email), function (err, result) {
+    const sql = functions.getSQLIsAllFree(req.body.client, login, phone, email);
+    con.query(sql, function (err, result) {
         res.setHeader('Content-Type', 'application/json');
         if (result.length < 1) {
             res.statusCode = 200;

@@ -558,12 +558,12 @@ footer nav {
 }
 
 .nav-link {
-    color: var(--light-grey);
+    color: rgb(200, 200, 200) !important;
 }
 
 .active_nav {
     font-weight: bolder;
-    text-shadow: 1px 1px 2px rgb(134, 134, 134);
+    text-shadow: 2px 2px 3px rgb(124, 124, 124);
 }
 
 .badge {

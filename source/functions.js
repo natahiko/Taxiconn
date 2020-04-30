@@ -236,9 +236,12 @@ module.exports = {
             if (error) console.log(error);
             else console.log('Email sent: ' + info.response);
         });
+    },
+    getSQLIsAllFree: function (client, login, phone, email) {
+        if (client) return "SELECT * FROM clients WHERE login='{}' OR phone='{}' OR email='{}';".format(login, phone, email);
+        else return "SELECT * FROM drivers WHERE login='{}' OR phone='{}' OR email='{}';".format(login, phone, email);
     }
-};
-
+}
 String.prototype.format = function () {
     var i = 0, args = arguments;
     return this.replace(/{}/g, function () {
