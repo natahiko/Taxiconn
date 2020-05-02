@@ -69,6 +69,19 @@ router.post('/createorder', function (req, res) {
         }
     });
 });
+router.get('/all', function (req, res) {
+    const clas = functions.getCarModelIdLocal(req.cookies.userid);
+    if (clas === null) {
+        res.statusCode = 403;
+        res.json({"err": "no user founded"});
+        res.end();
+    } else {
+        con.query("SELECT * FROM orders INNER JOIN payments ON payments.pay_id=orders.pay_type_id WHERE status=0 AND class='{}';".format(clas), function (err, result) {
+            res.write(pug.renderFile(__dirname + "/src/pugs/allorders.pug", {"orders": result}));
+            res.end();
+        });
+    }
+});
 router.post('/cancelDrive', function (req, res) {
     db.getCon().query(functions.getSQLCancelDrive(req.body.order_id, req.cookies), function () {
         res.json({"data": true});

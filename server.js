@@ -1,4 +1,3 @@
-const multer = require('multer');
 const pug = require('pug');
 let express = require('express');
 let config = require('./config/conf.json');
@@ -9,6 +8,7 @@ const cookieParser = require('cookie-parser');
 let fs = require('fs');
 let path = require('path');
 const db = require('./source/database_pool');
+const multer = require('multer');
 
 let server = express();
 server.use(cookieParser());
@@ -20,9 +20,9 @@ server.use(express.static('public'));
 server.use(express.static('files'));
 server.use(bodyParser.urlencoded({extended: true}));
 server.use(bodyParser.json());
-server.use('/user', require('./source/users'));
-server.use('/driver', require('./source/drivers'));
-server.use('/orders', require('./source/orders'));
+// server.use('/user', require('./source/users'));
+// server.use('/driver', require('./source/drivers'));
+// server.use('/orders', require('./source/orders'));
 //use fot test
 // server.use('/default', require('./source/default'));
 
