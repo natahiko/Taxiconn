@@ -25,9 +25,9 @@ div.container.content.mt-2
                                 span #{order.comment}
                         div.col-12.mt-2
                         if type === 'client'
-                            a.btn.btn-warning.bg-warning-dark.col-3.ml-3(href='/driverprofile/#{order.user_id}') Переглянути профіль водія
+                            a.btn.btn-warning.bg-warning-dark.col-3.ml-3(href='/driver/#{order.user_id}') Переглянути профіль водія
                         else
-                            a.btn.btn-warning.bg-warning-dark.col-3.ml-3(href='/userprofile/#{order.driver_id}') Переглянути профіль клієнта
+                            a.btn.btn-warning.bg-warning-dark.col-3.ml-3(href='/user/#{order.driver_id}') Переглянути профіль клієнта
                         a.btn.btn-dark.col-3.ml-3(href='#{order.url}' target='blank') Відкрити маршрут
                     if type === 'driver'
                         div.card-footer
@@ -95,9 +95,9 @@ div.container.content.mt-2
                                 span  #{order.comment}
                         br
                         if type === 'client'
-                            a.a(href='/driverprofile/' + order.driver_id) Переглянути профіль водія
+                            a.a(href='/driver/' + order.driver_id) Переглянути профіль водія
                         else if driver_id !== null
-                            a.a(href='/userprofile/' + order.user_id) Переглянути профіль клієнта
+                            a.a(href='/user/' + order.user_id) Переглянути профіль клієнта
                         else
                             div.a Замовлення було скасовано раніше, ніж його взяв водій
 
