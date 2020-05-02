@@ -22,7 +22,7 @@ function loginUser() {
         dataType: 'json',
         contentType: 'application/json',
         success: function (data) {
-            if (!data.registered) {
+            if (!data.registered && person.type==='clients') {
                 document.cookie = "unauthorised_userid=" + data.userid;
                 document.cookie = 'unauthorised=' + type;
                 window.location = '/changepassword';
@@ -498,7 +498,7 @@ function ordertaxi() {
         "notes": $("#notes").val()
     };
     $.ajax({
-        url: '/createorder',
+        url: '/orders/createorder',
         type: 'post',
         dataType: 'json',
         contentType: 'application/json',
@@ -528,7 +528,7 @@ function getOrder(id) {
         url: '/acceptOrder',
         type: 'post',
         success: function () {
-            window.location = '/myorders';
+            window.location = '/orders/my';
         },
         error: function () {
             $("#order_modal_alert").modal("toggle");
@@ -541,7 +541,7 @@ function getOrder(id) {
 
 function renew_orders_method() {
     $.ajax({
-        url: '/allorders',
+        url: '/orders/all',
         type: 'get',
         dataType: 'json',
         contentType: 'application/json',
@@ -592,12 +592,12 @@ function sendNewProfilePhoto() {
 
 function endDrive(order_id) {
     $.ajax({
-        url: '/endDrive',
+        url: '/orders/endDrive',
         type: 'post',
         dataType: 'json',
         contentType: 'application/json',
         success: function () {
-            window.location = '/mydrives';
+            window.location = '/orders/my';
         },
         data: JSON.stringify({"order_id": order_id})
     });
@@ -605,12 +605,12 @@ function endDrive(order_id) {
 
 function cancelDrive(order_id) {
     $.ajax({
-        url: '/cancelDrive',
+        url: '/orders/cancelDrive',
         type: 'post',
         dataType: 'json',
         contentType: 'application/json',
         success: function () {
-            window.location = '/mydrives';
+            window.location = '/orders/my';
         },
         data: JSON.stringify({"order_id": order_id})
     });

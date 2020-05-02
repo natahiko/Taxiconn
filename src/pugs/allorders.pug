@@ -16,7 +16,7 @@ each order in orders
                     b Коментар:
                     span #{order.comment}
             div.mt-2.ord_buttons
-                a.btn.btn-warning.bg-warning-dark(href='/userprofile/' + order.user_id) Переглянути профіль клієнта
+                a.btn.btn-warning.bg-warning-dark(href='/user/' + order.user_id) Переглянути профіль клієнта
                 a.btn.btn-dark(href='#{order.url}' target='blank') Відкрити маршрут
         div.card-footer
             button.btn.btn-warning.float-right(onclick="getOrder('#{order.id}')") Взяти поїздку
