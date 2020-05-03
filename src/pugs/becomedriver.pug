@@ -96,20 +96,6 @@ div.container.content(id='becomedriverpage')
                 input.form-control(type="text" placeholder="0000" maxlength=4 id='driver_autonum2')
                 input.form-control(type="text" placeholder="ХХ" maxlength=2 id='driver_autonum3')
         div.col-sm-10.col-12.mb-2
-            div.input-group
-                div.input-group-prepend
-                    span.input-group-text Виробник
-                select.input-group-append.form-control(onchange='renew_car_model()' id='select_carproducer')
-                    option.default_option(value="default" selected) Оберіть виробника
-                    each prod in producers
-                        option.form-control(value=prod.prodid) #{prod.producer}
-        div.col-sm-10.col-12.mb-2
-            div.input-group
-                div.input-group-prepend
-                    span.input-group-text Марка
-                select.input-group-append.form-control(id="select_carmodel")
-                    option.default_option(value="default" selected) Оберіть марка
-        div.col-sm-10.col-12.mb-2
             div.input-group(style='font-size: xx-large;')
                 div.form-check-inline
                     label.form-check-label.input-group
@@ -123,6 +109,21 @@ div.container.content(id='becomedriverpage')
                             div.input-group-text
                                 input.form-check-input(type="radio" onclick='renew_car_model()' name="car_class" value='comfort')
                         span.form-control Комфорт
+        div.col-sm-10.col-12.mb-2
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text Виробник
+                select.input-group-append.form-control(onchange='renew_car_model()' id='select_carproducer')
+                    option.default_option(value="default" selected) Оберіть виробника
+                    each prod in producers
+                        option.form-control(value=prod.prodid) #{prod.producer}
+        div.col-sm-10.col-12.mb-2
+            div.input-group
+                div.input-group-prepend
+                    span.input-group-text Марка
+                select.input-group-append.form-control(id="select_carmodel")
+                    option.default_option(value="default" selected) Оберіть марка
+
         h5.col-12.col-sm-12 Оберіть пароль для входу
         div.col-sm-10.col-12.mb-2
             div.input-group

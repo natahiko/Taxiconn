@@ -47,13 +47,14 @@ function exit() {
 }
 
 function renew_car_model(value) {
+    console.log(value);
     let producerid = $("#select_carproducer").children("option:selected").val();
     let classSel = $('#carclassprofile');
-    let car_class;
-    if (classSel === undefined) {
+    let car_class = classSel.children("option:selected").val();
+    if (car_class === undefined) {
         car_class = $('input[name="car_class"]:checked').val();
-    } else {
-        car_class = classSel.children("option:selected").val();
+        console.log(car_class);
+        console.log("вапнгш");
     }
     let prods = {
         "producer": producerid,
@@ -68,6 +69,7 @@ function renew_car_model(value) {
         dataType: 'json',
         contentType: 'application/json',
         success: function (data) {
+            console.log(data);
             let res = data.res;
             carModelSelector.append("<option value='default' class='default_option'>Оберіть марку</option>");
             for (let i = 0; i < res.length; i++) {

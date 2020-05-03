@@ -76,8 +76,8 @@ router.get('/all', function (req, res) {
         res.json({"err": "no user founded"});
         res.end();
     } else {
-        con.query("SELECT * FROM orders INNER JOIN payments ON payments.pay_id=orders.pay_type_id WHERE status=0 AND class='{}';".format(clas), function (err, result) {
-            res.write(pug.renderFile(__dirname + "/src/pugs/allorders.pug", {"orders": result}));
+        db.getCon().query("SELECT * FROM orders INNER JOIN payments ON payments.pay_id=orders.pay_type_id WHERE status=0 AND class='{}';".format(clas), function (err, result) {
+            res.write(pug.renderFile(path.join(__dirname, "../src/pugs/allorders.pug"), {"orders": result}));
             res.end();
         });
     }
@@ -113,5 +113,10 @@ router.get('/my', function (req, res) {
         });
     } else res.redirect("/404");
 });
-
+String.prototype.format = function () {
+    var i = 0, args = arguments;
+    return this.replace(/{}/g, function () {
+        return typeof args[i] !== 'undefined' ? args[i++] : '';
+    });
+};
 module.exports = router;

@@ -1,13 +1,13 @@
 const pug = require('pug');
 let express = require('express');
 let config = require('./config/conf.json');
-let functions = require('./source/functions');
+let functions = require('./modules/functions');
 let text = require('./config/main.json');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 let fs = require('fs');
 let path = require('path');
-const db = require('./source/database_pool');
+const db = require('./modules/database_pool');
 const multer = require('multer');
 
 let server = express();
@@ -20,11 +20,11 @@ server.use(express.static('public'));
 server.use(express.static('files'));
 server.use(bodyParser.urlencoded({extended: true}));
 server.use(bodyParser.json());
-// server.use('/user', require('./source/users'));
-// server.use('/driver', require('./source/drivers'));
-// server.use('/orders', require('./source/orders'));
+server.use('/user', require('./modules/users'));
+server.use('/driver', require('./modules/drivers'));
+server.use('/orders', require('./modules/orders'));
 //use fot test
-// server.use('/default', require('./source/default'));
+// server.use('/default', require('./modules/default'));
 
 let storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -270,12 +270,12 @@ server.post('/carmodel', function (req, res) {
         res.end();
         return;
     }
-    let car_class;
-    if (req.body.carclass === "comfort") car_class = " AND class='comfort'";
-    else car_class = " AND class='econom'";
-    db.getCon().query("SELECT id,model FROM car_models WHERE producer_id='{}' AND class='{}';".format(producer, car_class), function (err, result) {
+    console.log(producer);
+    console.log(req.body.carclass);
+    db.getCon().query("SELECT id,model FROM car_models WHERE producer_id='{}' AND class='{}';".format(producer, req.body.carclass), function (err, result) {
         res.statusCode = 202;
         res.setHeader('Content-Type', 'application/json');
+        console.log(result);
         res.write(JSON.stringify({
             "res": result
         }));
@@ -372,3 +372,11 @@ server.use(function (req, res) {
     res.write(fs.readFileSync(__dirname + '/src/html/404.html', 'utf8'));
     res.end();
 });
+
+
+String.prototype.format = function () {
+    var i = 0, args = arguments;
+    return this.replace(/{}/g, function () {
+        return typeof args[i] !== 'undefined' ? args[i++] : '';
+    });
+};
