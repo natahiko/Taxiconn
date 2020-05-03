@@ -109,9 +109,8 @@ server.get('/confirmregistration', function (req, res) {
         res.redirect("/404");
     } else {
         res.write(pug.renderFile(__dirname + "/src/pugs/header-unauthorized.pug", text.header));
-        let email = req.query.email + req.query.emend;
         res.write(pug.renderFile(__dirname + "/src/pugs/confirmregistration.pug", {
-            "email": email
+            "email": req.query.email + req.query.emend
         }));
     }
     res.end();
@@ -214,9 +213,7 @@ server.put('/password', function (req, res) {
     let type = req.body.type;
     if (old === "" || old === undefined || now === "" || now === undefined) {
         res.statusCode = 406;
-        res.write(JSON.stringify({
-            "err": 'lost some data'
-        }));
+        res.write(JSON.stringify({"err": 'lost some data'}));
         res.end();
         return;
     }
@@ -226,9 +223,7 @@ server.put('/password', function (req, res) {
     db.getCon().query(functions.getSQLPassword(type, userid, old), function (err, result) {
         if (result.length < 1) {
             res.statusCode = 409;
-            res.write(JSON.stringify({
-                "err": 'uncorect old'
-            }));
+            res.write(JSON.stringify({"err": 'uncorect old'}));
             res.end();
         } else {
             db.getCon().query("UPDATE " + type + " SET password='" + now + "' WHERE id='" + userid + "';", function (err) {
@@ -237,9 +232,7 @@ server.put('/password', function (req, res) {
                         "err": 'Внутрішня помилка на сервері'
                     }));
                     res.statusCode = 409;
-                } else {
-                    res.statusCode = 204;
-                }
+                } else res.statusCode = 204;
                 res.end();
             });
         }
@@ -270,12 +263,9 @@ server.post('/carmodel', function (req, res) {
         res.end();
         return;
     }
-    console.log(producer);
-    console.log(req.body.carclass);
     db.getCon().query("SELECT id,model FROM car_models WHERE producer_id='{}' AND class='{}';".format(producer, req.body.carclass), function (err, result) {
         res.statusCode = 202;
         res.setHeader('Content-Type', 'application/json');
-        console.log(result);
         res.write(JSON.stringify({
             "res": result
         }));

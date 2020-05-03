@@ -69,6 +69,26 @@ router.post('/createorder', function (req, res) {
         }
     });
 });
+router.get('/calcprice', function (req, res) {
+    const clas = req.body.clas;
+    const pay_type = req.body.pay_type;
+    const km = req.body.km;
+    if(clas==="" || clas===undefined || km==="" || km===undefined || pay_type==="" || pay_type===undefined){
+        res.statusCode = 401;
+        res.end();
+    }
+    const day_type = functions.getDayType();
+    const sql = `SELECT price FROM tarifs WHERE class='{}' AND pay_type='{}'
+                    AND day_type='{}';`.format(clas, pay_type, day_type);
+    db.getCon().query(sql, function (err, res) {
+        if(err)res.statusCode = 401;
+        else{
+            const price = result[0].price * km / 1000;
+            res.json({"price": price});
+        }
+        res.end();
+    });
+});
 router.get('/all', function (req, res) {
     const clas = functions.getCarModelIdLocal(req.cookies.userid);
     if (clas === null) {

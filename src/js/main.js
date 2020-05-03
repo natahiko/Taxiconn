@@ -47,14 +47,11 @@ function exit() {
 }
 
 function renew_car_model(value) {
-    console.log(value);
     let producerid = $("#select_carproducer").children("option:selected").val();
     let classSel = $('#carclassprofile');
     let car_class = classSel.children("option:selected").val();
     if (car_class === undefined) {
         car_class = $('input[name="car_class"]:checked').val();
-        console.log(car_class);
-        console.log("вапнгш");
     }
     let prods = {
         "producer": producerid,
