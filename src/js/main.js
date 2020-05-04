@@ -22,7 +22,7 @@ function loginUser() {
         dataType: 'json',
         contentType: 'application/json',
         success: function (data) {
-            if (!data.registered && person.type==='clients') {
+            if (!data.registered && person.type === 'clients') {
                 document.cookie = "unauthorised_userid=" + data.userid;
                 document.cookie = 'unauthorised=' + type;
                 window.location = '/changepassword';
@@ -494,7 +494,8 @@ function ordertaxi() {
         "address_to": address_to,
         "pay_type": $("#pay_type").val(),
         "clas": $("input[name='class']:checked").val(),
-        "notes": $("#notes").val()
+        "notes": $("#notes").val(),
+        "price": $('#km_val').val()
     };
     $.ajax({
         url: '/orders/createorder',
@@ -700,14 +701,14 @@ function registerUser() {
 
 function calcPrice() {
     const d = sessionStorage.getItem("distance");
-    if(d===null) return;
+    if (d === null) return;
     $.ajax({
         url: '/orders/calcprice',
         type: 'post',
         dataType: 'json',
         contentType: 'application/json',
         success: function (data) {
-            document.getElementById('km_val').value = data.price+" грн.";
+            document.getElementById('km_val').value = data.price + " грн.";
         },
         data: JSON.stringify({
             "km": d,

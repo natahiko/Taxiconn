@@ -120,7 +120,7 @@ module.exports = {
         else
             return "SELECT * FROM drivers WHERE login='{}';".format(login);
     },
-    getSQLCreateOrder: function (userid, from, to, clas, pay_type, notes) {
+    getSQLCreateOrder: function (userid, from, to, clas, pay_type, notes, price) {
         if (notes === "") notes = 'NULL';
         else notes = "'" + notes + "'";
         const dirurl = "https://www.google.com/maps/dir/?api=1&origin=" + encodeURI(from) + "&destination=" +
@@ -128,8 +128,8 @@ module.exports = {
         const code = this.generateCode();
 
         return `INSERT INTO orders 
-                (id, user_id, class, pay_type_id, comment, address_from, address_to, url, start_date) 
-                VALUES ('{}', '{}', '{}', '{}' , ${notes}, '{}', '{}', '{}', NOW());`.format(code, userid, clas, pay_type, from, to, dirurl);
+                (id, user_id, class, pay_type_id, comment, address_from, address_to, url, start_date, price) 
+                VALUES ('{}', '{}', '{}', '{}' , ${notes}, '{}', '{}', '{}', NOW(), '{}');`.format(code, userid, clas, pay_type, from, to, dirurl, price);
     },
     getSQLUploadPhoto: function (cookies) {
         const text = localStorage.getItem("photo_src_" + cookies.userid);
@@ -243,8 +243,8 @@ module.exports = {
     },
     getDayType: function () {
         const time = new Date().getHours();
-        if(time===23 || (time>=0 && time <=7)) return "night";
-        if((time>=8 && time<=10) || (time>=17 && time<=20)) return "peak";
+        if (time === 23 || (time >= 0 && time <= 7)) return "night";
+        if ((time >= 8 && time <= 10) || (time >= 17 && time <= 20)) return "peak";
         return "default";
     }
 }

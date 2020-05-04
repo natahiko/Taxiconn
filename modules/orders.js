@@ -46,6 +46,8 @@ router.post('/createorder', function (req, res) {
     const to = req.body.address_to;
     const clas = req.body.clas;
     const pay_type = req.body.pay_type;
+    let price = req.body.price;
+    price = parseFloat(price.substring(0, price.length - 5));
     if (from === '' || to === "" || clas === "" || pay_type === "") {
         res.statusCode = 402;
         res.write(JSON.stringify({"err": "not enough parameters"}));
@@ -57,7 +59,7 @@ router.post('/createorder', function (req, res) {
             res.json({"too_much": true, "count": config.max_car_amount_for_client});
             res.end();
         } else {
-            const sql = functions.getSQLCreateOrder(userid, from, to, clas, pay_type, req.body.notes);
+            const sql = functions.getSQLCreateOrder(userid, from, to, clas, pay_type, req.body.notes, price);
             db.getCon().query(sql, function (err) {
                 if (err !== null) {
                     res.redirect("/orders/createorder");
@@ -74,7 +76,7 @@ router.post('/calcprice', function (req, res) {
     const clas = req.body.clas;
     const pay_type = req.body.pay_type;
     const km = req.body.km;
-    if(clas==="" || clas===undefined || km==="" || km===undefined || pay_type==="" || pay_type===undefined){
+    if (clas === "" || clas === undefined || km === "" || km === undefined || pay_type === "" || pay_type === undefined) {
         res.statusCode = 401;
         res.end();
     }
@@ -82,10 +84,10 @@ router.post('/calcprice', function (req, res) {
     const sql = `SELECT * FROM tarifs WHERE class='{}' AND pay_type='{}'
                     AND day_type='{}';`.format(clas, pay_type, day_type);
     db.getCon().query(sql, function (err, result) {
-        if(err)res.statusCode = 401;
-        else{
+        if (err) res.statusCode = 401;
+        else {
             let price = result[0]['price'];
-            price *= (parseFloat(km.substring(0, km.length-3).replace(',','.')));
+            price *= (parseFloat(km.substring(0, km.length - 3).replace(',', '.')));
             price += result[0]['min_price'];
             res.json({"price": price.toFixed(2)});
         }
