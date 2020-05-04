@@ -94,6 +94,17 @@ router.post('/calcprice', function (req, res) {
         res.end();
     });
 });
+router.get('/calculator', function (req, res) {
+    text.header['nowpage'] = "nav_client";
+    res.write(pug.renderFile(path.join(__dirname,"..",functions.getHeader(req.cookies.authorised)), text.header));
+    db.getCon().query('SELECT * FROM payments', function (err, result) {
+        res.write(pug.renderFile(path.join(__dirname, "../src/pugs/calculator.pug"), {
+            "pay_types": result,
+            "googlemapapi": config.googlemapapi
+        }));
+        res.end();
+    });
+});
 router.get('/all', function (req, res) {
     const clas = functions.getCarModelIdLocal(req.cookies.userid);
     if (clas === null) {

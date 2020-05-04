@@ -1,12 +1,9 @@
-section.condition.content
+section.condition.content.mt-1.mb-2
     div(id='foralert')
     div.row
-        h2.col-7
-            kbd Замовити таксі
-        div.col-5.input-group
-            div.input-group-prepend
-                span.input-group-text Вартість:
-            input.input-group-append.form-control.bg-white(id='km_val' value='-' disabled=true)
+        h2.col-12
+            kbd Калькулятор цін
+
     hr.m-1
     div.container
         div.address_info.row
@@ -32,15 +29,14 @@ section.condition.content
                     select.input-group-append.form-control(id="pay_type" onchange='calcPrice()')
                         each type in pay_types
                             option.default_option(value=type.pay_id data-toggle="tooltip" title=type.notes) #{type.name}
-
             div.col-12.col-sm-6.ordercart(id="map")
-            div.col-12.col-sm-12
-                div.form-group
-                    label(for="address_from") Коментар до замовлення:
-                    textarea.form-control(id='notes' placeholder='Допишіть ваш коментар...')
+            div.col-12.input-group.mt-2
+                div.input-group-prepend
+                    span.input-group-text Вартість:
+                input.input-group-append.form-control.bg-white(id='km_val' value='-' disabled=true)
 
-                div.input-group.align-content-center(style='width: 100%')
-                    button.btn.btn-lg.btn-warning.mb-0(style='margin: auto; width: 40%' type='button' onclick='ordertaxi()') Замовити
+
+
 include footer
 script(type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=" + googlemapapi + "&libraries=places&callback=initMap")
 script(src='../../src/js/maps.js' type="text/javascript")
