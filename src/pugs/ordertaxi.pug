@@ -20,16 +20,16 @@ section.condition.content
                 div(style='margin-bottom: 12px')
                     div.form-check-inline
                         label.form-check-label
-                            input.form-check-input(type='radio' name='class' checked value='econom')
+                            input.form-check-input(type='radio' name='class' checked value='econom' onclick='calcPrice()')
                             span Econom
                     div.form-check-inline
                         label.form-check-label
-                            input.form-check-input(type='radio' name='class' value="comfort")
+                            input.form-check-input(type='radio' name='class' value="comfort" onclick='calcPrice()')
                             span Comfort
                 div.input-group
                     div.input-group-prepend
                         span.input-group-text Оплата
-                    select.input-group-append.form-control(id="pay_type")
+                    select.input-group-append.form-control(id="pay_type" onchange='calcPrice()')
                         each type in pay_types
                             option.default_option(value=type.pay_id data-toggle="tooltip" title=type.notes) #{type.name}
 

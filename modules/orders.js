@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 let text = require('../config/main.json');
+let config = require('../config/conf.json');
 const db = require('./database_pool');
 let functions = require('./functions');
 const pug = require('pug');
@@ -69,7 +70,7 @@ router.post('/createorder', function (req, res) {
         }
     });
 });
-router.get('/calcprice', function (req, res) {
+router.post('/calcprice', function (req, res) {
     const clas = req.body.clas;
     const pay_type = req.body.pay_type;
     const km = req.body.km;
@@ -78,13 +79,15 @@ router.get('/calcprice', function (req, res) {
         res.end();
     }
     const day_type = functions.getDayType();
-    const sql = `SELECT price FROM tarifs WHERE class='{}' AND pay_type='{}'
+    const sql = `SELECT * FROM tarifs WHERE class='{}' AND pay_type='{}'
                     AND day_type='{}';`.format(clas, pay_type, day_type);
-    db.getCon().query(sql, function (err, res) {
+    db.getCon().query(sql, function (err, result) {
         if(err)res.statusCode = 401;
         else{
-            const price = result[0].price * km / 1000;
-            res.json({"price": price});
+            let price = result[0]['price'];
+            price *= (parseFloat(km.substring(0, km.length-3).replace(',','.')));
+            price += result[0]['min_price'];
+            res.json({"price": price.toFixed(2)});
         }
         res.end();
     });
@@ -103,6 +106,7 @@ router.get('/all', function (req, res) {
     }
 });
 router.post('/cancelDrive', function (req, res) {
+    console.log("cancel");
     db.getCon().query(functions.getSQLCancelDrive(req.body.order_id, req.cookies), function () {
         res.json({"data": true});
         res.end();

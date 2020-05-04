@@ -241,7 +241,7 @@ module.exports = {
         if (client) return "SELECT * FROM clients WHERE login='{}' OR phone='{}' OR email='{}';".format(login, phone, email);
         else return "SELECT * FROM drivers WHERE login='{}' OR phone='{}' OR email='{}';".format(login, phone, email);
     },
-    getDateType: function () {
+    getDayType: function () {
         const time = new Date().getHours();
         if(time===23 || (time>=0 && time <=7)) return "night";
         if((time>=8 && time<=10) || (time>=17 && time<=20)) return "peak";

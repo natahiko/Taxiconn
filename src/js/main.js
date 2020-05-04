@@ -697,3 +697,22 @@ function registerUser() {
         })
     });
 }
+
+function calcPrice() {
+    const d = sessionStorage.getItem("distance");
+    if(d===null) return;
+    $.ajax({
+        url: '/orders/calcprice',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function (data) {
+            document.getElementById('km_val').value = data.price+" грн.";
+        },
+        data: JSON.stringify({
+            "km": d,
+            "pay_type": $("#pay_type").val(),
+            "clas": $("input[name='class']:checked").val(),
+        })
+    });
+}

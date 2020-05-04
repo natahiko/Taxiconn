@@ -94,20 +94,8 @@ AutocompleteDirectionsHandler.prototype.route = function () {
             if (status === 'OK') {
                 me.directionsRenderer.setDirections(response);
                 var d = response.routes[0].legs[0].distance.text;
-                $.ajax({
-                    url: '/orders/calcprice',
-                    type: 'post',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    success: function (data) {
-                        document.getElementById('km_val').value = data.price+" грн.";
-                    },
-                    data: JSON.stringify({
-                        "km": d,
-                        "pay_type": $("#pay_type").val(),
-                        "clas": $("input[name='class']:checked").val(),
-                    })
-                });
+                sessionStorage.setItem("distance", d)
+                calcPrice();
             } else {
                 window.alert('Directions request failed due to ' + status);
             }
