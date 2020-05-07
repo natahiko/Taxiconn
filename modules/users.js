@@ -5,7 +5,6 @@ let functions = require('./functions');
 const pug = require('pug');
 let path = require('path');
 
-
 router.get('/userrules', function (req, res) {
     text.header['nowpage'] = "nav_client";
     res.write(pug.renderFile(path.join(__dirname, '/..') + functions.getHeader(req.cookies.authorised), text.header));
@@ -16,7 +15,6 @@ router.get('/userrules', function (req, res) {
         res.end();
     });
 });
-
 
 router.get('/registeruser', function (req, res) {
     let user = req.cookies.authorised;
@@ -32,10 +30,12 @@ router.get('/registeruser', function (req, res) {
         });
     }
 });
+
 router.param('userid', function (req, res, next, userid) {
     req.userid = userid;
     return next();
 });
+
 router.get('/:userid', function (req, res) {
     text.header['nowpage'] = "";
     const userid = req.userid;

@@ -16,6 +16,7 @@ router.get('/workcond', function (req, res) {
         res.end();
     });
 });
+
 router.get('/usefultips', function (req, res) {
     text.header['nowpage'] = "nav_driver";
     res.write(pug.renderFile(path.join(__dirname, '/..') + functions.getHeader(req.cookies.authorised), text.header));
@@ -39,10 +40,12 @@ router.get('/becomedriver', function (req, res) {
         });
     }
 });
+
 router.param('driverid', function (req, res, next, driverid) {
     req.userid = driverid;
     return next();
 });
+
 router.get('/:driverid', function (req, res) {
     text.header['nowpage'] = "";
     const userid = req.userid;
@@ -61,6 +64,7 @@ router.get('/:driverid', function (req, res) {
         }
     });
 });
+
 String.prototype.format = function () {
     var i = 0, args = arguments;
     return this.replace(/{}/g, function () {

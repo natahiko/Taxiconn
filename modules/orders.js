@@ -7,7 +7,6 @@ let functions = require('./functions');
 const pug = require('pug');
 let path = require('path');
 
-
 router.get('/', function (req, res) {
     if (req.cookies.authorised !== 'drivers') res.redirect("/404");
     else {
@@ -72,6 +71,7 @@ router.post('/createorder', function (req, res) {
         }
     });
 });
+
 router.post('/calcprice', function (req, res) {
     const clas = req.body.clas;
     const pay_type = req.body.pay_type;
@@ -94,6 +94,7 @@ router.post('/calcprice', function (req, res) {
         res.end();
     });
 });
+
 router.get('/calculator', function (req, res) {
     text.header['nowpage'] = "nav_client";
     res.write(pug.renderFile(path.join(__dirname,"..",functions.getHeader(req.cookies.authorised)), text.header));
@@ -105,6 +106,7 @@ router.get('/calculator', function (req, res) {
         res.end();
     });
 });
+
 router.get('/all', function (req, res) {
     const clas = functions.getCarModelIdLocal(req.cookies.userid);
     if (clas === null) {
@@ -118,6 +120,7 @@ router.get('/all', function (req, res) {
         });
     }
 });
+
 router.post('/cancelDrive', function (req, res) {
     console.log("cancel");
     db.getCon().query(functions.getSQLCancelDrive(req.body.order_id, req.cookies), function () {
