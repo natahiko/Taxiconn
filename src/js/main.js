@@ -539,19 +539,23 @@ function getOrder(id) {
     });
 }
 
+function checkOrders() {
+    renew_orders_method();
+    setTimeout(renew_orders_method, 3000)
+}
+
 function renew_orders_method() {
+    console.log("drftgyhjk");
     $.ajax({
         url: '/orders/all',
         type: 'get',
         dataType: 'json',
         contentType: 'application/json',
         success: function (data) {
+            console.log(data);
             $("#orders").html(data);
-        },
-        error: function (data) {
-            console.log(data.err);
-        },
-        data: JSON.stringify({})
+            setTimeout(renew_orders_method, 3000)
+        }
     });
 }
 

@@ -31,7 +31,7 @@ module.exports = {
         let json = jsonStorage.getItem(code);
         if (json === "") return "";
         json = JSON.parse(json);
-        return json.car_model
+        return json.car_model;
     },
     getRegisretDriverSQL: function (email, code, carmodelid) {
         if (localStorage.getItem(email) === null || localStorage.getItem(email) !== code) {
@@ -163,7 +163,7 @@ module.exports = {
                 COUNT(CASE WHEN orders.status=4 THEN orders.id END) AS finished_amount, 
                 COUNT(CASE WHEN orders.status=2 THEN orders.id END) AS cancel_driver_amount,
                 COUNT(CASE WHEN orders.status=3 THEN orders.id END) AS cancel_client_amount 
-                FROM drivers LEFT OUTER JOIN car_models ON car_models.id=drivers.carmodelid INNER JOIN orders 
+                FROM drivers LEFT OUTER JOIN car_models ON car_models.id=drivers.carmodelid LEFT OUTER JOIN orders 
                     ON drivers.id = orders.driver_id WHERE drivers.id='{}' GROUP BY driver_id`.format(userid);
     },
     getSQLEndDrive: function (order_id, driver_id) {
@@ -226,7 +226,7 @@ module.exports = {
             html: "<div style='background-color: #343A40; width: 100%'>" +
                 "    <b style='margin: 15px; color: white; font-size: x-large'>Taxiconn</b>" +
                 "    <h2 style='text-align: center'></h2></div>" +
-                "<span style='text-align: center; align-items: center; color: black'><h2>" + email.header + "</h2><p>" + email.text + "</p>" +
+                "<span style='text-align: center; align-items: center; color: black'><h2>" + email.header.format(data.name) + "</h2><p>" + email.text + "</p>" +
                 "<div style='font-weight: bold; font-size: 20px; color: red'>" + email.alert + "</div>" +
                 "<input style='width: 50%; margin: 7px 25%; text-align: center; padding: 5px; font-size: x-large; " +
                 "background: white; border: none' disabled type='text' value='" + data.password + "' id='code'>" +

@@ -115,6 +115,7 @@ router.get('/all', function (req, res) {
         res.end();
     } else {
         db.getCon().query("SELECT * FROM orders INNER JOIN payments ON payments.pay_id=orders.pay_type_id WHERE status=0 AND class='{}';".format(clas), function (err, result) {
+            res.statusCode = 200;
             res.write(pug.renderFile(path.join(__dirname, "../src/pugs/allorders.pug"), {"orders": result}));
             res.end();
         });

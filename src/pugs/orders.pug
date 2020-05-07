@@ -19,4 +19,5 @@ div.modal.fade(id='order_modal_alert' tabindex="-1" role="dialog" aria-hidden="t
                 button.btn.btn-warning(type="button" data-dismiss="modal") Зрозуміло!
 
 include footer
-script(type="text/javascript") setInterval(renew_orders_method, 3000);
+cript(type="text/javascript") setTimeout(renew_orders_method,3000);
+//script(type="text/javascript") setTimeout(function () {window.location = '/orders'}, 2000);

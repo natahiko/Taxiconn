@@ -24,7 +24,7 @@ server.use('/user', require('./modules/users'));
 server.use('/driver', require('./modules/drivers'));
 server.use('/orders', require('./modules/orders'));
 //use fot test
-// server.use('/default', require('./modules/default'));
+server.use('/default', require('./modules/default'));
 
 let storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -135,7 +135,8 @@ server.get('/confirmregistrcode', function (req, res) {
                 res.write(pug.renderFile(__dirname + "/src/pugs/confirmregistration.pug", {
                     "email": email
                 }));
-            } else res.write(pug.renderFile(__dirname + "/src/pugs/successRegistered.pug"));
+            } else
+                res.write(pug.renderFile(__dirname + "/src/pugs/successRegistered.pug"));
             res.end();
         });
     }

@@ -25,7 +25,9 @@ section.container.content
                 pre.mb-0     <b>Святкові дні: </b>
                     span 11:00 - 17:00
         div.googlemap.col-sm-5.col-12(id="googleMap")
-include footer
+
+
 script(src="https://maps.googleapis.com/maps/api/js?key=" + googlemapapi + "&callback=myMap")
-script(src='../../src/js/maps.min.js' type="text/javascript")
+script(src='../../src/js/maps.js' type="text/javascript")
 script(type="text/javascript") myMap();
+include footer
