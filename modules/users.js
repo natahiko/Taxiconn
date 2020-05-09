@@ -1,10 +1,11 @@
-const router = require('express').Router();
-let text = require('../config/main.json');
-const db = require('./database_pool');
-let functions = require('./functions');
-const pug = require('pug');
-let path = require('path');
+const router = require('express').Router(),
+    db = require('./database_pool'),
+    text = require('../config/main.json'),
+    functions = require('./functions'),
+    pug = require('pug'),
+    path = require('path'), fs = require('fs');
 
+//page with user rules from db
 router.get('/userrules', function (req, res) {
     text.header['nowpage'] = "nav_client";
     res.write(pug.renderFile(path.join(__dirname, '/..') + functions.getHeader(req.cookies.authorised), text.header));
@@ -16,6 +17,7 @@ router.get('/userrules', function (req, res) {
     });
 });
 
+//quick register page
 router.get('/registeruser', function (req, res) {
     let user = req.cookies.authorised;
     if (user === 'clients') res.redirect("/profile");
@@ -31,11 +33,11 @@ router.get('/registeruser', function (req, res) {
     }
 });
 
+//pages with dynamic client ids for show profile without editind
 router.param('userid', function (req, res, next, userid) {
     req.userid = userid;
     return next();
 });
-
 router.get('/:userid', function (req, res) {
     text.header['nowpage'] = "";
     const userid = req.userid;

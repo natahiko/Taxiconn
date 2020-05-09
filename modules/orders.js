@@ -1,11 +1,10 @@
-const express = require('express');
-const router = express.Router();
-let text = require('../config/main.json');
-let config = require('../config/conf.json');
-const db = require('./database_pool');
-let functions = require('./functions');
-const pug = require('pug');
-let path = require('path');
+const router = require('express').Router(),
+    db = require('./database_pool'),
+    text = require('../config/main.json'),
+    functions = require('./functions'),
+    pug = require('pug'),
+    path = require('path'), fs = require('fs'),
+    config = require('../config/conf.json');
 
 router.get('/', function (req, res) {
     if (req.cookies.authorised !== 'drivers') res.redirect("/404");
@@ -97,7 +96,7 @@ router.post('/calcprice', function (req, res) {
 
 router.get('/calculator', function (req, res) {
     text.header['nowpage'] = "nav_client";
-    res.write(pug.renderFile(path.join(__dirname,"..",functions.getHeader(req.cookies.authorised)), text.header));
+    res.write(pug.renderFile(path.join(__dirname, "..", functions.getHeader(req.cookies.authorised)), text.header));
     db.getCon().query('SELECT * FROM payments', function (err, result) {
         res.write(pug.renderFile(path.join(__dirname, "../src/pugs/calculator.pug"), {
             "pay_types": result,
@@ -116,7 +115,7 @@ router.get('/all', function (req, res) {
     } else {
         db.getCon().query("SELECT * FROM orders INNER JOIN payments ON payments.pay_id=orders.pay_type_id WHERE status=0 AND class='{}';".format(clas), function (err, result) {
             res.statusCode = 200;
-            res.write(pug.renderFile(path.join(__dirname, "../src/pugs/allorders.pug"), {"orders": result}));
+            res.json({"data": pug.renderFile(path.join(__dirname, "../src/pugs/allorders.pug"), {"orders": result})});
             res.end();
         });
     }

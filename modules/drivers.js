@@ -1,11 +1,11 @@
-const router = require('express').Router();
-let text = require('../config/main.json');
-const db = require('./database_pool');
-let functions = require('./functions');
-const pug = require('pug');
-let path = require('path');
-let fs = require('fs');
+const router = require('express').Router(),
+    db = require('./database_pool'),
+    text = require('../config/main.json'),
+    functions = require('./functions'),
+    pug = require('pug'),
+    path = require('path'), fs = require('fs');
 
+//return work cond page with info about car models
 router.get('/workcond', function (req, res) {
     text.header['nowpage'] = "nav_driver";
     res.write(pug.renderFile(path.join(__dirname, '/..') + functions.getHeader(req.cookies.authorised), text.header));
@@ -17,6 +17,7 @@ router.get('/workcond', function (req, res) {
     });
 });
 
+//usefull tips html page
 router.get('/usefultips', function (req, res) {
     text.header['nowpage'] = "nav_driver";
     res.write(pug.renderFile(path.join(__dirname, '/..') + functions.getHeader(req.cookies.authorised), text.header));
@@ -24,7 +25,7 @@ router.get('/usefultips', function (req, res) {
     res.end();
 });
 
-
+//become driver page
 router.get('/becomedriver', function (req, res) {
     let user = req.cookies.authorised;
     if (user === 'drivers') res.redirect("/profile");
@@ -41,11 +42,11 @@ router.get('/becomedriver', function (req, res) {
     }
 });
 
+//pages with dynamic driver ids for show profile without editind
 router.param('driverid', function (req, res, next, driverid) {
     req.userid = driverid;
     return next();
 });
-
 router.get('/:driverid', function (req, res) {
     text.header['nowpage'] = "";
     const userid = req.userid;

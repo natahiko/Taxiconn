@@ -4,6 +4,7 @@ let nodemailer = require('nodemailer');
 var md5 = require('md5');
 
 module.exports = {
+    //return header name depent on autorised
     getHeader: function (autorised) {
         if (autorised === 'drivers') {
             return "/src/pugs/header-driver.pug";
@@ -20,9 +21,11 @@ module.exports = {
     generateCode: function () {
         return Math.random().toString(36).slice(2);
     },
+    //save code
     setCode: function (email, code) {
         localStorage.setItem(email, code);
     },
+    //save driver info into local storage
     setRegisretDriverInfo: function (code, json) {
         json['password'] = this.hashPassword(json.password);
         jsonStorage.setItem(code, JSON.stringify(json));
@@ -37,12 +40,14 @@ module.exports = {
         if (localStorage.getItem(email) === null || localStorage.getItem(email) !== code) {
             return "";
         }
+        //get driver info from local storage
         let json = jsonStorage.getItem(code);
         let photo_src = "https://eu.ui-avatars.com/api/?name=" + json.name + "%20" + json.surname
             + "&background=343a40&color=ffc107&bold=true&size=512";
         if (json === "") return "";
         json = JSON.parse(json);
         const userid = this.generateCode();
+        //add driver to db
         let sql = `INSERT INTO drivers (id, login, name, surname, age, licence, carmodelid, caryear,
                      password, phone, description, email, carnumber, photo_src) VALUES 
                     ('{}', '{}','{}','{}','{}','{}','{}', '{}','{}','{}','{}','{}', '{}', '{}'
@@ -53,12 +58,14 @@ module.exports = {
         return sql;
     },
     send: async function (emailTo, code, config, email) {
+        //send emain for driver
         let transporter = nodemailer.createTransport({
             host: config.host,
             port: config.port,
             secure: false,
             auth: config.auth
         });
+        //content of email
         let mailOptions = {
             from: config.auth.user,
             to: emailTo,
@@ -123,6 +130,7 @@ module.exports = {
     getSQLCreateOrder: function (userid, from, to, clas, pay_type, notes, price) {
         if (notes === "") notes = 'NULL';
         else notes = "'" + notes + "'";
+        //create dir_url
         const dirurl = "https://www.google.com/maps/dir/?api=1&origin=" + encodeURI(from) + "&destination=" +
             encodeURI(to) + "&travelmode=driving&dir_action=navigate";
         const code = this.generateCode();
@@ -132,11 +140,13 @@ module.exports = {
                 VALUES ('{}', '{}', '{}', '{}' , ${notes}, '{}', '{}', '{}', NOW(), '{}');`.format(code, userid, clas, pay_type, from, to, dirurl, price);
     },
     getSQLUploadPhoto: function (cookies) {
+        //get photo src from storage and remove
         const text = localStorage.getItem("photo_src_" + cookies.userid);
         localStorage.removeItem("photo_src_" + cookies.userid);
         if (cookies.userid === "" || cookies.userid === undefined || cookies.authorised === "" || cookies.authorised === undefined) {
             return "";
         }
+        //return sql text
         const userid = cookies.userid;
         if (cookies.authorised === 'clients')
             return "UPDATE clients SET photo_src='{}' WHERE id='{}';".format(text, userid);
@@ -187,12 +197,14 @@ module.exports = {
         }
     },
     getSQLRedisterUser: function (data) {
+        //get all parameters
         const code = this.generateCode();
         const password = this.generateCode();
         const passHash = this.hashPassword(password);
         const email = data.email + data.emend;
         const photo_src = "https://eu.ui-avatars.com/api/?name=" + data.first_name + "%20" + data.surname
             + "&background=343a40&color=ffc107&bold=true&size=512";
+        //save in local storage
         jsonStorage.setItem(data.login, JSON.stringify({
             "full_name": data.first_name + " " + data.surname,
             "password": password,
@@ -205,11 +217,13 @@ module.exports = {
             .format(code, data.login, data.first_name, data.surname, data.age, email, passHash, photo_src);
     },
     getSQLChageUserPassword: function (cookies, body) {
+        //hasing
         const oldHash = this.hashPassword(body.old_pass);
         const newHash = this.hashPassword(body.new_pass);
         return `UPDATE clients SET password='{}', registered=1 WHERE password='{}' AND id='{}';`.format(newHash, oldHash, cookies.unauthorised_userid);
     },
     sendUserMail: async function (login, config, email) {
+        //sed amain with temporary password for user
         let data = jsonStorage.getItem(login);
         jsonStorage.removeItem(login);
         data = JSON.parse(data);
@@ -219,6 +233,7 @@ module.exports = {
             secure: false,
             auth: config.auth
         });
+        //email content
         let mailOptions = {
             from: config.auth.user,
             to: data.email,

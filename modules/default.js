@@ -1,6 +1,6 @@
-const express = require('express');
-const router = express.Router();
-let functions = require('./functions');
+const express = require('express'),
+      router = express.Router(),
+      functions = require('./functions');
 
 router.get('/getRandCode', function (req, res) {
     let code = functions.generateCode();

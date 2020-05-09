@@ -1,13 +1,11 @@
+//logining user function
 function loginUser() {
     let passSelector = $("#log_pass");
     let login = $("#log_login").val();
     let pass = passSelector.val();
     let type = $("#log_type").children("option:selected").val();
-    if (type === "Оберіть як ви хочете увійти...") {
-        return;
-    }
     passSelector.val("");
-    if (login === "" || pass === "") {
+    if (type === "Оберіть як ви хочете увійти..." || login === "" || pass === "") {
         alert("Всі поля мають бути заповнені");
         return false;
     }
@@ -16,6 +14,7 @@ function loginUser() {
         "password": pass,
         "type": type
     };
+    //create request for check
     $.ajax({
         url: '/login',
         type: 'post',
@@ -23,16 +22,19 @@ function loginUser() {
         contentType: 'application/json',
         success: function (data) {
             if (!data.registered && person.type === 'clients') {
+                //if client try to login first time need to change password
                 document.cookie = "unauthorised_userid=" + data.userid;
                 document.cookie = 'unauthorised=' + type;
                 window.location = '/changepassword';
             } else {
+                //set cookies and redirect to profile
                 document.cookie = "userid=" + data.userid;
                 document.cookie = 'authorised=' + type;
                 window.location = '/profile';
             }
         },
         error: function () {
+            //if not such data in db
             alert("Перевірте правильність данних та спробуйте ще!");
             return false;
         },
@@ -40,16 +42,20 @@ function loginUser() {
     });
 }
 
+//removing cookies for exit user from system
 function exit() {
     document.cookie = 'userid=null;max-age=-1';
     document.cookie = 'authorised=null;max-age=-1';
     window.location = '/';
 }
 
+//function for change list of models depent on producer
 function renew_car_model(value) {
     let producerid = $("#select_carproducer").children("option:selected").val();
     let classSel = $('#carclassprofile');
+    //if is a becomedriver page
     let car_class = classSel.children("option:selected").val();
+    //if is a driver profile page
     if (car_class === undefined) {
         car_class = $('input[name="car_class"]:checked').val();
     }
@@ -66,30 +72,22 @@ function renew_car_model(value) {
         dataType: 'json',
         contentType: 'application/json',
         success: function (data) {
-            console.log(data);
             let res = data.res;
             carModelSelector.append("<option value='default' class='default_option'>Оберіть марку</option>");
-            for (let i = 0; i < res.length; i++) {
+            for (let i = 0; i < res.length; i++)
                 carModelSelector.append("<option value='" + res[i].id + "'>" + res[i].model + "</option>");
-            }
             $("#select_carmodel option[value=" + value + "]").attr('selected', true);
         },
         data: JSON.stringify(prods)
     });
 }
 
-function becomedriver() {
-    let nameSelector = $("#name");
-    let name = nameSelector.val();
-    if (name === "" || !validName(name)) {
-        nameSelector.css.background = "red";
-    }
-}
-
+//submiting function on becomedriver
 function loadSubmit() {
     const emailSelector = $("#driver_email");
     let loginSelector = $("#driver_login");
     const selectorsids = ["#select_category", "#select_carproducer", "#select_carmodel"];
+    //check all field
     const isValid = [!validateName("#driver_name"), !validateName("#driver_surname"),
         !validAge("#driver_age"), !validateTel("#driver_tel"), !validSeria("#driver_seria"),
         !validSeriaNum("#driver_seria_num"), !validPassword("#driver_pass", "#driver_pass_conf"),
@@ -99,12 +97,14 @@ function loadSubmit() {
         event.preventDefault();
         return false;
     }
+    //get needed values that should be unique
     let login = loginSelector.val();
     const email = emailSelector.val() + $("#select_email").val();
     let licence = $("#driver_seria").val() + $("#driver_seria_num").val();
     let phoneSel = $("#driver_tel");
     let phone = phoneSel.val();
     const autonum = $("#driver_autonum1").val() + $("#driver_autonum2").val() + $("#driver_autonum3").val();
+    //check unique
     $.ajax({
         url: '/isAllFree',
         type: 'post',
@@ -113,6 +113,7 @@ function loadSubmit() {
         success: function () {
             loginSelector.addClass("is-valid");
             loginSelector.removeClass("is-invalid");
+            //send main is all is correct
             $.ajax({
                 url: '/sendmail',
                 type: 'post',
@@ -173,6 +174,7 @@ function loadSubmit() {
     });
 }
 
+//listener for selector to create grey color for none values
 function setValues() {
     let docs = document.getElementsByTagName("select");
     for (let i = 0; i < docs.length; i++) {
@@ -194,6 +196,7 @@ function checkValueSelect() {
     }
 }
 
+//check neq login in registered pages and  profiles
 function checkLogin(logSelector, type) {
     let login = logSelector.val();
     if (login === "") {
@@ -263,6 +266,7 @@ async function checkFreeLogin() {
     return checkLogin(logSelector, "drivers");
 }
 
+//change passwor in profile
 function changePass(usertype) {
     const oldPassSel = $("#old_change_pass");
     const passSel = $("#change_pass");
@@ -285,12 +289,14 @@ function changePass(usertype) {
         "now": pass,
         "type": usertype
     };
+    //create request
     $.ajax({
         url: '/password',
         type: 'put',
         dataType: 'json',
         contentType: 'application/json',
         success: function () {
+            //set correct alert
             $("#profilesection").prepend("<div class='alert alert-success alert-dismissible'>" +
                 "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
                 "<strong>Ваш пароль успішно змінено!</strong></div>");
@@ -318,8 +324,10 @@ function changePass(usertype) {
     });
 }
 
+//functions for make fielda enable for editing
 function showEditingProfile(val) {
     if (val) {
+        //for editing
         $(".driver_auto input[type=number]").prop("disabled", true);
         $(".driver_auto select").prop("disabled", true);
         $(".main_profile_part input").prop("disabled", true);
@@ -333,6 +341,7 @@ function showEditingProfile(val) {
         $("#canselprofilebutton").hide();
         $("#upload_photo").hide();
     } else {
+        //cancel editing
         $(".driver_auto input[type=number]").prop("disabled", false);
         $(".driver_auto select").prop("disabled", false);
         $(".main_profile_part input").prop("disabled", false);
@@ -482,6 +491,8 @@ function saveClientChanges() {
     });
 }
 
+
+//submit on ordertaxi
 function ordertaxi() {
     const address_from = $("#address_from").val();
     const address_to = $("#address_to").val();
@@ -504,6 +515,7 @@ function ordertaxi() {
         contentType: 'application/json',
         success: function (data2) {
             if (data2.too_much) {
+                //alert in more than 2 active drives
                 $("#foralert").prepend("<div class='alert alert-danger alert-dismissible'>" +
                     "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
                     "<strong>Перевищено ліміт!</strong> Ви вже маєте " + data2.count +
@@ -513,6 +525,7 @@ function ordertaxi() {
                 window.location = "/thankspage";
         },
         error: function (data2) {
+            //server error
             $("#foralert").prepend("<div class='alert alert-danger alert-dismissible'>" +
                 "<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
                 "<strong>Помилка!</strong> Чомусь не вдалося обробити вашу заявку. <a href='#' onclick='ordertaxi()'>Спробуйте ще!</a>" +
@@ -533,28 +546,22 @@ function getOrder(id) {
         error: function () {
             $("#order_modal_alert").modal("toggle");
         },
-        data: {
-            "orderid": id
-        }
+        data: {"orderid": id}
     });
 }
 
-function checkOrders() {
-    renew_orders_method();
-    setTimeout(renew_orders_method, 3000)
-}
-
-function renew_orders_method() {
-    console.log("drftgyhjk");
+//functions for renew orders on deivers orders page
+async function renew_orders_method() {
     $.ajax({
         url: '/orders/all',
         type: 'get',
         dataType: 'json',
         contentType: 'application/json',
         success: function (data) {
-            console.log(data);
-            $("#orders").html(data);
-            setTimeout(renew_orders_method, 3000)
+            $("#orders").html(data.data);
+        },
+        error: function (data) {
+            console.log(data.err);
         }
     });
 }
