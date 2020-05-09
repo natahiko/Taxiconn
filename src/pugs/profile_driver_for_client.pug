@@ -78,11 +78,7 @@ div.content
                 div.input-group-prepend.col-3.col-sm-2.pr-0
                     span.input-group-text Авто
                 select.form-control.m-0.col-9.col-sm-4(disabled id='select_carproducer')
-                    each prod in producers
-                        if prod.prodid === info.producer_id
-                            option.form-control(selected value=prod.prodid) #{prod.producer}
-                        else
-                            option.form-control(value=prod.prodid) #{prod.producer}
+                    option.form-control(selected value=info.producer_id) #{info.producer}
                 select.form-control.m-0.col-8.col-sm-4(disabled id="select_carmodel")
                 input.form-control.m-0.col-4.col-sm-2(type="number" id='profile_carid' min=2000 max=2020 value=info.caryear disabled)
 include footer

@@ -173,7 +173,8 @@ module.exports = {
                 COUNT(CASE WHEN orders.status=4 THEN orders.id END) AS finished_amount, 
                 COUNT(CASE WHEN orders.status=2 THEN orders.id END) AS cancel_driver_amount,
                 COUNT(CASE WHEN orders.status=3 THEN orders.id END) AS cancel_client_amount 
-                FROM drivers LEFT OUTER JOIN car_models ON car_models.id=drivers.carmodelid LEFT OUTER JOIN orders 
+                FROM drivers LEFT OUTER JOIN car_models ON car_models.id=drivers.carmodelid
+                    INNER JOIN сar_producer ON car_models.producer_id = сar_producer.prodid LEFT OUTER JOIN orders 
                     ON drivers.id = orders.driver_id WHERE drivers.id='{}' GROUP BY driver_id`.format(userid);
     },
     getSQLEndDrive: function (order_id, driver_id) {

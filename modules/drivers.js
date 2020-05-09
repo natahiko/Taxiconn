@@ -50,19 +50,14 @@ router.param('driverid', function (req, res, next, driverid) {
 router.get('/:driverid', function (req, res) {
     text.header['nowpage'] = "";
     const userid = req.userid;
-    db.getCon().query("SELECT * FROM drivers WHERE id='{}';".format(userid), function (err, result) {
-        if (err || result.length < 1) res.redirect("/404");
-        else {
-            db.getCon().query(functions.getSQLProfileDriver(userid), function (err2, result2) {
-                text.header['nowpage'] = "/driverprofile/" + userid;
-                res.write(pug.renderFile(path.join(__dirname, '/..') + functions.getHeader(req.cookies.authorised), text.header));
-                res.write(pug.renderFile(path.join(__dirname, '/../src/pugs/profile_driver_for_client.pug'), {
-                    info: result[0],
-                    producers: result2[0]
-                }));
-                res.end();
-            });
-        }
+    db.getCon().query(functions.getSQLProfileDriver(userid), function (err2, result2) {
+        text.header['nowpage'] = "/driverprofile/" + userid;
+        res.write(pug.renderFile(path.join(__dirname, '/..') + functions.getHeader(req.cookies.authorised), text.header));
+        res.write(pug.renderFile(path.join(__dirname, '/../src/pugs/profile_driver_for_client.pug'), {
+            info: result2[0],
+            producers: []
+        }));
+        res.end();
     });
 });
 
