@@ -17,7 +17,7 @@
     "mysql": "^2.18.1",
     "node": "^13.10.1",
     "node-localstorage": "^2.1.5",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "nodemailer": "^6.4.4",
     "pug": "^2.0.4",
     "read-chunk": "^3.2.0"
